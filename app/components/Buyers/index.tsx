@@ -11,26 +11,26 @@ const cardData: cardDataType[] = [
     {
         imgSrc: '/assets/buyers/ourbuyers.svg',
         percent: '80k',
-        heading: "Artists Distributed",
-        subheading: "Empowering artists with global music distribution and reaching audiences worldwide.",
+        heading: "Advanced Analytics",
+        subheading: "Get deeper insights into your music's performance with detailed analytics. Track your streaming stats social media engagement and royalties easily.",
     },
     {
         imgSrc: '/assets/buyers/projectcompleted.svg',
         percent: '90k',
-        heading: "Tracks Distributed",
-        subheading: "Successfully distributing tracks to top streaming platforms and expanding musical reach.",
+        heading: "Automatically create release links.",
+        subheading: "Instantly create shareable links and pre-save links to amplify your music's reach on release day. Provide your fans with a convenient way to discover and enjoy your latest release across all major streaming platforms.",
     },
     {
         imgSrc: '/assets/buyers/happybuyers.svg',
         percent: '80%',
-        heading: "Satisfied Clients",
-        subheading: "Helping artists and labels achieve their music distribution goals with high satisfaction rates.",
+        heading: "Fast Payments, Simple Withdrawals ",
+        subheading: "Get your royalties directly deposited into your African bank account and enjoy the ease of quick and simple withdrawals. Stay in control of your earnings with reliable banking services from SONGDIS",
     },
     {
         imgSrc: '/assets/buyers/teammembers.svg',
         percent: '50+',
         heading: "Music Industry Partners",
-        subheading: "Partnering with leading industry professionals to enhance music distribution and promotion.",
+        subheading: "Partnering with leading industry professionals to enhance music distribution and promotion. Boost your streams and build momentum with these powerful tools from SONGDIS.",
     }
 ]
 

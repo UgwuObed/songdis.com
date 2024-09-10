@@ -55,7 +55,7 @@ const Register = () => {
                                         <div className="w-full max-w-md space-y-8">
                                             <div>
                                                 <img
-                                                    className="mx-auto h-12 w-auto"
+                                                    className="mx-auto h-20 w-auto"
                                                     src="/assets/logo/logo.png"
                                                     alt="Your Company"
                                                 />

@@ -8,10 +8,11 @@ const Banner = () => {
                 <div className="mx-auto max-w-7xl pt-16 sm:pt-20 pb-20 banner-image">
                     <div className="text-center">
                         <h1 className="text-4xl font-semibold text-navyblue sm:text-5xl lg:text-7xl md:4px lh-96">
-                            Empower Your Music with<br /> Seamless Distribution.
+                        Make money with your music.<br /> Unlimited & everywhere.
                         </h1>
                         <p className="mt-6 text-lg leading-8 text-bluegray">
-                            Songdis is the music distribution platform artists and labels trust to reach a global audience. <br /> Distribute your music to top streaming services and track your success effortlessly.
+                        SONGDIS provides independent artists and labels with easy music distribution to over 400+ platforms including spotify, Apple, Instagram <br />Earn 100% of your revenue, and expand
+                        your fan base across Africa & worldwide.
                         </p>
                     </div>
 
