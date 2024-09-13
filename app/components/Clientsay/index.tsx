@@ -12,7 +12,7 @@ const Clientsay = () => {
             <div className="relative h-full">
                 <Image src="/assets/clientsay/kdiv.jpg" alt="Artist 1" width={300} height={300} className="w-full h-full object-cover rounded-lg" />
                 <div className="absolute bottom-5 left-5 bg-white bg-opacity-80 p-4 rounded-lg">
-                    <p className="text-black">"Songdis has been a game-changer for our music distribution."</p>
+                    <p className="text-black">&quot;Songdis has been a game-changer for our music distribution.&quot;</p>
                     <h3 className="text-xl font-semibold">KDIV COCO</h3>
                     <h4 className="text-sm">Artist & Songwriter</h4>
                 </div>
@@ -22,7 +22,7 @@ const Clientsay = () => {
             <div className="relative h-full">
                 <Image src="/assets/clientsay/rech.jpg" alt="Artist 2" width={300} height={300} className="w-full h-full object-cover rounded-lg" />
                 <div className="absolute bottom-5 left-5 bg-white bg-opacity-80 p-4 rounded-lg">
-                    <p className="text-black">"Their platform made it easy to get our tracks onto major streaming services."</p>
+                    <p className="text-black">&quot;Their platform made it easy to get our tracks onto major streaming services.&quot;</p>
                     <h3 className="text-xl font-semibold">REECHDEE</h3>
                     <h4 className="text-sm">Artist</h4>
                 </div>
@@ -32,7 +32,7 @@ const Clientsay = () => {
             <div className="relative h-full">
                 <Image src="/assets/clientsay/ola.jpg" alt="Artist 3" width={300} height={300} className="w-full h-full object-cover rounded-lg" />
                 <div className="absolute bottom-5 left-5 bg-white bg-opacity-80 p-4 rounded-lg">
-                    <p className="text-black">"We reached new heights with Songdis."</p>
+                    <p className="text-black">&quot;We reached new heights with Songdis.&quot;</p>
                     <h3 className="text-xl font-semibold">SWIRTOLA</h3>
                     <h4 className="text-sm">Artist & Performer</h4>
                 </div>
@@ -42,7 +42,7 @@ const Clientsay = () => {
             <div className="relative h-full">
                 <Image src="/assets/clientsay/emmy.jpg" alt="Artist 4" width={300} height={300} className="w-full h-full object-cover rounded-lg" />
                 <div className="absolute bottom-5 left-5 bg-white bg-opacity-80 p-4 rounded-lg">
-                    <p className="text-black">"The best distribution service I’ve used."</p>
+                    <p className="text-black">&quot;The best distribution service I’ve used.&quot;</p>
                     <h3 className="text-xl font-semibold">EMMYBROWN</h3>
                     <h4 className="text-sm">Singer & Performer</h4>
                 </div>
