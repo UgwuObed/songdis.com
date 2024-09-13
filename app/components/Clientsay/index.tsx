@@ -4,25 +4,89 @@ const Clientsay = () => {
     return (
         <div className="mx-auto max-w-2xl py-40 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="bg-image-what">
-                <h3 className='text-navyblue text-center text-4xl lg:text-6xl font-semibold'>What Our Artist Say About Us</h3>
-                <h4 className="text-lg font-normal text-darkgray text-center mt-4">Hear from artists and labels who have experienced the power of seamless music distribution. <br /> Discover how we’ve helped them reach new heights.</h4>
+                <h3 className='text-navyblue text-center text-4xl lg:text-6xl font-semibold'>What Artists Say About Us</h3>
 
-                <div className="lg:relative">
-                    <Image src={'/assets/clientsay/avatars.png'} alt="client-avatars" width={1061} height={733} className="hidden lg:block" />
+              {/* Web View */}
+            <div className="hidden lg:grid lg:grid-cols-4 lg:gap-4 lg:mt-10">
+            {/* Artist 1 */}
+            <div className="relative h-full">
+                <Image src="/assets/clientsay/kdiv.jpg" alt="Artist 1" width={300} height={300} className="w-full h-full object-cover rounded-lg" />
+                <div className="absolute bottom-5 left-5 bg-white bg-opacity-80 p-4 rounded-lg">
+                    <p className="text-black">"Songdis has been a game-changer for our music distribution."</p>
+                    <h3 className="text-xl font-semibold">KDIV COCO</h3>
+                    <h4 className="text-sm">Artist & Songwriter</h4>
+                </div>
+            </div>
 
-                    <span className="lg:absolute lg:bottom-40 lg:left-80">
-                    <Image src={'/assets/clientsay/kdiv.jpg'} alt="testimonial-client" width={168} height={168} className="mx-auto pt-30 lg:pb-30 rounded-full" />
-                        <div className="lg:inline-block bg-white rounded-2xl p-5 shadow-sm">
-                            <p className="text-base font-normal text-center text-darkgray">“Songdis has been a game-changer for our music distribution. The platform made it easy to get our tracks onto major streaming services and track our success.”</p>
-                            <h3 className="text-2xl font-medium text-center py-2">Kdiv Coco</h3>
-                            <h4 className="text-sm font-normal text-center">Artist & songwriter</h4>
-                        </div>
-                    </span>
+            {/* Artist 2 */}
+            <div className="relative h-full">
+                <Image src="/assets/clientsay/rech.jpg" alt="Artist 2" width={300} height={300} className="w-full h-full object-cover rounded-lg" />
+                <div className="absolute bottom-5 left-5 bg-white bg-opacity-80 p-4 rounded-lg">
+                    <p className="text-black">"Their platform made it easy to get our tracks onto major streaming services."</p>
+                    <h3 className="text-xl font-semibold">REECHDEE</h3>
+                    <h4 className="text-sm">Artist</h4>
+                </div>
+            </div>
+
+            {/* Artist 3 */}
+            <div className="relative h-full">
+                <Image src="/assets/clientsay/ola.jpg" alt="Artist 3" width={300} height={300} className="w-full h-full object-cover rounded-lg" />
+                <div className="absolute bottom-5 left-5 bg-white bg-opacity-80 p-4 rounded-lg">
+                    <p className="text-black">"We reached new heights with Songdis."</p>
+                    <h3 className="text-xl font-semibold">SWIRTOLA</h3>
+                    <h4 className="text-sm">Artist & Performer</h4>
+                </div>
+            </div>
+
+            {/* Artist 4 */}
+            <div className="relative h-full">
+                <Image src="/assets/clientsay/emmy.jpg" alt="Artist 4" width={300} height={300} className="w-full h-full object-cover rounded-lg" />
+                <div className="absolute bottom-5 left-5 bg-white bg-opacity-80 p-4 rounded-lg">
+                    <p className="text-black">"The best distribution service I’ve used."</p>
+                    <h3 className="text-xl font-semibold">EMMYBROWN</h3>
+                    <h4 className="text-sm">Singer & Performer</h4>
                 </div>
             </div>
         </div>
-    )
-}
+
+{/* Mobile View */}
+<div className="lg:hidden mt-10">
+    <div className="grid grid-cols-2 gap-4">
+        {/* Artist 1 */}
+        <div className="relative">
+            <Image src="/assets/clientsay/kdiv.jpg" alt="Artist 1" width={300} height={300} className="w-full h-full object-cover rounded-lg" />
+            <div className="bg-white bg-opacity-80 p-4 rounded-lg mt-2">
+            </div>
+        </div>
+
+        {/* Artist 2 */}
+        <div className="relative">
+            <Image src="/assets/clientsay/rech.jpg" alt="Artist 2" width={300} height={300} className="w-full h-full object-cover rounded-lg" />
+            <div className="bg-white bg-opacity-80 p-4 rounded-lg mt-2">
+            </div>
+        </div>
+
+        {/* Artist 3 */}
+        <div className="relative">
+            <Image src="/assets/clientsay/ola.jpg" alt="Artist 3" width={300} height={300} className="w-full h-full object-cover rounded-lg" />
+            <div className="bg-white bg-opacity-80 p-4 rounded-lg mt-2">
+            </div>
+        </div>
+
+        {/* Artist 4 */}
+        <div className="relative">
+            <Image src="/assets/clientsay/emmy.jpg" alt="Artist 4" width={300} height={300} className="w-full h-full object-cover rounded-lg" />
+            <div className="bg-white bg-opacity-80 p-4 rounded-lg mt-2">
+            </div>
+        </div>
+    </div>
+</div><br/>
+                <div className="text-center mt-6">
+                    <button className="bg-red-600 text-white py-3 px-6 rounded-lg">Join Now</button>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default Clientsay;
-
