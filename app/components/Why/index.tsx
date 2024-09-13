@@ -15,9 +15,9 @@ const whydata: whydata[] = [
         subheading: "Streamline your music distribution process with our intuitive platform and tools, making management a breeze.",
     },
     {
-        heading: "Detailed Analytics",
-        subheading: "Gain insights into your music's performance with comprehensive analytics and reporting features.",
-    }
+        heading: "Easy Withdrawal",
+        subheading: "Enjoy hassle-free withdrawal options with streamlined processes for your earnings."
+    }    
 ]
 
 const Why = () => {

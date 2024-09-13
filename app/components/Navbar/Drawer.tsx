@@ -31,6 +31,7 @@ const Drawer = ({ children, isOpen, setIsOpen }: DrawerProps) => {
                         className="h-19 w-20"
                         src={"/assets/logo/logo.png"}
                         alt="Courses-Logo"
+                        style={{ height: '140px', width: 'auto' }} 
                         onClick={() => {
                             setIsOpen(false);
                         }}

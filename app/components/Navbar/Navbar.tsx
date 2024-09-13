@@ -33,24 +33,28 @@ const Navbar = () => {
     return (
         <Disclosure as="nav" className="navbar">
             <>
-                <div className="mx-auto max-w-7xl px-6 lg:py-4 lg:px-8">
-                    <div className="relative flex h-20 items-center justify-between">
-                        <div className="flex flex-1 items-center sm:items-stretch sm:justify-start">
+            <div className="mx-auto max-w-7xl px-6 lg:py-4 lg:px-8">
+                <div className="relative flex h-20 items-center justify-between">
+                    <div className="flex flex-1 items-center sm:items-stretch sm:justify-start">
 
-                            {/* LOGO */}
+                    {/* LOGO */}
 
-                            <div className="flex flex-shrink-0 items-center">
-                    <img
-                        className="block h-19 w-20 lg:hidden" 
+                    <div className="flex flex-shrink-0 items-center">
+                        {/* Mobile Logo - Custom Size */}
+                        <img
+                        className="block lg:hidden"
                         src={'/assets/logo/logo.png'}
                         alt="dsign-logo"
-                    />
-                    <img
-                        className="hidden h-15 w-36 lg:block" 
+                        style={{ height: '140px', width: 'auto' }} 
+                        />
+                        {/* Desktop Logo - Custom Size */}
+                        <img
+                        className="hidden lg:block"
                         src={'/assets/logo/logo.png'}
                         alt="dsign-logo"
-                    />
-                </div>
+                        style={{ height: '250px', width: 'auto' }} 
+                        />
+                    </div>
 
                             {/* LINKS */}
 

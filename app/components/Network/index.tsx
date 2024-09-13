@@ -35,7 +35,7 @@ const Network = () => {
             <div className="mx-auto max-w-2xl py-20 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 <h3 className="text-4xl sm:text-6xl font-semibold text-center my-10 lh-81">Our Global Music Distribution Network</h3>
 
-                <Image src={'/assets/network/map.png'} alt={"map-image"} width={1400} height={800} />
+                {/* <Image src={'/assets/network/map.png'} alt={"map-image"} width={1400} height={800} /> */}
 
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-16 gap-y-4 lg:gap-x-8'>
                     {Aboutdata.map((item, i) => (
