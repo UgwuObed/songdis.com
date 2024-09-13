@@ -19,9 +19,6 @@ const data: Data[] = [
         imgSrc: "/assets/carousel/meta.png"
     },
     {
-        imgSrc: "/assets/carousel/hev.png"
-    },
-    {
         imgSrc: "/assets/carousel/Musx.png"
     },
     {

@@ -8,7 +8,7 @@ interface cardDataType {
 const cardData: cardDataType[] = [
     {
         heading: "Advanced Analytics",
-        subheading: "Get deeper insights into your music's performance with detailed analytics. Track your streaming stats social media engagement and royalties easily.",
+        subheading: "With songdis advance tools you can get deeper insights into your music's performance with detailed analytics. Track your streaming stats social media engagement and royalties easily.",
     },
     {
         heading: "Create release links.",
@@ -20,7 +20,7 @@ const cardData: cardDataType[] = [
     },
     {
         heading: "Cover Song Licensing",
-        subheading: "Release your own version of any song with ease. Our streamlined process ensures you obtain all necessary rights within 1-2 business days, allowing you to legally distribute your cover song and start earning royalties. Let us handle the licensing so you can focus on creating amazing music.",
+        subheading: "Release your own version of any song with ease. Our streamlined process ensures you obtain all necessary rights within 1-2 business days, allowing you to legally distribute your cover song and start earning royalties.",
     }
 ]
 
