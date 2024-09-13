@@ -10,9 +10,6 @@ interface Data {
 
 const data: Data[] = [
     {
-        imgSrc: "/assets/carousel/hev.png"
-    },
-    {
         imgSrc: "/assets/carousel/apple.png"
     },
     {
