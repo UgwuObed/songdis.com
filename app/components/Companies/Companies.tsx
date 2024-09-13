@@ -19,6 +19,9 @@ const data: Data[] = [
         imgSrc: "/assets/carousel/meta.png"
     },
     {
+        imgSrc: "/assets/carousel/hev.png"
+    },
+    {
         imgSrc: "/assets/carousel/Musx.png"
     },
     {
@@ -79,7 +82,7 @@ export default class MultipleItems extends Component {
                         <Slider {...settings}>
                             {data.map((item, i) =>
                                 <div key={i}>
-                                    <Image src={item.imgSrc} alt={item.imgSrc} width={150} height={150} />
+                                    <Image src={item.imgSrc} alt={item.imgSrc} width={250} height={250} />
                                 </div>
                             )}
                         </Slider>

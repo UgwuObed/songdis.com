@@ -14,7 +14,7 @@ const Aboutdata: datatype[] = [
         paragraph: 'Let our team promote your music by submitting it for editorial playlists and securing user-generated placements that match your genre. Boost your streams and reach a broader audience.',
     },
     {
-        imgSrc: "/assets/provide/marketing.svg",
+        imgSrc: "/assets/provide/sign.svg",
         service: "Get Signed",
         paragraph: 'At songdis, we help talented artists succeed by offering representation through our management company, The Heavenly Wave. We pitch their music to top record labels and investors.',
     },
@@ -24,9 +24,9 @@ const Aboutdata: datatype[] = [
         paragraph: 'Log in to your Songdis Dashboard to register your music for chart placement and ensure its considered for Billboard recognition and promotion.',
     },
     {
-        imgSrc: "/assets/provide/support.svg",
+        imgSrc: "/assets/provide/team.svg",
         service: "Co-Management",
-        paragraph: 'With our Pro Plan, artists receive support from The Heavenly Wave management team, handling promotion, contract negotiation, and PR so you can focus on making great music.',
+        paragraph: 'Our Pro Plan artists enjoy the support of our management team at The Heavenly Wave, alleviating the stress of navigating the music industry on their own. We handle the behind-the-scenes tasks, such as promotion, contract negotiation, and public relations, allowing you to focus on what you do best - making great music.',
     },
 ]
 

@@ -4,7 +4,7 @@ const Clientsay = () => {
     return (
         <div className="mx-auto max-w-2xl py-40 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="bg-image-what">
-                <h3 className='text-navyblue text-center text-4xl lg:text-6xl font-semibold'>What Artists Say About Us</h3>
+                <h3 className='text-navyblue text-center text-4xl lg:text-6xl font-semibold'>What Our Artists Say About Us</h3>
 
               {/* Web View */}
             <div className="hidden lg:grid lg:grid-cols-4 lg:gap-4 lg:mt-10">

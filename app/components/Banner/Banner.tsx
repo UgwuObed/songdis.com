@@ -6,7 +6,7 @@ const Banner = () => {
             <div className="w-full"> 
                 <div className="w-full pt-16 sm:pt-20 pb-20 banner-image relative"> 
                     <div className="text-center relative z-10">
-                        <h1 className="text-3xl font-semibold text-white sm:text-4xl lg:text-6xl md:4px lh-96">
+                        <h1 className="text-3xl font-bold text-white sm:text-4xl lg:text-6xl md:4px lh-96">
                             Get your music everywhere.<br /> In Simple Steps!
                         </h1>
                         <p className="mt-6 text-base leading-8 text-white">

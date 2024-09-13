@@ -17,9 +17,9 @@ const whydata: whydata[] = [
       "Streamline your music distribution process with our intuitive platform and tools, making management a breeze.",
   },
   {
-    heading: "Easy Withdrawal",
+    heading: "Fast Payments, Simple Withdrawals",
     subheading:
-      "Enjoy hassle-free withdrawal options with streamlined processes for your earnings.",
+      "Get your royalties directly deposited into your African bank account and enjoy the ease of quick and simple withdrawals. Stay in control of your earnings",
   },
 ];
 
