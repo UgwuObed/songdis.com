@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
-import Signdialog from './Signdialog';  // Import Sign In modal
-import Registerdialog from './Registerdialog';  // Import Sign Up modal
+import React from "react";
+import Link from "next/link";
 
 interface NavigationItem {
   name: string;
@@ -15,21 +13,13 @@ const navigation: NavigationItem[] = [
   { name: 'About', href: '#about', current: false },
   { name: 'Project', href: '#project', current: false },
   { name: 'Help', href: '/', current: false },
-];
+]
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
-const Drawerdata = () => {
-  const [isSignInOpen, setIsSignInOpen] = useState(false); // State for Sign In modal
-  const [isSignUpOpen, setIsSignUpOpen] = useState(false); // State for Sign Up modal
-
-  const openSignInModal = () => setIsSignInOpen(true);
-  const openSignUpModal = () => setIsSignUpOpen(true);
-  const closeSignInModal = () => setIsSignInOpen(false);
-  const closeSignUpModal = () => setIsSignUpOpen(false);
-
+const Data = () => {
   return (
     <div className="rounded-md max-w-sm w-full mx-auto">
       <div className="flex-1 space-y-4 py-1">
@@ -49,33 +39,17 @@ const Drawerdata = () => {
               </Link>
             ))}
             <div className="mt-4"></div>
-
-            {/* Sign In button */}
-            <button
-              className="bg-white w-full text-blue border border-lightblue font-medium py-2 px-4 rounded"
-              onClick={openSignInModal}
-            >
+            <button className="bg-white w-full text-blue border border-lightblue font-medium py-2 px-4 rounded">
               Sign In
             </button>
-
-            {/* Sign Up button */}
-            <button
-              className="bg-lightblue w-full hover:bg-blue hover:text-white text-blue font-medium my-2 py-2 px-4 rounded"
-              onClick={openSignUpModal}
-            >
-              Sign Up
+            <button className="bg-lightblue w-full hover:bg-blue hover:text-white text-blue font-medium my-2 py-2 px-4 rounded">
+              Sign up
             </button>
           </div>
         </div>
       </div>
-
-      {/* Sign In Modal */}
-      <Signdialog isOpen={isSignInOpen} onClose={closeSignInModal} />
-
-      {/* Sign Up Modal */}
-      <Registerdialog isOpen={isSignUpOpen} onClose={closeSignUpModal} />
     </div>
   );
-};
+}
 
-export default Drawerdata;
+export default Data;
