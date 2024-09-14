@@ -1,17 +1,46 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
-import { LockClosedIcon } from '@heroicons/react/20/solid'
+import { Dialog, Transition } from '@headlessui/react';
+import { Fragment, useState } from 'react';
+import { LockClosedIcon } from '@heroicons/react/20/solid';
+import axios from 'axios';
+import { BASE_URL } from '../apiConfig';
 
 const Signin = () => {
-    let [isOpen, setIsOpen] = useState(false)
+    let [isOpen, setIsOpen] = useState(false);
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
 
     const closeModal = () => {
-        setIsOpen(false)
-    }
+        setIsOpen(false);
+        setError('');
+        setSuccess(false);
+    };
 
     const openModal = () => {
-        setIsOpen(true)
-    }
+        setIsOpen(true);
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(`${BASE_URL}/login`, formData);
+            const { token } = response.data;
+
+            // Store token in localStorage
+            localStorage.setItem('authToken', token);
+            setSuccess(true);
+            setError('');
+        } catch (err) {
+            setError('Failed to sign in. Please check your credentials and try again.');
+        }
+    };
 
     return (
         <>
@@ -62,7 +91,9 @@ const Signin = () => {
                                                     Sign in to your account
                                                 </h2>
                                             </div>
-                                            <form className="mt-8 space-y-6" action="#" method="POST">
+                                            {error && <p className="text-red-500 text-center">{error}</p>}
+                                            {success && <p className="text-green-500 text-center">Sign in successful!</p>}
+                                            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                                                 <input type="hidden" name="remember" defaultValue="true" />
                                                 <div className="-space-y-px rounded-md shadow-sm">
                                                     <div>
@@ -75,8 +106,10 @@ const Signin = () => {
                                                             type="email"
                                                             autoComplete="email"
                                                             required
-                                                            className="relative block w-full appearance-none rounded-none rounded-t-md border border-grey500 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
+                                                            className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                                                             placeholder="Email address"
+                                                            value={formData.email}
+                                                            onChange={handleChange}
                                                         />
                                                     </div>
                                                     <div>
@@ -89,8 +122,10 @@ const Signin = () => {
                                                             type="password"
                                                             autoComplete="current-password"
                                                             required
-                                                            className="relative block w-full appearance-none rounded-none rounded-b-md border border-grey500 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
+                                                            className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                                                             placeholder="Password"
+                                                            value={formData.password}
+                                                            onChange={handleChange}
                                                         />
                                                     </div>
                                                 </div>
@@ -146,7 +181,7 @@ const Signin = () => {
                 </Dialog>
             </Transition>
         </>
-    )
-}
+    );
+};
 
 export default Signin;
