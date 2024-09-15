@@ -84,7 +84,12 @@ const Footer = () => {
                 height={24}
               />
               <h5 className="text-base font-normal text-white">
-                925 Grace land estate
+              Grace Betty Udokwe Street Lekki, Lagos Nigeria, 
+      
+<br />
+Office 2282, 182-184 High Street North, East
+Ham, London, United Kingdom, E6 2JA
+
               </h5>
             </div>
             <div className="flex gap-2 mt-10">
@@ -95,7 +100,7 @@ const Footer = () => {
                 height={24}
               />
               <h5 className="text-base font-normal text-white">
-                + 90 333 346 77
+              +234 915 533 5515
               </h5>
             </div>
             <div className="flex gap-2 mt-10">

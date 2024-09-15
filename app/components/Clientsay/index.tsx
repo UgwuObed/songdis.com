@@ -4,9 +4,8 @@ const Clientsay = () => {
     return (
         <div className="mx-auto max-w-2xl py-40 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="bg-image-what">
-                <h6 className='text-navyblue text-center text-4xl lg:text-6xl font-400'>Join 10k + Songdis  Artists</h6>
-                <p>We provide the tools and services you need to succeed in all stages of your career.</p>
-
+                <h3 className='text-navyblue text-center text-4xl lg:text-6xl font-semibold'>What Our Artists Say About Us</h3>
+                <p className='text-navyblue text-center text-4xl lg:text-6xl font-200'>We provide the tools and services you need to succeed in all stages of your career.</p>
               {/* Web View */}
             <div className="hidden lg:grid lg:grid-cols-4 lg:gap-4 lg:mt-10">
             {/* Artist 1 */}
