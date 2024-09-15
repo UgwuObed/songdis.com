@@ -1,10 +1,12 @@
-import React from "react";
+"use client"; 
 
-interface BannerProps {
-    openSignUp: () => void;
-}
+import React, { useState } from 'react';
+import Image from "next/image";
+import Registerdialog from '../Navbar/Registerdialog';
 
-const Banner = ({ openSignUp }: BannerProps) => {
+const Banner = () => {
+    const [isRegisterOpen, setIsRegisterOpen] = useState(false);  
+
     return (
         <main>
             <div className="w-full"> 
@@ -20,18 +22,21 @@ const Banner = ({ openSignUp }: BannerProps) => {
                     </div>
 
                     <div className="text-center mt-5 relative z-10">
-                        <button 
-                            type="button" 
-                            className='text-sm text-white font-medium bg-red-600 py-3 px-6 mt-2 border border-lightgrey leafbutton'
-                            onClick={openSignUp} 
+                        <button
+                            type="button"
+                            className="text-sm text-white font-medium bg-red-600 py-3 px-6 mt-2 border border-lightgrey leafbutton"
+                            onClick={() => setIsRegisterOpen(true)}  
                         >
                             Join For Free
                         </button>
                     </div>
+
+                    {/* Registration dialog */}
+                    <Registerdialog isOpen={isRegisterOpen} setIsOpen={setIsRegisterOpen} />
                 </div>
             </div>
         </main>
     );
-}
+};
 
 export default Banner;

@@ -1,3 +1,5 @@
+"use client"; 
+
 import Banner from './components/Banner/Banner';
 import Companies from './components/Companies/Companies';
 import Buyers from './components/Buyers/index';
