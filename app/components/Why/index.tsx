@@ -34,7 +34,7 @@ const Why = () => {
           {/* COLUMN-1 (Image Section) */}
           <div className="flex justify-center lg:justify-start">
             <Image
-              src="/assets/why/iPad.png"
+              src="/assets/why/web.png"
               alt="music-distribution-image"
               width={400}
               height={900}
