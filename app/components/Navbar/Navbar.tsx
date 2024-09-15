@@ -7,7 +7,6 @@ import Drawerdata from "./Drawerdata";
 import Signdialog from "./Signdialog";
 import Registerdialog from "./Registerdialog";
 
-
 interface NavigationItem {
     name: string;
     href: string;
@@ -23,41 +22,34 @@ const navigation: NavigationItem[] = [
 ]
 
 function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
+    return classes.filter(Boolean).join(' ');
 }
 
 const Navbar = () => {
-
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+    const [isSignInOpen, setIsSignInOpen] = React.useState(false);
+    const [isRegisterOpen, setIsRegisterOpen] = React.useState(false);
 
     return (
         <Disclosure as="nav" className="navbar">
             <>
-            <div className="mx-auto max-w-7xl px-6 lg:py-4 lg:px-8">
-                <div className="relative flex h-20 items-center justify-between">
-                    <div className="flex flex-1 items-center sm:items-stretch sm:justify-start">
-
-                    {/* LOGO */}
-
-                    <div className="flex flex-shrink-0 items-center">
-                        {/* Mobile Logo - Custom Size */}
-                        <img
-                        className="block lg:hidden"
-                        src={'/assets/logo/logo.png'}
-                        alt="dsign-logo"
-                        style={{ height: '140px', width: 'auto' }} 
-                        />
-                        {/* Desktop Logo - Custom Size */}
-                        <img
-                        className="hidden lg:block"
-                        src={'/assets/logo/logo.png'}
-                        alt="dsign-logo"
-                        style={{ height: '250px', width: 'auto' }} 
-                        />
-                    </div>
-
-                            {/* LINKS */}
-
+                <div className="mx-auto max-w-7xl px-6 lg:py-4 lg:px-8">
+                    <div className="relative flex h-20 items-center justify-between">
+                        <div className="flex flex-1 items-center sm:items-stretch sm:justify-start">
+                            <div className="flex flex-shrink-0 items-center">
+                                <img
+                                    className="block lg:hidden"
+                                    src={'/assets/logo/logo.png'}
+                                    alt="dsign-logo"
+                                    style={{ height: '140px', width: 'auto' }} 
+                                />
+                                <img
+                                    className="hidden lg:block"
+                                    src={'/assets/logo/logo.png'}
+                                    alt="dsign-logo"
+                                    style={{ height: '250px', width: 'auto' }} 
+                                />
+                            </div>
                             <div className="hidden lg:block m-auto">
                                 <div className="flex space-x-4">
                                     {navigation.map((item) => (
@@ -65,7 +57,7 @@ const Navbar = () => {
                                             key={item.name}
                                             href={item.href}
                                             className={classNames(
-                                                item.current ? ' text-black hover:opacity-100' : 'hover:text-black hover:opacity-100',
+                                                item.current ? 'text-black hover:opacity-100' : 'hover:text-black hover:opacity-100',
                                                 'px-3 py-4 text-lg font-normal opacity-75 space-links'
                                             )}
                                             aria-current={item.href ? 'page' : undefined}
@@ -77,35 +69,44 @@ const Navbar = () => {
                             </div>
                         </div>
 
+                        <div className="hidden lg:flex space-x-4">
+                            <button 
+                                className="text-black text-lg font-medium px-4 py-2 hover:bg-gray-200" 
+                                onClick={() => setIsSignInOpen(true)}
+                            >
+                                Sign In
+                            </button>
+                            <button 
+                                className="text-white text-lg font-medium bg-red-600 px-4 py-2 hover:bg-red-700   border-lightgrey leafbutton"
+                                onClick={() => setIsRegisterOpen(true)}
+                            >
+                                Sign Up
+                            </button>
+                        </div>
+
                         {/* SIGNIN DIALOG */}
-
-                        <Signdialog />
-
+                        <Signdialog isOpen={isSignInOpen} setIsOpen={setIsSignInOpen} />
 
                         {/* REGISTER DIALOG */}
+                        <Registerdialog isOpen={isRegisterOpen} setIsOpen={setIsRegisterOpen} />
 
-                        <Registerdialog />
-
-
-                        {/* DRAWER FOR MOBILE VIEW */}
-
-                        {/* DRAWER ICON */}
-
+                        {/* DRAWER ICON FOR MOBILE */}
                         <div className='block lg:hidden'>
-                            <Bars3Icon className="block h-6 w-6" aria-hidden="true" onClick={() => setIsOpen(true)} />
+                            <Bars3Icon className="block h-6 w-6" aria-hidden="true" onClick={() => setIsDrawerOpen(true)} />
                         </div>
 
                         {/* DRAWER LINKS DATA */}
-
-                        <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
-                            <Drawerdata />
+                        <Drawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen}>
+                            <Drawerdata
+                                openSignIn={() => setIsSignInOpen(true)}
+                                openSignUp={() => setIsRegisterOpen(true)}
+                            />
                         </Drawer>
-
                     </div>
                 </div>
             </>
         </Disclosure>
-    )
+    );
 }
 
 export default Navbar;

@@ -4,8 +4,12 @@ import { LockClosedIcon } from '@heroicons/react/20/solid';
 import axios from 'axios';
 import { BASE_URL } from '../apiConfig';
 
-const Signin = () => {
-    let [isOpen, setIsOpen] = useState(false);
+interface SigninProps {
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+}
+
+const Signin = ({ isOpen, setIsOpen }: SigninProps) => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -19,10 +23,6 @@ const Signin = () => {
         setSuccess(false);
     };
 
-    const openModal = () => {
-        setIsOpen(true);
-    };
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -32,8 +32,6 @@ const Signin = () => {
         try {
             const response = await axios.post(`${BASE_URL}/login`, formData);
             const { token } = response.data;
-
-            // Store token in localStorage
             localStorage.setItem('authToken', token);
             setSuccess(true);
             setError('');
@@ -43,144 +41,72 @@ const Signin = () => {
     };
 
     return (
-        <>
-            <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:pr-0">
-                <div className='hidden lg:block'>
-                    <button type="button" className='text-lg text-red-500 font-medium' onClick={openModal}>
-                        Sign In
-                    </button>
-                </div>
-            </div>
+        <Transition appear show={isOpen} as={Fragment}>
+            <Dialog as="div" className="relative z-10" onClose={closeModal}>
+                <Transition.Child
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                >
+                    <div className="fixed inset-0 bg-black bg-opacity-25" />
+                </Transition.Child>
 
-            <Transition appear show={isOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={closeModal}>
-                    <Transition.Child
-                        as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0"
-                        enterTo="opacity-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                    >
-                        <div className="fixed inset-0 bg-black bg-opacity-25" />
-                    </Transition.Child>
-
-                    <div className="fixed inset-0 overflow-y-auto">
-                        <div className="flex min-h-full items-center justify-center p-4 text-center">
-                            <Transition.Child
-                                as={Fragment}
-                                enter="ease-out duration-300"
-                                enterFrom="opacity-0 scale-95"
-                                enterTo="opacity-100 scale-100"
-                                leave="ease-in duration-200"
-                                leaveFrom="opacity-100 scale-100"
-                                leaveTo="opacity-0 scale-95"
-                            >
-                                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-
-                                    <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-                                        <div className="w-full max-w-md space-y-8">
-                                            <div>
-                                                <img
-                                                    className="mx-auto h-20 w-auto"
-                                                    src="/assets/logo/logo.png"
-                                                    alt="Company"
-                                                />
-                                                <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-                                                    Sign in to your account
-                                                </h2>
-                                            </div>
-                                            {error && <p className="text-red-500 text-center">{error}</p>}
-                                            {success && <p className="text-green-500 text-center">Sign in successful!</p>}
-                                            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                                                <input type="hidden" name="remember" defaultValue="true" />
-                                                <div className="-space-y-px rounded-md shadow-sm">
-                                                    <div>
-                                                        <label htmlFor="email-address" className="sr-only">
-                                                            Email address
-                                                        </label>
-                                                        <input
-                                                            id="email-address"
-                                                            name="email"
-                                                            type="email"
-                                                            autoComplete="email"
-                                                            required
-                                                            className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
-                                                            placeholder="Email address"
-                                                            value={formData.email}
-                                                            onChange={handleChange}
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <label htmlFor="password" className="sr-only">
-                                                            Password
-                                                        </label>
-                                                        <input
-                                                            id="password"
-                                                            name="password"
-                                                            type="password"
-                                                            autoComplete="current-password"
-                                                            required
-                                                            className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
-                                                            placeholder="Password"
-                                                            value={formData.password}
-                                                            onChange={handleChange}
-                                                        />
-                                                    </div>
-                                                </div>
-
-                                                <div className="flex items-center justify-between">
-                                                    <div className="flex items-center">
-                                                        <input
-                                                            id="remember-me"
-                                                            name="remember-me"
-                                                            type="checkbox"
-                                                            className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500"
-                                                        />
-                                                        <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                                                            Remember me
-                                                        </label>
-                                                    </div>
-
-                                                    <div className="text-sm">
-                                                        <a href="#" className="font-medium text-red-600 hover:text-red-500">
-                                                            Forgot your password?
-                                                        </a>
-                                                    </div>
-                                                </div>
-
-                                                <div>
-                                                    <button
-                                                        type="submit"
-                                                        className="group relative flex w-full justify-center rounded-md border border-transparent bg-red-500 py-2 px-4 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                                                    >
-                                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                                                            <LockClosedIcon className="h-5 w-5 text-red-500 group-hover:text-red-400" aria-hidden="true" />
-                                                        </span>
-                                                        Sign in
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
+                <div className="fixed inset-0 overflow-y-auto">
+                    <div className="flex min-h-full items-center justify-center p-4 text-center">
+                        <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0 scale-95"
+                            enterTo="opacity-100 scale-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100 scale-100"
+                            leaveTo="opacity-0 scale-95"
+                        >
+                            <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                <h2 className="text-2xl font-semibold text-gray-700 text-center">Sign In</h2>
+                                {error && <p className="text-red-500 text-center">{error}</p>}
+                                {success && <p className="text-green-500 text-center">Sign-in successful!</p>}
+                                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                                    <div className="rounded-md shadow-sm">
+                                        <input
+                                            id="email"
+                                            name="email"
+                                            type="email"
+                                            required
+                                            className="mb-4 block w-full rounded-md border px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
+                                            placeholder="Email"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                        />
+                                        <input
+                                            id="password"
+                                            name="password"
+                                            type="password"
+                                            required
+                                            className="mb-4 block w-full rounded-md border px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
+                                            placeholder="Password"
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                        />
                                     </div>
-
-                                    <div className="mt-4 flex justify-end">
-                                        <button
-                                            type="button"
-                                            className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
-                                            onClick={closeModal}
-                                        >
-                                            Got it, thanks!
-                                        </button>
-                                    </div>
-                                </Dialog.Panel>
-                            </Transition.Child>
-                        </div>
+                                    <button
+                                        type="submit"
+                                        className="relative flex w-full justify-center rounded-md border bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                                    >
+                                        <LockClosedIcon className="absolute inset-y-0 left-0 h-5 w-5 text-red-500 group-hover:text-red-400" aria-hidden="true" />
+                                        Sign In
+                                    </button>
+                                </form>
+                            </Dialog.Panel>
+                        </Transition.Child>
                     </div>
-                </Dialog>
-            </Transition>
-        </>
+                </div>
+            </Dialog>
+        </Transition>
     );
 };
 
