@@ -1,6 +1,10 @@
-import Image from "next/image";
+import React from "react";
 
-const Banner = () => {
+interface BannerProps {
+    openSignUp: () => void;
+}
+
+const Banner = ({ openSignUp }: BannerProps) => {
     return (
         <main>
             <div className="w-full"> 
@@ -10,23 +14,24 @@ const Banner = () => {
                             Get your music everywhere.<br /> In Simple Steps!
                         </h1>
                         <p className="mt-6 text-base leading-8 text-white">
-                        Songdis provides independent artists and labels with Co-management &  simple music distribution to over 400+ platforms including spotify, Apple.<br />Earn 100% of your revenue and expand your fan base across Africa and worldwide.
+                            Songdis provides independent artists and labels with Co-management & simple music distribution to over 400+ platforms including Spotify, Apple.<br />
+                            Earn 100% of your revenue and expand your fan base across Africa and worldwide.
                         </p>
                     </div>
 
                     <div className="text-center mt-5 relative z-10">
-                        <button type="button" className='text-sm text-white font-medium bg-red-600 py-3 px-6 mt-2 border border-lightgrey leafbutton'>
+                        <button 
+                            type="button" 
+                            className='text-sm text-white font-medium bg-red-600 py-3 px-6 mt-2 border border-lightgrey leafbutton'
+                            onClick={openSignUp} 
+                        >
                             Join For Free
                         </button>
-                        {/* <button type="button" className='text-sm ml-4 mt-2 text-white transition duration-150 ease-in-out hover:text-white hover:bg-red-600 font-medium py-3 px-8 border border-lightgrey leafbutton'>
-                            See More
-                        </button> */}
                     </div>
                 </div>
             </div>
         </main>
-    )
+    );
 }
 
 export default Banner;
-

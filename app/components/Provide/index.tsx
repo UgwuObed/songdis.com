@@ -48,18 +48,19 @@ const Provide = () => {
 
                     <div className='lg:col-span-1'></div>
 
-                    {/* COLUMN-2 */}
-                    <div className='col-span-6 lg:col-span-5'>
-                        <div className='grid grid-cols-1 sm:grid-cols-2 gap-x-16 gap-y-10 lg:gap-x-40 px-10 py-12 bg-bluebg rounded-3xl'>
-                            {Aboutdata.map((item, i) => (
-                                <div key={i} className='bg-white rounded-3xl lg:-ml-32 p-6 shadow-xl'>
-                                    <Image src={item.imgSrc} alt={item.service} width={64} height={64} className="mb-5" />
-                                    <h4 className="text-2xl font-semibold">{item.service}</h4>
-                                    <h4 className='text-lg font-normal text-bluegray my-2'>{item.paragraph}</h4>
-                                </div>
-                            ))}
-                        </div>
+                {/* COLUMN-2 */}
+                <div className='col-span-6 lg:col-span-5'>
+                    <div className='grid grid-cols-1 sm:grid-cols-2 gap-x-16 gap-y-10 lg:gap-x-40 px-10 py-12 bg-red-400 rounded-3xl'>
+                        {Aboutdata.map((item, i) => (
+                            <div key={i} className='bg-white rounded-3xl lg:-ml-32 p-6 shadow-xl'>
+                                <Image src={item.imgSrc} alt={item.service} width={64} height={64} className="mb-5" />
+                                <h4 className="text-2xl font-semibold">{item.service}</h4>
+                                <h4 className='text-lg font-normal text-bluegray my-2'>{item.paragraph}</h4>
+                            </div>
+                        ))}
                     </div>
+                </div>
+
 
                 </div>
             </div>

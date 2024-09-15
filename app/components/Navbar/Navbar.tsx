@@ -11,24 +11,30 @@ interface NavigationItem {
     name: string;
     href: string;
     current: boolean;
-}
-
-const navigation: NavigationItem[] = [
-    { name: 'Distribute', href: '/', current: true },
-    { name: 'Services', href: '#services', current: false },
-    { name: 'About', href: '#about', current: false },
-    { name: 'Project', href: '#project', current: false },
-    { name: 'Help', href: '/', current: false },
-]
-
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ');
+    onClick?: () => void;
 }
 
 const Navbar = () => {
     const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
     const [isSignInOpen, setIsSignInOpen] = React.useState(false);
     const [isRegisterOpen, setIsRegisterOpen] = React.useState(false);
+
+    const navigation: NavigationItem[] = [
+        { 
+            name: 'Distribute', 
+            href: '/', 
+            current: true, 
+            onClick: () => setIsRegisterOpen(true)
+        },
+        { name: 'Services', href: '#services', current: false },
+        { name: 'About', href: '#about', current: false },
+        { name: 'Project', href: '#project', current: false },
+        { name: 'Help', href: '/', current: false },
+    ];
+
+    function classNames(...classes: string[]) {
+        return classes.filter(Boolean).join(' ');
+    }
 
     return (
         <Disclosure as="nav" className="navbar">
@@ -60,6 +66,12 @@ const Navbar = () => {
                                                 item.current ? 'text-black hover:opacity-100' : 'hover:text-black hover:opacity-100',
                                                 'px-3 py-4 text-lg font-normal opacity-75 space-links'
                                             )}
+                                            onClick={(e) => {
+                                                if (item.onClick) {
+                                                    e.preventDefault();
+                                                    item.onClick();
+                                                }
+                                            }}
                                             aria-current={item.href ? 'page' : undefined}
                                         >
                                             {item.name}
