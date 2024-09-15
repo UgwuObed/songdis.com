@@ -76,6 +76,19 @@ const Footer = () => {
 
           {/* COLUMN-4 */}
           <div className="col-span-4 md:col-span-4 lg:col-span-4">
+          <div className="flex gap-2">
+              <Image
+                src={"/assets/footer/mask.svg"}
+                alt="mask-icon"
+                width={24}
+                height={24}
+              />
+              <h5 className="text-base font-normal text-white">
+            Office 2282, 182-184 High Street North, East
+            Ham, London, United Kingdom, E6 2JA
+      </h5>
+            </div>
+            <br />
             <div className="flex gap-2">
               <Image
                 src={"/assets/footer/mask.svg"}
@@ -85,11 +98,6 @@ const Footer = () => {
               />
               <h5 className="text-base font-normal text-white">
               Grace Betty Udokwe Street Lekki, Lagos Nigeria, 
-      
-<br />
-Office 2282, 182-184 High Street North, East
-Ham, London, United Kingdom, E6 2JA
-
               </h5>
             </div>
             <div className="flex gap-2 mt-10">
