@@ -1,8 +1,8 @@
-'use client'; // Ensures this is a client-side component
+'use client'; 
 
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation'; // Updated import for next/navigation
+import { useRouter } from 'next/navigation'; 
 import { BASE_URL } from '../apiConfig';
 import Link from 'next/link';
 
@@ -24,8 +24,8 @@ const Signin = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true when the form is submitted
-    setError(''); // Clear any previous errors
+    setLoading(true); 
+    setError(''); 
 
     try {
       const response = await axios.post(`${BASE_URL}/login`, {
@@ -33,27 +33,25 @@ const Signin = () => {
         password: formData.password,
       });
 
-      console.log('API response:', response.data); // Log the API response for debugging
-
-      // Handle success: Check if a token is returned
+    
       if (response.status === 200 && response.data.token) {
         const { token } = response.data;
-        localStorage.setItem('authToken', token); // Store the token
+        localStorage.setItem('authToken', token); 
 
-        // Redirect to dashboard with a success message after login
+      
         router.push('/dashboard?loginSuccess=true');
       } else {
-        // If the response is not successful, set an error message
+        
         setError('Login failed. Please check your credentials.');
       }
     } catch (err) {
-      // Handle API errors properly
-      console.error('API error:', err);
+     
       if (axios.isAxiosError(err) && err.response) {
-        // Handle errors returned by the API
+       
+        
         setError(err.response.data.message || 'Login failed. Please try again.');
       } else {
-        // Handle other types of errors
+  
         setError('An unexpected error occurred. Please try again.');
       }
     } finally {
@@ -111,7 +109,7 @@ const Signin = () => {
         </p>
       </div>
 
-      {/* Spinner animation and notification styles */}
+     
       <style jsx>{`
         .notification {
           position: absolute;
