@@ -10,23 +10,15 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-html {
-    --scroll-behavior: smooth !important;
-    scroll-behavior: smooth !important;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-html:not([data-scroll="0"]) .navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background-color: white !important;
-    opacity: 1.9;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-    transition: 0.4s linear;
-    padding: 0px !important;
-    z-index: 3;
+#root {
+    height: 100%;
 }
-
 .leafbutton {
     border-radius: 0px 30px 30px 40px;
 }
@@ -41,9 +33,9 @@ html:not([data-scroll="0"]) .navbar {
     background-attachment: fixed; 
     position: relative;
     z-index: 1;
-  }
-  
-  .banner-image::before {
+}
+
+.banner-image::before {
     content: '';
     position: absolute;
     top: 0;
@@ -52,9 +44,8 @@ html:not([data-scroll="0"]) .navbar {
     height: 100%;
     background: rgba(156, 71, 71, 0.4);
     z-index: -1; 
-  }
-  
-  
+}
+
 hr {
     border-color: rgba(255, 0, 0, 0.65);
 }
@@ -63,8 +54,7 @@ hr {
     width: 270px;
 }
 
-
-@media screen and (min-width :1000px) {
+@media screen and (min-width: 1000px) {
     .lh-96 {
         line-height: 96px !important;
     }
@@ -97,11 +87,6 @@ hr {
     justify-content: center;
 }
 
-
-.footer-icons {
-    transition: .5s;
-}
-
 .footer-icons:hover {
     transform: translateY(-8px);
 }
@@ -116,15 +101,8 @@ hr {
     justify-content: center;
 }
 
-.footer-fb-icons {
-    transition: .5s;
-}
 .footer-fb-icons:hover {
     transform: translateY(-8px);
-}
-
-.space-links {
-    transition: .3s;
 }
 
 .space-links:hover {

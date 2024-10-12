@@ -46,8 +46,8 @@ const Data = ({ openSignIn, openSignUp }: DrawerdataProps) => {
                 )}
                 onClick={(e) => {
                   if (item.onClick) {
-                    e.preventDefault(); // Prevent default if onClick is defined
-                    item.onClick(); // Trigger the onClick function
+                    e.preventDefault(); 
+                    item.onClick(); 
                   }
                 }}
                 aria-current={item.current ? 'page' : undefined}

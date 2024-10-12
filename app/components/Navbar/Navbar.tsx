@@ -82,20 +82,15 @@ const Navbar = () => {
                         </div>
 
                         <div className="hidden lg:flex space-x-4">
-                            <button 
-                                className="text-black text-lg font-medium px-4 py-2 hover:bg-gray-200" 
-                                onClick={() => setIsSignInOpen(true)}
-                            >
-                                Sign In
-                            </button>
-                            <button 
-                                className="text-white text-lg font-medium bg-red-600 px-4 py-2 hover:bg-red-700   border-lightgrey leafbutton"
-                                onClick={() => setIsRegisterOpen(true)}
-                            >
-                                Sign Up
-                            </button>
+                            <Link 
+                             className="text-black text-lg font-medium px-4 py-2 hover:bg-gray-200" 
+                            href="/auth/signin">Sign In</Link>
+                            <Link 
+                             className="text-white text-lg font-medium bg-red-600 px-4 py-2 hover:bg-red-700   border-lightgrey leafbutton"
+                            href="/auth/signup">Sign Up</Link>
                         </div>
 
+                    
                         {/* SIGNIN DIALOG */}
                         <Signdialog isOpen={isSignInOpen} setIsOpen={setIsSignInOpen} />
 

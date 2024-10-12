@@ -1,11 +1,8 @@
 import './globals.css';
-import Navbar from './components/Navbar/index';
-import Footer from './components/Footer/Footer';
-
 
 export const metadata = {
   title: 'Songdis',
-  description: 'Free Music Distributions & Co Management for Africa independent Artist & labels Powered by The Heavenly Wave',
+  description: 'Free Music Distributions & Co Management for Africa independent Artist & labels Powered by The Heavenly Wave',
 }
 
 export default function RootLayout({
@@ -15,11 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <Navbar />
-        {children}
-        <Footer />
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
