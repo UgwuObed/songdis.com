@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect  } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { BASE_URL } from '../apiConfig';
@@ -19,19 +19,6 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchCsrfToken = async () => {
-      try {
-        await axios.get(`${BASE_URL}/sanctum/csrf-cookie`, { withCredentials: true });
-      } catch (err) {
-        console.error('Error fetching CSRF token:', err);
-        setError('Failed to initialize signup. Please try again.');
-      }
-    };
-
-    fetchCsrfToken();
-  }, []);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -43,32 +30,30 @@ const Signup = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    
+
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       setLoading(false);
       return;
     }
-
     if (!formData.accountType) {
       setError('Please select an account type');
       setLoading(false);
       return;
     }
-
+  
     try {
       const response = await axios.post(
-        `${BASE_URL}/register`,
+        `${BASE_URL}/user/register`,
         {
-          first_name: formData.firstName,
-          last_name: formData.lastName,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
           email: formData.email,
           password: formData.password,
-          password_confirmation: formData.confirmPassword,
-          account_type: formData.accountType,
+          accountType: formData.accountType,
         },
         {
-          withCredentials: true, 
+          withCredentials: true,
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -76,11 +61,8 @@ const Signup = () => {
         }
       );
 
-      console.log('API response:', response.data);
-
-      if (response.data && response.data.token) {
-        localStorage.setItem('authToken', response.data.token);
-        router.push('/dashboard?signupSuccess=true');
+      if (response.data.status === 'success') {
+        router.push('/auth/signin?signupSuccess=true');
       } else {
         setError('Registration failed. Please try again.');
       }
@@ -95,8 +77,8 @@ const Signup = () => {
       setLoading(false);
     }
   };
-
-
+  
+  
   return (
     <div style={styles.container}>
       <div style={styles.formContainer as React.CSSProperties}>
@@ -265,7 +247,6 @@ const Signup = () => {
   );
 };
 
-// Style object
 const styles = {
   container: {
     backgroundImage: 'url("/assets/banner/auth.jpg")',

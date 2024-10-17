@@ -1,11 +1,8 @@
-import { Disclosure } from '@headlessui/react';
 import { HomeIcon, ChartBarIcon, WalletIcon, PlayIcon, CogIcon, UsersIcon, FolderIcon, LinkIcon, MusicalNoteIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React from 'react';
 
-const SidebarMenu = () => {
-    const [isOpen, setIsOpen] = useState(true);
-
+const SidebarMenu = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpen: boolean) => void }) => {
     const navigation = [
         { name: 'Home', href: '/', icon: HomeIcon },
         { name: 'Your Music', href: '/music', icon: PlayIcon },

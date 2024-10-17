@@ -1,6 +1,6 @@
 'use client'; 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation'; 
 import { BASE_URL } from '../apiConfig';
@@ -15,6 +15,8 @@ const Signin = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter(); 
 
+  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -24,41 +26,39 @@ const Signin = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true); 
-    setError(''); 
-
+    setLoading(true);
+    setError('');
+  
     try {
-      const response = await axios.post(`${BASE_URL}/login`, {
-        email: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        `${BASE_URL}/user/login`,
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        {
+          withCredentials: true, 
+        }
+      );
 
-    
-      if (response.status === 200 && response.data.token) {
-        const { token } = response.data;
-        localStorage.setItem('authToken', token); 
-
-      
+      if (response.status === 200 && response.data.data.token) {
+        const { token } = response.data.data; 
+        localStorage.setItem('authToken', token);
         router.push('/dashboard?loginSuccess=true');
       } else {
-        
         setError('Login failed. Please check your credentials.');
       }
     } catch (err) {
-     
       if (axios.isAxiosError(err) && err.response) {
-       
-        
         setError(err.response.data.message || 'Login failed. Please try again.');
       } else {
-  
         setError('An unexpected error occurred. Please try again.');
       }
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
-
+  
   return (
     <div style={styles.container}>
       <div style={styles.formContainer as React.CSSProperties}>
