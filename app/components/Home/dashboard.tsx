@@ -26,9 +26,23 @@ import {
 
 const Dashboard = () => {
   const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Check authentication state
+  const [isLoading, setIsLoading] = useState(true); // Add loading state for when the auth check is ongoing
   const [showLoginSuccessNotification, setShowLoginSuccessNotification] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+  // Check for authentication
+  useEffect(() => {
+    const token = localStorage.getItem('authToken'); // Check for token in localStorage
+    if (!token) {
+      router.push('/auth/signin'); // Redirect to login if not authenticated
+    } else {
+      setIsAuthenticated(true);
+    }
+    setIsLoading(false); // Set loading to false once check is done
+  }, [router]);
+
+  // Show success notification on login
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     if (searchParams.get('loginSuccess') === 'true') {
@@ -36,6 +50,14 @@ const Dashboard = () => {
       setTimeout(() => setShowLoginSuccessNotification(false), 3000);
     }
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Show loading state while checking authentication
+  }
+
+  if (!isAuthenticated) {
+    return null; // Prevent rendering of the component if not authenticated
+  }
 
   const features = [
     { name: 'Priority Pitch', description: 'Submit releases for enhanced promotion, editorial playlists, and more', icon: MusicalNoteIcon },
@@ -103,16 +125,16 @@ const Dashboard = () => {
               <button className="text-red-600 font-medium">View All</button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="relative aspect-square">
-                <img
-                  src={`/assets/dashboard/release-${item}.PNG`} 
-                  alt={`Release ${item}`}
-                  className="w-full h-full object-cover rounded-lg shadow-md"
-                />
-              </div>
-            ))}
-          </div>
+              {[1, 2, 3, 4].map((item) => (
+                <div key={item} className="relative aspect-square">
+                  <img
+                    src={`/assets/dashboard/release-${item}.PNG`}
+                    alt={`Release ${item}`}
+                    className="w-full h-full object-cover rounded-lg shadow-md"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Wallet and Delivery Log */}
@@ -141,18 +163,18 @@ const Dashboard = () => {
                 </select>
               </div>
               <ul className="space-y-4">
-            {[1, 2, 3, 4].map((item) => (
-              <li key={item} className="flex justify-between items-center text-sm">
-                <div className="flex items-center">
-                  <img src={`/assets/dashboard/release-${item}.png`} alt={`Cover ${item}`} className="w-8 h-8 rounded mr-2" />
-                  <span>Cover Me</span>
-                </div>
-                <span>Apple Music (Direct)</span>
-                <span>Sat, 20 Sept 2024</span>
-                <span className="text-green-500">Completed</span>
-              </li>
-            ))}
-          </ul>
+                {[1, 2, 3, 4].map((item) => (
+                  <li key={item} className="flex justify-between items-center text-sm">
+                    <div className="flex items-center">
+                      <img src={`/assets/dashboard/release-${item}.png`} alt={`Cover ${item}`} className="w-8 h-8 rounded mr-2" />
+                      <span>Cover Me</span>
+                    </div>
+                    <span>Apple Music (Direct)</span>
+                    <span>Sat, 20 Sept 2024</span>
+                    <span className="text-green-500">Completed</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 
@@ -193,4 +215,5 @@ const Dashboard = () => {
     </div>
   );
 };
+
 export default Dashboard;
