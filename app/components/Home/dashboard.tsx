@@ -91,9 +91,12 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 overflow-hidden"> {/* Prevent horizontal overflow */}
       <SidebarMenu isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-48' : 'ml-16'}`}>
+      <div
+        className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-48' : 'ml-16'}`}
+        style={{ overflowX: 'hidden', width: '100vw' }} // Prevent horizontal scrolling and ensure full width
+      >
         {/* Top Bar */}
         <div className="bg-white shadow-md p-4 flex items-center justify-between">
           <div className="flex-grow mr-6">
