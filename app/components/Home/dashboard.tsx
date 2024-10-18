@@ -31,18 +31,17 @@ const Dashboard = () => {
   const [showLoginSuccessNotification, setShowLoginSuccessNotification] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // Check for authentication
+ 
   useEffect(() => {
-    const token = localStorage.getItem('authToken'); // Check for token in localStorage
+    const token = localStorage.getItem('authToken'); 
     if (!token) {
-      router.push('/auth/signin'); // Redirect to login if not authenticated
+      router.push('/auth/signin'); 
     } else {
       setIsAuthenticated(true);
     }
-    setIsLoading(false); // Set loading to false once check is done
+    setIsLoading(false); 
   }, [router]);
 
-  // Show success notification on login
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     if (searchParams.get('loginSuccess') === 'true') {
@@ -52,11 +51,11 @@ const Dashboard = () => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Show loading state while checking authentication
+    return <div>Loading...</div>; 
   }
 
   if (!isAuthenticated) {
-    return null; // Prevent rendering of the component if not authenticated
+    return null; 
   }
 
   const features = [
@@ -91,11 +90,11 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-100 overflow-hidden"> {/* Prevent horizontal overflow */}
+    <div className="flex h-screen bg-gray-100 overflow-hidden"> 
       <SidebarMenu isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
       <div
         className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-48' : 'ml-16'}`}
-        style={{ overflowX: 'hidden', width: '100vw' }} // Prevent horizontal scrolling and ensure full width
+        style={{ overflowX: 'hidden', width: '100vw' }}
       >
         {/* Top Bar */}
         <div className="bg-white shadow-md p-4 flex items-center justify-between">
