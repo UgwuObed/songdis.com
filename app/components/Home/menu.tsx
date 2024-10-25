@@ -1,18 +1,20 @@
 import { HomeIcon, ChartBarIcon, WalletIcon, PlayIcon, CogIcon, UsersIcon, FolderIcon, LinkIcon, MusicalNoteIcon } from '@heroicons/react/24/outline';
+import { link } from 'fs';
 import Link from 'next/link';
 import React from 'react';
 
 const SidebarMenu = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpen: boolean) => void }) => {
     const navigation = [
-        { name: 'Home', href: '/', icon: HomeIcon },
-        { name: 'Your Music', href: '/music', icon: PlayIcon },
-        { name: 'Wallet', href: '/wallet', icon: WalletIcon },
+        { name: 'Home', href: '/dashboard', icon: HomeIcon },
+        { name: 'Your Music', href: '/home/music', icon: PlayIcon },
+        { name: 'Wallet', href: '/home/wallet', icon: WalletIcon },
         { name: 'Analytics', href: '/analytics', icon: ChartBarIcon },
         { name: 'Release Links', href: '/release-links', icon: LinkIcon },
         { name: 'Playlist Hub', href: '/plays', icon: MusicalNoteIcon },
         { name: 'Co Management', href: '/collaborators', icon: UsersIcon },
         { name: 'Settings', href: '/settings', icon: CogIcon },
     ];
+    
 
     return (
         <div
