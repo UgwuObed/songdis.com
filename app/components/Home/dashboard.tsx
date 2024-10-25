@@ -110,7 +110,7 @@ const Dashboard = () => {
               {[1, 2, 3, 4].map((item) => (
                 <div key={item} className="relative aspect-square">
                   <img
-                    src={`/assets/dashboard/release-${item}.PNG`}
+                    src={`/assets/dashboard/release-${item}.jpeg`}
                     alt={`Release ${item}`}
                     className="w-full h-full object-cover rounded-lg shadow-md"
                   />
@@ -148,7 +148,7 @@ const Dashboard = () => {
                 {[1, 2, 3, 4].map((item) => (
                   <li key={item} className="flex justify-between items-center text-sm">
                     <div className="flex items-center">
-                      <img src={`/assets/dashboard/release-${item}.png`} alt={`Cover ${item}`} className="w-8 h-8 rounded mr-2" />
+                      <img src={`/assets/dashboard/release-${item}.jpeg`} alt={`Cover ${item}`} className="w-8 h-8 rounded mr-2" />
                       <span>Cover Me</span>
                     </div>
                     <span>Apple Music (Direct)</span>

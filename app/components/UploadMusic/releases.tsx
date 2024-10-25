@@ -3,11 +3,11 @@ import { useState } from 'react';
 const Releases = () => {
   const [search, setSearch] = useState('');
   const [releases] = useState([
-    { title: 'Timeless', artist: 'Davido', status: 'Live', type: 'Album', cover: '/assets/dashboard/release-1.PNG' },
+    { title: 'Timeless', artist: 'Davido', status: 'Live', type: 'Album', cover: '/assets/dashboard/release-1.jpeg' },
     { title: 'Bumbum', artist: 'Kdiv', status: 'Live', type: 'Single', cover: '/assets/dashboard/release-5.jpeg' },
-    { title: 'Timeless', artist: 'Davido', status: 'Live', type: 'EP', cover: '/assets/dashboard/release-3.PNG' },
-    { title: 'Timeless', artist: 'Davido', status: 'Takedown', type: 'Album', cover: '/assets/dashboard/release-4.PNG' },
-    { title: 'Chrome', artist: 'Zinoleesky', status: 'Need Doc', type: 'Album', cover: '/assets/dashboard/release-2.PNG' },
+    { title: 'Timeless', artist: 'Davido', status: 'Live', type: 'EP', cover: '/assets/dashboard/release-3.jpeg' },
+    { title: 'Timeless', artist: 'Davido', status: 'Takedown', type: 'Album', cover: '/assets/dashboard/release-4.jpeg' },
+    { title: 'Chrome', artist: 'Zinoleesky', status: 'Need Doc', type: 'Album', cover: '/assets/dashboard/release-2.jpeg' },
     { title: 'Twice As Tall', artist: 'Burna Boy', status: 'Live', type: 'Album', cover: '/assets/dashboard/release-6.jpeg' },
   ]);
 
