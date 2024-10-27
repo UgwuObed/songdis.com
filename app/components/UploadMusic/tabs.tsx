@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const Tabs = ({ selectedTab, setSelectedTab }: { selectedTab: string; setSelectedTab: (tab: string) => void }) => {
-  const tabs = ['Create New', 'Releases', 'Tracks', 'Edit History'];
+  const tabs = ['Releases', 'Create New', 'Tracks', 'Edit History'];
 
   return (
     <div className="border-b border-gray-200">
