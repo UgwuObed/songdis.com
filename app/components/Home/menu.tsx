@@ -9,7 +9,7 @@ const SidebarMenu = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpe
         { name: 'Your Music', href: '/home/music', icon: PlayIcon },
         { name: 'Wallet', href: '/home/wallet', icon: WalletIcon },
         { name: 'Analytics', href: '/analytics', icon: ChartBarIcon },
-        { name: 'Release Links', href: '/release-links', icon: LinkIcon },
+        { name: 'Release Links', href: '/release-link/release', icon: LinkIcon },
         { name: 'Playlist Hub', href: '/plays', icon: MusicalNoteIcon },
         { name: 'Co Management', href: '/collaborators', icon: UsersIcon },
         { name: 'Settings', href: '/settings', icon: CogIcon },
