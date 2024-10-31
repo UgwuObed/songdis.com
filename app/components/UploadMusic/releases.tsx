@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { PencilIcon, ShareIcon, EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 
 const Releases = () => {
   const [search, setSearch] = useState('');
@@ -11,9 +12,7 @@ const Releases = () => {
     { title: 'Twice As Tall', artist: 'Burna Boy', status: 'Live', type: 'Album', cover: '/assets/dashboard/release-6.jpeg' },
   ]);
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-  };
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => setSearch(event.target.value);
 
   return (
     <div className="p-4">
@@ -78,9 +77,15 @@ const Releases = () => {
                 </span>
               </div>
               <div className="flex justify-between items-center mt-4 space-x-2">
-                <button className="text-blue-500">Edit</button>
-                <button className="text-blue-500">Share</button>
-                <button className="text-blue-500">More</button>
+                <button className="text-blue-500 flex items-center text-orange-500 hover:text-orange-600">
+                  <PencilIcon className="w-5 h-5 mr-1" />
+                </button>
+                <button className="text-blue-500 flex items-center text-green-500 hover:text-green-600">
+                  <ShareIcon className="w-5 h-5 mr-1" /> 
+                </button>
+                <button className="text-blue-500 flex items-center">
+                  <EllipsisVerticalIcon className="w-5 h-5 mr-1" />
+                </button>
               </div>
             </div>
           ))}
