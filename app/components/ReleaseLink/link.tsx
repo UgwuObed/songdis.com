@@ -23,7 +23,7 @@ const Link = () => {
   const [editUrl, setEditUrl] = useState(''); 
   const [useCustomPlatform, setUseCustomPlatform] = useState(false);
 
-  // Predefined list of popular streaming platforms
+
   const popularPlatforms = [
     { name: 'Spotify', urlPrefix: 'https://spotify.com/' },
     { name: 'Apple Music', urlPrefix: 'https://apple.com/' },
@@ -34,7 +34,8 @@ const Link = () => {
 
   const handleSearch = (event: { target: { value: SetStateAction<string>; }; }) => setSearch(event.target.value);
 
-  const openModal = (index: number) => setActiveReleaseIndex(index as unknown as SetStateAction<null>);  const closeModal = () => setActiveReleaseIndex(null);
+  const openModal = (index: number) => setActiveReleaseIndex(index as unknown as SetStateAction<null>);
+  const closeModal = () => setActiveReleaseIndex(null);
 
   const openEditLinkModal = (linkIndex: number) => {
     if (activeReleaseIndex !== null) {
@@ -53,7 +54,7 @@ const Link = () => {
       setReleases(updatedReleases);
       setNewPlatform('');
       setNewUrl('');
-      setUseCustomPlatform(false); // Reset toggle after adding link
+      setUseCustomPlatform(false); 
     }
   };
 
@@ -72,12 +73,17 @@ const Link = () => {
     setReleases(updatedReleases);
   };
 
+  // Filter releases based on search term
+  const filteredReleases = releases.filter((release) =>
+    release.title.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="bg-white p-6 rounded-lg shadow-md">
       <SidebarMenu isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
       <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-48' : 'ml-16'} p-4 overflow-auto`}>
-        <SearchBar />
+        {/* <SearchBar /> */}
 
         <div className="bg-white p-6 max-w-7xl mx-auto">
           <div className="mb-6">
@@ -93,11 +99,10 @@ const Link = () => {
             className="border p-2 rounded w-full sm:w-1/3 mb-6"
           />
 
-          {/* Release Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {releases
-              .filter((release) => release.title.toLowerCase().includes(search.toLowerCase()))
-              .map((release, index) => (
+          {/* Conditional rendering based on search results */}
+          {filteredReleases.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredReleases.map((release, index) => (
                 <div key={index} className="bg-white shadow rounded-lg p-4">
                   <img src={release.cover} alt={release.title} className="rounded mb-4 w-full" />
                   <h3 className="text-lg font-semibold">{release.title}</h3>
@@ -112,7 +117,12 @@ const Link = () => {
                   </div>
                 </div>
               ))}
-          </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              No releases found for "{search}". Try a different search term.
+            </div>
+          )}
 
           {/* Pagination */}
           <div className="flex justify-center items-center mt-8 space-x-2">
@@ -234,5 +244,4 @@ const Link = () => {
     </div>
   );
 };
-
 export default Link;
