@@ -120,8 +120,8 @@ const Link = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              No releases found for "{search}". Try a different search term.
-            </div>
+            No releases found for &quot;{search}&quot;. Try a different search term.
+          </div>          
           )}
 
           {/* Pagination */}
