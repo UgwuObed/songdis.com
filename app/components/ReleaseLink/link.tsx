@@ -22,6 +22,7 @@ const Link = () => {
     title: '',
     artist: '',
     type: 'Single',
+    song: '',
     cover: '',
     releaseDate: '',
   });
@@ -55,6 +56,7 @@ const Link = () => {
       title: '',
       artist: '',
       type: 'Single',
+      song: '',
       cover: '',
       releaseDate: '',
     });
@@ -231,6 +233,18 @@ const Link = () => {
                   <option value="Single">Single</option>
                   <option value="Album">Album</option>
                   <option value="EP">EP</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Select Song</label>
+                <select
+                  value={newRelease.song}
+                  onChange={(e) => setNewRelease({ ...newRelease, song: e.target.value })}
+                  className="mt-1 block w-full border rounded-md p-2"
+                >
+                  <option value="Single">Bumbum</option>
+                  <option value="Album">Love Ass</option>
+                  <option value="EP">Ekebe</option>
                 </select>
               </div>
               <div>
