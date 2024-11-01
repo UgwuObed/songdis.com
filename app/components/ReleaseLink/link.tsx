@@ -181,7 +181,7 @@ const Link = () => {
               ))}
             </div>
           ) : (
-            <div className="text-gray-500">No releases found for "{search}". Try a different search term.</div>
+            <div className="text-gray-500">No releases found for &quot{search}&quot. Try a different search term.</div>
           )}
         </div>
       </div>
