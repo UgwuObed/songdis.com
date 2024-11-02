@@ -203,26 +203,7 @@ const Link = () => {
                 />
                 {newRelease.cover && <img src={newRelease.cover} alt="Cover Preview" className="mt-2 w-32 h-32 object-cover rounded-md" />}
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Title</label>
-                <input
-                  type="text"
-                  value={newRelease.title}
-                  onChange={(e) => setNewRelease({ ...newRelease, title: e.target.value })}
-                  className="mt-1 block w-full border rounded-md p-2"
-                  placeholder="Enter release title"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Artist</label>
-                <input
-                  type="text"
-                  value={newRelease.artist}
-                  onChange={(e) => setNewRelease({ ...newRelease, artist: e.target.value })}
-                  className="mt-1 block w-full border rounded-md p-2"
-                  placeholder="Enter artist name"
-                />
-              </div>
+          
               <div>
                 <label className="block text-sm font-medium text-gray-700">Type</label>
                 <select
