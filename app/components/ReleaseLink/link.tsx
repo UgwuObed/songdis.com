@@ -19,8 +19,6 @@ const Link = () => {
   ]);
 
   const [newRelease, setNewRelease] = useState({
-    title: '',
-    artist: '',
     type: 'Single',
     song: '',
     cover: '',
@@ -49,12 +47,19 @@ const Link = () => {
       url: platform.urlPrefix,
     }));
 
-    const updatedReleases = [...releases, { ...newRelease, status: 'Live', links: defaultLinks }];
+    const newReleaseWithDefaults = {
+      title: newRelease.song,
+      artist: newRelease.song,
+      status: 'Live',
+      type: newRelease.type,
+      cover: newRelease.cover,
+      links: defaultLinks,
+    };
+
+    const updatedReleases = [...releases, newReleaseWithDefaults];
     setReleases(updatedReleases);
     setIsCreateModalOpen(false);
     setNewRelease({
-      title: '',
-      artist: '',
       type: 'Single',
       song: '',
       cover: '',
@@ -247,7 +252,7 @@ const Link = () => {
                 <button
                   onClick={handleCreateRelease}
                   className="px-4 py-2 bg-red-500 text-white rounded-md"
-                  disabled={!newRelease.title || !newRelease.artist || !newRelease.cover}
+                  disabled={!newRelease.song || !newRelease.type || !newRelease.cover}
                 >
                   Create Link
                 </button>
