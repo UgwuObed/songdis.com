@@ -8,12 +8,12 @@ import Link from 'next/link';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
-    confirmPassword: '',
-    accountType: '',
+    password_confirmation: '',
+    account_type: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -30,55 +30,51 @@ const Signup = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
-
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+  
+    if (formData.password !== formData.password_confirmation) {
+      setError('Passwords do not match.');
       setLoading(false);
       return;
     }
-    if (!formData.accountType) {
-      setError('Please select an account type');
+  
+    if (!formData.account_type) {
+      setError('Please select an account type.');
       setLoading(false);
       return;
     }
   
     try {
-      const response = await axios.post(
-        `${BASE_URL}/user/register`,
-        {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          password: formData.password,
-          accountType: formData.accountType,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-        }
-      );
+      // await axios.get(`${BASE_URL}/sanctum/csrf-cookie`);
+      
+      const response = await axios.post(`${BASE_URL}/api/register`, {
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        email: formData.email,
+        password: formData.password,
+        password_confirmation: formData.password_confirmation,
+        account_type: formData.account_type,
+      });
+  
+      if (response.data?.message === 'Registration successful.') {
+        const token = response.data.token;
+        localStorage.setItem('authToken', token);
 
-      if (response.data.status === 'success') {
-        router.push('/auth/signin?signupSuccess=true');
+        router.push('/dashboard');
       } else {
         setError('Registration failed. Please try again.');
       }
-    } catch (err) {
-      console.error('API error:', err);
+    } catch (err: unknown) {
+      console.error('Signup error:', err);
       if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.message || 'Failed to register. Please check your information and try again.');
+        setError(err.response.data.message || 'An unexpected error occurred.');
       } else {
-        setError('An unexpected error occurred. Please try again later.');
+        setError('An unexpected error occurred.');
       }
     } finally {
       setLoading(false);
     }
-  };
-  
-  
+};
+
   return (
     <div style={styles.container}>
       <div style={styles.formContainer as React.CSSProperties}>
@@ -97,18 +93,18 @@ const Signup = () => {
           <div style={styles.gridContainer}>
             <input
               type="text"
-              name="firstName"
+              name="first_name"
               placeholder="First Name"
-              value={formData.firstName}
+              value={formData.first_name}
               onChange={handleChange}
               required
               style={styles.input}
             />
             <input
               type="text"
-              name="lastName"
+              name="last_name"
               placeholder="Last Name"
-              value={formData.lastName}
+              value={formData.last_name}
               onChange={handleChange}
               required
               style={styles.input}
@@ -135,9 +131,9 @@ const Signup = () => {
           />
           <input
             type="password"
-            name="confirmPassword"
+            name="password_confirmation"
             placeholder="Confirm Password"
-            value={formData.confirmPassword}
+            value={formData.password_confirmation}
             onChange={handleChange}
             required
             style={styles.input}
@@ -148,9 +144,9 @@ const Signup = () => {
             <div
               style={{
                 ...styles.accountTypeBox as React.CSSProperties,
-                ...(formData.accountType === 'artist' ? styles.activeBox : {}),
+                ...(formData.account_type === 'artist' ? styles.activeBox : {}),
               }}
-              onClick={() => setFormData({ ...formData, accountType: 'artist' })}
+              onClick={() => setFormData({ ...formData, account_type: 'artist' })}
             >
               <h4 style={styles.accountTypeTitle}>Artist</h4>
               <p>Unlimited albums and singles</p>
@@ -162,9 +158,9 @@ const Signup = () => {
             <div
               style={{
                 ...styles.accountTypeBox as React.CSSProperties,
-                ...(formData.accountType === 'label-paid' ? styles.activeBox : {}),
+                ...(formData.account_type === 'label-paid' ? styles.activeBox : {}),
               }}
-              onClick={() => setFormData({ ...formData, accountType: 'label-paid' })}
+              onClick={() => setFormData({ ...formData, account_type: 'label-paid' })}
             >
               <h4 style={styles.accountTypeTitle}>Label</h4>
               <p>Unlimited albums for one artist</p>
@@ -176,9 +172,9 @@ const Signup = () => {
             <div
               style={{
                 ...styles.accountTypeBox as React.CSSProperties,
-                ...(formData.accountType === 'label-free' ? styles.activeBox : {}),
+                ...(formData.account_type === 'label-free' ? styles.activeBox : {}),
               }}
-              onClick={() => setFormData({ ...formData, accountType: 'label-free' })}
+              onClick={() => setFormData({ ...formData, account_type: 'label-free' })}
             >
               <h4 style={styles.accountTypeTitle}>Label</h4>
               <p>Collect royalties. 100% free.</p>
@@ -245,8 +241,8 @@ const Signup = () => {
       `}</style>
     </div>
   );
-};
 
+};
 const styles = {
   container: {
     backgroundImage: 'url("/assets/banner/auth.jpg")',

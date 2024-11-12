@@ -24,41 +24,38 @@ const Signin = () => {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-  
-    try {
-      const response = await axios.post(
-        `${BASE_URL}/user/login`,
-        {
-          email: formData.email,
-          password: formData.password,
-        },
-        {
-          withCredentials: true, 
-        }
-      );
 
-      if (response.status === 200 && response.data.data.token) {
-        const { token } = response.data.data; 
+    try {
+      // await axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie');
+
+      const response = await axios.post(`${BASE_URL}/api/login`, {
+        email: formData.email,
+        password: formData.password,
+      });
+  
+      if (response.data?.message === 'Login successful.') {
+        const token = response.data.token;
         localStorage.setItem('authToken', token);
-        router.push('/dashboard?loginSuccess=true');
+
+        router.push('/dashboard');
       } else {
-        setError('Login failed. Please check your credentials.');
+        setError('Login failed. Please try again.');
       }
-    } catch (err) {
+    } catch (err: unknown) {
+      console.error('Signin error:', err);
       if (axios.isAxiosError(err) && err.response) {
-        setError(err.response.data.message || 'Login failed. Please try again.');
+        setError(err.response.data.message || 'An unexpected error occurred.');
       } else {
-        setError('An unexpected error occurred. Please try again.');
+        setError('An unexpected error occurred.');
       }
     } finally {
       setLoading(false);
     }
-  };
-  
+};
   return (
     <div style={styles.container}>
       <div style={styles.formContainer as React.CSSProperties}>
