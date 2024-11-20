@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import Modal from 'react-modal';
 import axios from 'axios';
 
-Modal.setAppElement('#root'); 
+
 
 const UploadMusic = () => {
   const [step, setStep] = useState(1);
