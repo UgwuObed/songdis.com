@@ -142,7 +142,7 @@ import axios from 'axios';
     <div className="grid grid-cols-3 gap-8">
       <div className="flex flex-col items-center space-y-4">
       <label className="text-sm text-gray-600">Upload Album Art (JPEG, PNG)</label>
-      <p className="text-sm text-black-200"> Minimum 500x500 size</p>
+      <p className="text-sm text-black-200"> Minimum 3000x3000 size</p>
         <div className="w-48 h-48 bg-gray-100 border-dashed border-2 border-gray-300 rounded-lg flex items-center justify-center relative">
           {!albumArtPreview ? (
             <div>
@@ -306,12 +306,12 @@ import axios from 'axios';
     <h2 className="text-1xl font-semibold text-gray-800">Add Your Music</h2>
 
     <div className="bg-gray-100 border-dashed border-2 border-gray-300 rounded-lg p-8 text-center relative">
-      <p className="text-gray-600 text-sm mb-4">Browse for files or drag and drop them here</p>
+      <p className="text-gray-600 text-sm mb-4">Browse for songs(MP3/WAVE)</p>
       <button
         onClick={() => document.getElementById("audioFileInput")?.click()}
         className="px-4 py-2 bg-gray-200 text-sm text-gray-700 rounded hover:bg-gray-300 transition duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
       >
-        Choose File
+        Choose Music
       </button>
       <input
         id="audioFileInput"
@@ -379,29 +379,7 @@ import axios from 'axios';
       </div>
 
       <div className="space-y-6">
-        {/* Secondary Genre */}
-        <div>
-          <label className="block text-sm text-gray-600 mb-1">Secondary Genre</label>
-          <select
-            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-            value={secondaryGenre}
-            onChange={(e) => setSecondaryGenre(e.target.value)}
-          >
-            <option value="">Select Secondary Genre</option>
-            <option value="Afrobeats">Afrobeats</option>
-            <option value="Reggae">Reggae</option>
-            <option value="Dancehall">Dancehall</option>
-            <option value="Pop">Pop</option>
-            <option value="Rap">Rap</option>
-            <option value="R&B">R&B</option>
-            <option value="Electronic">Electronic</option>
-            <option value="Soul">Soul</option>
-            <option value="Jazz">Jazz</option>
-            <option value="Rock">Rock</option>
-            <option value="Classical">Classical</option>
-          </select>
-        </div>
-
+        
         {/* Release Date */}
         <div>
           <label className="block text-sm text-gray-600 mb-1">Release Date</label>
@@ -442,10 +420,6 @@ import axios from 'axios';
     </div>
   </motion.div>
 )}
-
-
-
-
 
 {step === 4 && (
   <motion.div className="space-y-8">
@@ -497,7 +471,7 @@ import axios from 'axios';
             <textarea className={`${inputStyle} resize-none`} placeholder="Enter Lyrics" required></textarea>
           </div>
           <div className="mb-4">
-            <label className="block text-sm text-gray-600">Songwriter Splits</label>
+            <label className="block text-sm text-gray-600">Songwriter</label>
             <input type="text" className={inputStyle} placeholder="Enter Songwriter Splits" />
           </div>
           <div className="mb-4">
@@ -506,7 +480,7 @@ import axios from 'axios';
           </div>
           <div className="mb-4">
             <label className="block text-sm text-gray-600">UPC Code</label>
-            <input type="text" className={inputStyle} placeholder="UPC Code" />
+            <input type="text" className={inputStyle} placeholder="Optional" />
           </div>
           <div className="flex justify-between mt-6">
       <button
