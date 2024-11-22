@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import Modal from 'react-modal';
 import axios from 'axios';
 
-const UploadMusic = () => {
+  const UploadMusic = ({ uploadType }: { uploadType: 'Single' | 'Album/EP' | null }) => {
   const [step, setStep] = useState(1);
   const [trackTitle, setTrackTitle] = useState('');
   const [primaryArtist, setPrimaryArtist] = useState('');
@@ -16,6 +16,7 @@ const UploadMusic = () => {
   const [primaryGenre, setPrimaryGenre] = useState('');
   const [secondaryGenre, setSecondaryGenre] = useState('');
   const [releaseDate, setReleaseDate] = useState('');
+  const [mood, setMood] = useState('');
   const [preorderDate, setPreorderDate] = useState('');
   const [albumArt, setAlbumArt] = useState<File | null>(null); 
   const [albumArtPreview, setAlbumArtPreview] = useState(""); 
@@ -63,6 +64,7 @@ const UploadMusic = () => {
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
+      formData.append('uploadType', uploadType || '');
       formData.append('track_title', trackTitle);
       formData.append('primary_artist', primaryArtist);
       if (hasFeaturedArtist) formData.append('featured_artists', featuredArtists);
@@ -99,7 +101,7 @@ const UploadMusic = () => {
   
   const closeModal = () => setIsModalOpen(false);
 
-  const stepTitles = ['Details', 'Add Music', 'Release', 'Platform', 'Addtional Info'];
+  const stepTitles = ['Details', 'Add Music', 'Release', 'Platform', 'Metadata'];
 
   const inputStyle =
     'w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300';
@@ -111,6 +113,9 @@ const UploadMusic = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
+<h2 className="text-xl font-bold mb-6 flex justify-center">
+  Upload {uploadType === 'Single' ? 'Single Track' : 'Album/EP'}
+</h2>
       {/* Stepper */}
       <div className="flex justify-between items-center mb-8">
         {stepTitles.map((title, index) => (
@@ -135,9 +140,9 @@ const UploadMusic = () => {
 {step === 1 && (
   <motion.div className="space-y-8">
     <div className="grid grid-cols-3 gap-8">
-      {/* Album Art Upload Section */}
       <div className="flex flex-col items-center space-y-4">
-        <label className="text-sm text-gray-600">Upload Album Art</label>
+      <label className="text-sm text-gray-600">Upload Album Art (JPEG, PNG)</label>
+      <p className="text-sm text-black-200"> Minimum 500x500 size</p>
         <div className="w-48 h-48 bg-gray-100 border-dashed border-2 border-gray-300 rounded-lg flex items-center justify-center relative">
           {!albumArtPreview ? (
             <div>
@@ -172,10 +177,10 @@ const UploadMusic = () => {
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">Primary Artist</label>
+            <label className="block text-sm text-gray-600 mb-1">Artist Name</label>
             <input
               type="text"
-              placeholder="Enter Primary Artist Name"
+              placeholder="Enter Artist Name"
               className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
               value={primaryArtist}
               onChange={(e) => setPrimaryArtist(e.target.value)}
@@ -183,8 +188,33 @@ const UploadMusic = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm text-gray-600 mb-1">Featured Artist</label>
+           <div>
+        <div className="relative flex items-center">
+        <label className="block text-sm text-gray-600 mb-1">
+          Featured Artist&nbsp;
+          <span className="text-xs text-gray-500">(Separate names with commas)</span>
+        </label>
+        <div 
+          className="ml-2 flex items-center text-xs text-red-400 cursor-help" 
+          title="Suggestion: Use commas to separate names. & will not separate names."
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 16h-1v-4h-1m1-4h.01M12 4.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15z"
+            />
+            </svg>
+          </div>
+        </div>
+
             <input
               type="text"
               placeholder="Enter Featured Artist"
@@ -194,7 +224,32 @@ const UploadMusic = () => {
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">Producer</label>
+          <div className="relative flex items-center">
+          <label className="block text-sm text-gray-600 mb-1">
+            Producer&nbsp; 
+            <span className="text-xs text-gray-500">(Separate names with commas)</span>
+          </label>
+          <div 
+            className="ml-2 flex items-center text-xs text-red-400 cursor-help" 
+            title="Suggestion: Use commas to separate names. & will not separate names."
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 16h-1v-4h-1m1-4h.01M12 4.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15z"
+              />
+            </svg>
+          </div>
+        </div>
+
             <input
               type="text"
               placeholder="Enter Producer Name"
@@ -218,14 +273,20 @@ const UploadMusic = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">UPC Code</label>
-            <input
-              type="text"
-              placeholder="Enter UPC Code"
+            <label className="block text-sm text-gray-600 mb-1">Mood</label>
+            <select
               className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-              value={upcCode}
-              onChange={(e) => setUpcCode(e.target.value)}
-            />
+              value={mood}
+              onChange={(e) => setMood(e.target.value)}
+            >
+              <option value="" disabled>Select Mood</option>
+              <option value="Calm">Calm</option>
+              <option value="Happy">Happy</option>
+              <option value="Energetic">Energetic</option>
+              <option value="Sad">Sad</option>
+              <option value="Romantic">Romantic</option>
+              <option value="Angry">Energetic</option>
+            </select>
           </div>
         </div>
       </div>
@@ -277,24 +338,23 @@ const UploadMusic = () => {
 
   </motion.div>
 )}
-
 {step === 3 && (
   <motion.div className="space-y-8">
-    <div className="grid grid-cols-2 gap-8">
+    <div className={`grid grid-cols-2 gap-8 ${uploadType === 'Single' ? 'items-start' : ''}`}>
       {/* Left Section */}
-      <div className="space-y-6">
-        {/* Release Title */}
-        <div>
-          <label className="block text-sm text-gray-600 mb-1">Release Title</label>
-          <input
-            type="text"
-            placeholder="Enter Release Title"
-            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-            value={releaseTitle}
-            onChange={(e) => setReleaseTitle(e.target.value)}
-          />
-        </div>
-
+      <div className={`space-y-6 ${uploadType === 'Single' ? 'col-span-2' : ''}`}>
+        {uploadType === 'Album/EP' && (
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">Release Title</label>
+            <input
+              type="text"
+              placeholder="Enter Release Title"
+              className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+              value={releaseTitle}
+              onChange={(e) => setReleaseTitle(e.target.value)}
+            />
+          </div>
+        )}
         <div>
           <label className="block text-sm text-gray-600 mb-1">Primary Genre</label>
           <select
@@ -352,19 +412,17 @@ const UploadMusic = () => {
             onChange={(e) => setReleaseDate(e.target.value)}
           />
         </div>
-      </div>
-    </div>
 
-    <div className="grid grid-cols-2 gap-8">
-      {/* Pre-Order Date */}
-      <div>
-        <label className="block text-sm text-gray-600 mb-1">Pre-Order Date</label>
-        <input
-          type="date"
-          className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-          value={preorderDate}
-          onChange={(e) => setPreorderDate(e.target.value)}
-        />
+        {/* Pre-Order Date */}
+        <div>
+          <label className="block text-sm text-gray-600 mb-1">Pre-Order Date</label>
+          <input
+            type="date"
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+            value={preorderDate}
+            onChange={(e) => setPreorderDate(e.target.value)}
+          />
+        </div>
       </div>
     </div>
 
@@ -384,6 +442,10 @@ const UploadMusic = () => {
     </div>
   </motion.div>
 )}
+
+
+
+
 
 {step === 4 && (
   <motion.div className="space-y-8">
@@ -443,8 +505,8 @@ const UploadMusic = () => {
             <textarea className={`${inputStyle} resize-none`} placeholder="Enter Credits" required></textarea>
           </div>
           <div className="mb-4">
-            <label className="block text-sm text-gray-600">Genres & Moods</label>
-            <input type="text" className={inputStyle} placeholder="Enter Genres & Moods" />
+            <label className="block text-sm text-gray-600">UPC Code</label>
+            <input type="text" className={inputStyle} placeholder="UPC Code" />
           </div>
           <div className="flex justify-between mt-6">
       <button
@@ -464,5 +526,7 @@ const UploadMusic = () => {
   )}
     </motion.div>
   );
+
 };
+
 export default UploadMusic;
