@@ -23,7 +23,7 @@ const Tabs = ({
             }`}
             onClick={() => {
               if (tab === 'Create New') {
-                onCreateNew(); // Trigger "Create New" logic
+                onCreateNew(); 
               } else {
                 setSelectedTab(tab);
               }

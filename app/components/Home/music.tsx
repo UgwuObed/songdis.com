@@ -15,14 +15,14 @@ const Music = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedTab, setSelectedTab] = useState('Releases');
   const [isSelectingType, setIsSelectingType] = useState(false);
-  const [uploadType, setUploadType] = useState<'Single' | 'Album/EP' | null>(null);
+  const [uploadType, setUploadType] = useState<'Single' | 'Album/EP'>('Single');
 
-  // Handle when "Create New" is clicked
+
   const handleUploadClick = () => {
     setIsSelectingType(true);
   };
 
-  // Handle type selection
+
   const handleTypeSelection = (type: 'Single' | 'Album/EP') => {
     setUploadType(type);
     setIsSelectingType(false);
@@ -67,7 +67,7 @@ const Music = () => {
               <Tabs
                 selectedTab={selectedTab}
                 setSelectedTab={setSelectedTab}
-                onCreateNew={handleUploadClick} // Pass the "Create New" logic to Tabs
+                onCreateNew={handleUploadClick} 
               />
 
               {/* Render Tab Content */}
@@ -81,6 +81,6 @@ const Music = () => {
       </div>
     </div>
   );
-};
 
+};
 export default Music;
