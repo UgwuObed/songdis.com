@@ -22,14 +22,15 @@ const Banner = () => {
                     </div>
 
                     <div className="text-center mt-5 relative z-10">
-                        <button
-                            type="button"
-                            className="text-sm text-white font-medium bg-red-600 py-3 px-6 mt-2 border border-lightgrey leafbutton"
-                            onClick={() => setIsRegisterOpen(true)}  
-                        >
-                            Join For Free
-                        </button>
-                    </div>
+                    <button
+                        type="button"
+                        className="text-sm text-white font-medium bg-red-600 py-3 px-6 mt-2 border border-lightgrey leafbutton"
+                        onClick={() => (window.location.href = 'https://inta.newhilltrust.com/')}
+                    >
+                        Join For Free
+                    </button>
+                </div>
+
 
                     {/* Registration dialog */}
                     <Registerdialog isOpen={isRegisterOpen} setIsOpen={setIsRegisterOpen} />

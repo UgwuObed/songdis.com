@@ -5,7 +5,7 @@ interface NavigationItem {
   name: string;
   href: string;
   current: boolean;
-  onClick?: () => void;  
+  onClick?: () => void;
 }
 
 interface DrawerdataProps {
@@ -56,15 +56,17 @@ const Data = ({ openSignIn, openSignUp }: DrawerdataProps) => {
               </Link>
             ))}
             <div className="mt-4"></div>
+            {/* Sign In Button */}
             <button
               className="bg-white w-full text-blue border border-lightblue font-medium py-2 px-4 rounded"
-              onClick={openSignIn}
+              onClick={() => window.location.href = 'https://inta.newhilltrust.com/'}
             >
               Sign In
             </button>
+            {/* Sign Up Button */}
             <button
               className="bg-lightblue w-full hover:bg-blue hover:text-white text-blue font-medium my-2 py-2 px-4 rounded"
-              onClick={openSignUp}
+              onClick={() => window.location.href = 'https://inta.newhilltrust.com/'}
             >
               Sign Up
             </button>

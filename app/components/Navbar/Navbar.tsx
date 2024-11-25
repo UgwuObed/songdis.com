@@ -82,15 +82,22 @@ const Navbar = () => {
                         </div>
 
                         <div className="hidden lg:flex space-x-4">
-                            <Link 
-                             className="text-black text-lg font-medium px-4 py-2 hover:bg-gray-200" 
-                            href="/auth/signin">Sign In</Link>
-                            <Link 
-                             className="text-white text-lg font-medium bg-red-600 px-4 py-2 hover:bg-red-700   border-lightgrey leafbutton"
-                            href="/auth/signup">Sign Up</Link>
+                            {/* Temporary Sign In */}
+                            <button 
+                                className="text-black text-lg font-medium px-4 py-2 hover:bg-gray-200" 
+                                onClick={() => window.location.href = 'https://inta.newhilltrust.com/'}
+                            >
+                                Sign In
+                            </button>
+                            {/* Temporary Sign Up */}
+                            <button 
+                                className="text-white text-lg font-medium bg-red-600 px-4 py-2 hover:bg-red-700 border-lightgrey leafbutton"
+                                onClick={() => window.location.href = 'https://inta.newhilltrust.com/'}
+                            >
+                                Sign Up
+                            </button>
                         </div>
 
-                    
                         {/* SIGNIN DIALOG */}
                         <Signdialog isOpen={isSignInOpen} setIsOpen={setIsSignInOpen} />
 

@@ -12,7 +12,7 @@ const Drawer = ({ children, isOpen, setIsOpen }: DrawerProps) => {
     return (
 <main
     className={
-        " fixed overflow-hidden z-10 bg-red-600 bg-opacity-25 inset-0 transform ease-in-out " + // Changed to red
+        " fixed overflow-hidden z-10 bg-red-600 bg-opacity-25 inset-0 transform ease-in-out " +
         (isOpen
             ? " transition-opacity opacity-100 duration-500 translate-x-0  "
             : " transition-all delay-500 opacity-0 -translate-x-full  ")
