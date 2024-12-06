@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import SidebarMenu from '../../components/Home/menu';
 import SearchBar from '../../components/Home/search';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { BASE_URL } from "../apiConfig";
 import {
   MusicalNoteIcon,
   DocumentTextIcon,
@@ -30,8 +31,32 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true); 
   const [showLoginSuccessNotification, setShowLoginSuccessNotification] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [releases, setReleases] = useState<string[]>([]);
+ 
 
  
+  useEffect(() => {
+    const fetchMusic = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/api/music`,  {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch music data');
+        }
+        const data = await response.json();
+        const albumArts = data.data.data.slice(0, 4).map((item: { album_art_url: string }) => item.album_art_url);
+        setReleases(albumArts);
+      } catch (error) {
+        console.error('Error fetching music data:', error);
+      }
+    };
+
+    fetchMusic();
+  }, []);
+
   useEffect(() => {
     const token = localStorage.getItem('authToken'); 
     if (!token) {
@@ -102,22 +127,34 @@ const Dashboard = () => {
         <div className="flex-1 overflow-y-auto p-6">
           {/* Releases Section */}
           <div className="mb-8">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-semibold">Releases</h2>
-              <button className="text-red-600 font-medium">View All</button>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {[1, 2, 3, 4].map((item) => (
-                <div key={item} className="relative aspect-square">
-                  <img
-                    src={`/assets/dashboard/release-${item}.jpeg`}
-                    alt={`Release ${item}`}
-                    className="w-full h-full object-cover rounded-lg shadow-md"
-                  />
-                </div>
-              ))}
-            </div>
+  <div className="flex justify-between items-center mb-4">
+    <h2 className="text-2xl font-semibold">Releases</h2>
+    <button className="text-red-600 font-medium">View All</button>
+  </div>
+  {releases.length > 0 ? (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {releases.map((albumArt, index) => (
+        albumArt && (
+          <div key={index} className="relative aspect-square">
+            <img
+              src={albumArt}
+              alt={`Release ${index + 1}`}
+              className="w-full h-full object-cover rounded-lg shadow-md"
+              onError={(e) => {
+                e.currentTarget.src = '/placeholder-image.jpg';
+                console.log('Error loading image:', albumArt);
+              }}
+            />
           </div>
+        )
+      ))}
+    </div>
+  ) : (
+    <div className="text-center py-8 text-gray-500">
+      No releases available
+    </div>
+  )}
+</div>
 
           {/* Wallet and Delivery Log */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -196,4 +233,5 @@ const Dashboard = () => {
       </div>
     </div>
   );
-};export default Dashboard;
+};
+export default Dashboard;

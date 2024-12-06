@@ -174,15 +174,15 @@ const Link = () => {
                   <h3 className="text-lg font-semibold">{release.title}</h3>
                   <p className="text-sm text-gray-500">{release.artist}</p>
                   <div className="flex justify-between items-center mt-4 space-x-2">
-                    <button className="flex items-center text-green-500 hover:text-green-600">
-                      <ClipboardIcon className="w-5 h-5 mr-1" />
+                    <button className="flex items-center text-black-500 hover:text-black-600">
+                      <ClipboardIcon className="w-5 h-5 mr-1" /> Copy Link
                     </button>
                     <button onClick={() => openModal(index)} className="flex items-center text-orange-500 hover:text-orange-600">
                       <PencilIcon className="w-5 h-5 mr-1" />
                     </button>
-                    <button onClick={() => deleteRelease(index)} className="flex items-center text-red-500 hover:text-red-600">
+                    {/* <button onClick={() => deleteRelease(index)} className="flex items-center text-red-500 hover:text-red-600">
                       <TrashIcon className="w-5 h-5" />
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               ))}

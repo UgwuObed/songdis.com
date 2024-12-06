@@ -1,7 +1,10 @@
-const MetadataStep = ({ formState, setFormState }: any) => {
-    return (
-      <div>
-        <h2 className="text-lg font-semibold mb-6 text-gray-600">Additional Information</h2>
+const MetadataStep = ({ formState, setFormState, uploadType }: { formState: any; setFormState: any; uploadType: "Single" | "Album/EP" }) => {
+  return (
+    <div>
+      <h2 className="text-lg font-semibold mb-6 text-gray-600">Additional Information</h2>
+      
+      {/* Render the lyrics field only for Single upload type */}
+      {uploadType === "Single" && (
         <div className="mb-4">
           <label className="block text-sm text-gray-600">Lyrics</label>
           <textarea
@@ -11,19 +14,22 @@ const MetadataStep = ({ formState, setFormState }: any) => {
             onChange={(e) => setFormState({ ...formState, lyrics: e.target.value })}
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-sm text-gray-600">UPC Code</label>
-          <input
-            type="text"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-red-500"
-            placeholder="Enter UPC Code"
-            value={formState.upcCode}
-            onChange={(e) => setFormState({ ...formState, upcCode: e.target.value })}
-          />
-        </div>
+      )}
+
+      <div className="mb-4">
+        <label className="block text-sm text-gray-600">UPC Code (Optional)</label>
+        <input
+          type="text"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-red-500"
+          placeholder="Enter UPC Code"
+          value={formState.upcCode}
+          onChange={(e) => setFormState({ ...formState, upcCode: e.target.value })}
+        />
       </div>
-    );
-  };
-  
-  export default MetadataStep;
+    </div>
+  );
+};
+
+export default MetadataStep;
+
   
