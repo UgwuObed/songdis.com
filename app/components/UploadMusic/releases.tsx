@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import UploadTypeSelection from '../UploadMusic/type';
 import { PencilIcon, ShareIcon, EllipsisVerticalIcon } from '@heroicons/react/24/outline';
-import { motion } from 'framer-motion'; // Import Framer Motion
+import { motion } from 'framer-motion'; 
 import { BASE_URL } from "../apiConfig";
 import axios from 'axios';
 
@@ -23,7 +23,7 @@ const Releases = () => {
   useEffect(() => {
     const fetchReleases = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/api/music?filter=single`, {
+        const response = await axios.get(`${BASE_URL}/api/music`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`,
           },
@@ -107,7 +107,7 @@ const Releases = () => {
                       <img
                         src={release.album_art_path}
                         alt={release.track_title}
-                        className="rounded mb-4 w-full h-48 object-cover" // Ensure consistent size
+                        className="rounded mb-4 w-full h-48 object-cover" 
                       />
                     </div>
                     <h3 className="text-lg font-semibold">{release.track_title}</h3>

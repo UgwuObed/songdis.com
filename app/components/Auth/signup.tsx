@@ -139,50 +139,63 @@ const Signup = () => {
             style={styles.input}
           />
 
-          <h3 style={styles.accountTypeHeading}>Choose account type</h3>
-          <div style={styles.accountTypeContainer}>
-            <div
-              style={{
-                ...styles.accountTypeBox as React.CSSProperties,
-                ...(formData.account_type === 'artist' ? styles.activeBox : {}),
-              }}
-              onClick={() => setFormData({ ...formData, account_type: 'artist' })}
-            >
-              <h4 style={styles.accountTypeTitle}>Artist</h4>
-              <p>Unlimited albums and singles</p>
-              <button type="button" style={styles.selectButton}>
-                Select for $2.99
-              </button>
-            </div>
+    <h3 style={styles.accountTypeHeading}>Choose account type</h3>
+    <div style={styles.accountTypeContainer}>
+      {/* Basic Plan Card */}
+      <div
+        style={{
+          ...styles.accountTypeBox as React.CSSProperties,
+          ...(formData.account_type === 'basic ' ? styles.activeBox : {}),
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '100%',
+        }}
+        onClick={() => setFormData({ ...formData, account_type: 'basic ' })}
+      >
+        <p>Unlimited uploads and supportive community for one artist</p>
+        <button type="button" style={{ ...styles.selectButton, marginTop: 'auto' }}>
+          Basic Plan
+        </button>
+      </div>
 
-            <div
-              style={{
-                ...styles.accountTypeBox as React.CSSProperties,
-                ...(formData.account_type === 'label-paid' ? styles.activeBox : {}),
-              }}
-              onClick={() => setFormData({ ...formData, account_type: 'label-paid' })}
-            >
-              <h4 style={styles.accountTypeTitle}>Label</h4>
-              <p>Unlimited albums for one artist</p>
-              <button type="button" style={styles.selectButton}>
-                Select for $5.99
-              </button>
-            </div>
+      {/* Growth Plan Card */}
+      <div
+        style={{
+          ...styles.accountTypeBox as React.CSSProperties,
+          ...(formData.account_type === 'growth' ? styles.activeBox : {}),
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '100%', 
+        }}
+        onClick={() => setFormData({ ...formData, account_type: 'growth' })}
+      >
+        <p>Multiple artists and enhances professional image.</p>
+        <button type="button" style={{ ...styles.selectButton, marginTop: 'auto' }}>
+          Growth Plan
+        </button>
+      </div>
 
-            <div
-              style={{
-                ...styles.accountTypeBox as React.CSSProperties,
-                ...(formData.account_type === 'label-free' ? styles.activeBox : {}),
-              }}
-              onClick={() => setFormData({ ...formData, account_type: 'label-free' })}
-            >
-              <h4 style={styles.accountTypeTitle}>Label</h4>
-              <p>Collect royalties. 100% free.</p>
-              <button type="button" style={styles.selectButton}>
-                Select for free
-              </button>
-            </div>
-          </div>
+      {/* Professional Plan Card */}
+      <div
+        style={{
+          ...styles.accountTypeBox as React.CSSProperties,
+          ...(formData.account_type === 'professional' ? styles.activeBox : {}),
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '100%', 
+        }}
+        onClick={() => setFormData({ ...formData, account_type: 'professional' })}
+      >
+        <p>Designed specially for career-level artists or labels</p>
+        <button type="button" style={{ ...styles.selectButton, marginTop: 'auto' }}>
+          Professional Plan
+        </button>
+      </div>
+    </div>
+
 
           <button type="submit" style={styles.submitButton} disabled={loading}>
             {loading ? (
