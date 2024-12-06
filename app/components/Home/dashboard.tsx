@@ -38,7 +38,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchMusic = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/api/music`,  {
+        const response = await fetch(`${BASE_URL}/api/music?filter=single`,  {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`,
           },
