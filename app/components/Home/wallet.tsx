@@ -26,8 +26,8 @@ const Wallet = () => {
         {/* Profile and Account Details */}
         <div className="bg-white p-6 rounded-lg shadow-md mb-4 flex flex-col md:flex-row items-center justify-between w-full">
           <div>
-            <h2 className="text-lg font-semibold text-gray-700">NEHEMIAH MELODY</h2>
-            <p className="text-gray-500">Access Bank - 0692527883</p>
+            {/* <h2 className="text-lg font-semibold text-gray-700">NEHEMIAH MELODY</h2>
+            <p className="text-gray-500">Access Bank - 0692527883</p> */}
           </div>
           <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition mt-4 md:mt-0">
             Update account details

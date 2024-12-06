@@ -9,7 +9,9 @@ const Tabs = ({
   setSelectedTab: (tab: string) => void;
   onCreateNew: () => void;
 }) => {
-  const tabs = ['Releases', 'Create New', 'Tracks', 'Edit History'];
+  // const tabs = ['Releases', 'Create New', 'Tracks', 'Edit History'];
+
+  const tabs = ['Releases', 'Create New',  'Edit History'];
 
   return (
     <div className="border-b border-gray-200">
