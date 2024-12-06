@@ -8,14 +8,14 @@ const SidebarMenu = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpe
         { name: 'Home', href: '/dashboard', icon: HomeIcon },
         { name: 'Your Music', href: '/home/music', icon: PlayIcon },
         { name: 'Wallet', href: '/home/wallet', icon: WalletIcon },
-        { name: 'Analytics', href: '/analytics', icon: ChartBarIcon },
+        { name: 'Analytics', href: '/home/analytics', icon: ChartBarIcon },
         { name: 'Release Links', href: '/release-link/release', icon: LinkIcon },
-        { name: 'Playlist Hub', href: '/plays', icon: MusicalNoteIcon },
-        { name: 'Co Management', href: '/collaborators', icon: UsersIcon },
-        { name: 'Settings', href: '/settings', icon: CogIcon },
+        { name: 'Playlist Hub', href: '/home/playlist', icon: MusicalNoteIcon },
+        { name: 'Co Management', href: '/home/management', icon: UsersIcon },
+        { name: 'Settings', href: '/home/settings', icon: CogIcon },
     ];
     
-
+ 
     return (
         <div
             className={`fixed inset-y-0 left-0 transform transition-all duration-500 ease-in-out ${
@@ -59,26 +59,39 @@ const SidebarMenu = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpe
                 ))}
             </nav>
 
-            {/* Bottom Menu */}
-            <div className="mt-auto p-4">
-                <Link href="/spotify">
-                    <div className="flex items-center text-white p-4 hover:bg-red-700 hover:scale-105 transform transition-all duration-300 cursor-pointer group">
-                        <FolderIcon className="h-6 w-6 group-hover:text-yellow-400" aria-hidden="true" />
-                        <span className={`ml-3 text-sm font-medium ${isOpen ? 'opacity-100' : 'opacity-0 hidden'} transition-opacity duration-500`}>
-                            Spotify
-                        </span>
-                    </div>
-                </Link>
-                <Link href="/cover">
-                    <div className="flex items-center text-white p-4 hover:bg-red-700 hover:scale-105 transform transition-all duration-300 cursor-pointer group">
-                        <FolderIcon className="h-6 w-6 group-hover:text-yellow-400" aria-hidden="true" />
-                        <span className={`ml-3 text-sm font-medium ${isOpen ? 'opacity-100' : 'opacity-0 hidden'} transition-opacity duration-500`}>
-                            Cover
-                        </span>
-                    </div>
-                </Link>
-            </div>
+{/* Bottom Menu */}
+<div className="mt-auto p-4">
+    <Link 
+        href="/spotify"
+        onClick={(e) => {
+            e.preventDefault(); 
+            alert('Coming Soon');
+        }}
+    >
+        <div className="flex items-center text-white p-4 hover:bg-red-700 hover:scale-105 transform transition-all duration-300 cursor-pointer group">
+            <FolderIcon className="h-6 w-6 group-hover:text-yellow-400" aria-hidden="true" />
+            <span className={`ml-3 text-sm font-medium ${isOpen ? 'opacity-100' : 'opacity-0 hidden'} transition-opacity duration-500`}>
+                Spotify
+            </span>
         </div>
+    </Link>
+    <Link 
+        href="/cover"
+        onClick={(e) => {
+            e.preventDefault(); 
+            alert('Coming Soon');
+        }}
+    >
+        <div className="flex items-center text-white p-4 hover:bg-red-700 hover:scale-105 transform transition-all duration-300 cursor-pointer group">
+            <FolderIcon className="h-6 w-6 group-hover:text-yellow-400" aria-hidden="true" />
+            <span className={`ml-3 text-sm font-medium ${isOpen ? 'opacity-100' : 'opacity-0 hidden'} transition-opacity duration-500`}>
+                Cover
+            </span>
+        </div>
+    </Link>
+</div>
+
+        </div> 
     );
 };
 

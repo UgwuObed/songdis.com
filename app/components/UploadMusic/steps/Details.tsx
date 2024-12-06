@@ -1,4 +1,52 @@
+import React from "react";
+import { uploadFile } from '../../../utils/cloudinaryUpload';
+
 const DetailsStep = ({ formState, setFormState, uploadType }: any) => {
+  const [alert, setAlert] = React.useState<{ type: string; message: string } | null>(null);
+
+  const handleUpload = async () => {
+    if (formState.albumArt) {
+      const formData = new FormData();
+      formData.append("file", formState.albumArt);
+
+      try {
+        const response = await uploadFile(formData); 
+        if (response?.secure_url) {
+          setFormState({
+            ...formState,
+            albumArt: response.secure_url,
+          });
+          setAlert({ type: "success", message: "Artwork uploaded!" });
+        } else {
+          setAlert({ type: "error", message: "Failed to retrieve upload URL." });
+        }
+      } catch (error) {
+        console.error("Upload failed:", error);
+        setAlert({ type: "error", message: "Error uploading file. Please try again." });
+      }
+    }
+  };
+
+  const AlertPopup = ({ type, message }: { type: string; message: string }) => (
+    <div
+      className={`fixed top-4 left-1/2 transform -translate-x-1/2 w-80 p-4 rounded-md ${
+        type === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"
+      }`}
+    >
+      <p>{message}</p>
+    </div>
+  );
+
+  React.useEffect(() => {
+    if (alert) {
+      const timer = setTimeout(() => {
+        setAlert(null);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [alert]);
+
   return (
     <div className="grid grid-cols-3 gap-8">
       {/* Album Art Upload */}
@@ -32,6 +80,15 @@ const DetailsStep = ({ formState, setFormState, uploadType }: any) => {
             />
           )}
         </div>
+        <button
+          className={`px-4 py-2 rounded bg-red-500 text-white ${
+            !formState.albumArt ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          onClick={handleUpload}
+          disabled={!formState.albumArt}
+        >
+          Upload
+        </button>
       </div>
 
       {/* Details Fields */}
@@ -40,14 +97,19 @@ const DetailsStep = ({ formState, setFormState, uploadType }: any) => {
           {/* Track Title or Release Name */}
           <div>
             <label className="block text-sm text-gray-600 mb-1">
-              {uploadType === 'Album/EP' ? 'Release Name' : 'Track Title'}
+              {uploadType === "Album/EP" ? "Release Name" : "Track Title"}
             </label>
             <input
               type="text"
-              placeholder={`Enter ${uploadType === 'Album/EP' ? 'Release Name' : 'Track Title'}`}
+              placeholder={`Enter ${uploadType === "Album/EP" ? "Release Name" : "Track Title"}`}
               className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-              value={formState.trackTitle}
-              onChange={(e) => setFormState({ ...formState, trackTitle: e.target.value })}
+              value={uploadType === "Album/EP" ? formState.releaseTitle : formState.trackTitle}
+              onChange={(e) =>
+                setFormState({
+                  ...formState,
+                  [uploadType === "Album/EP" ? "releaseTitle" : "trackTitle"]: e.target.value,
+                })
+              }
             />
           </div>
 
@@ -153,8 +215,8 @@ const DetailsStep = ({ formState, setFormState, uploadType }: any) => {
               <option value="" disabled>
                 Select an option
               </option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
+              <option value="1">Yes</option>
+              <option value="0">No</option>
             </select>
           </div>
 
@@ -178,6 +240,8 @@ const DetailsStep = ({ formState, setFormState, uploadType }: any) => {
             </select>
           </div>
         </div>
+                {/* Display Alert */}
+                {alert && <AlertPopup type={alert.type} message={alert.message} />}
       </div>
     </div>
   );

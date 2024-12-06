@@ -82,13 +82,8 @@ const Clientsay = () => {
     </div>
 </div><br/>
 <div className="text-center mt-6">
-    <button
-        className="bg-red-600 text-white py-3 px-6 rounded-lg"
-        onClick={() => (window.location.href = 'https://inta.newhilltrust.com/')}
-    >
-        Join Now
-    </button>
-</div>
+                    <button className="bg-red-600 text-white py-3 px-6 rounded-lg">Join Now</button>
+                </div>
 
             </div>
         </div>

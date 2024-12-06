@@ -1,26 +1,29 @@
 const PlatformStep = ({ formState, setFormState }: any) => {
     const platformOptions = [
-      "Spotify",
-      "Apple Music",
-      "Amazon Music",
-      "Tidal",
-      "Deezer",
-      "YouTube Music",
-      "Pandora",
-      "TikTok",
-      "Instagram/Facebook",
-      "Shazam",
+      'Spotify',
+      'Apple Music',
+      'Amazon Music',
+      'Tidal',
+      'Deezer',
+      'YouTube Music',
+      'Pandora',
+      'TikTok',
+      'Instagram/Facebook',
+      'Shazam',
     ];
   
     const togglePlatform = (platform: string) => {
+      const updatedPlatforms = formState.platforms.includes(platform)
+        ? formState.platforms.filter((p: string) => p !== platform)
+        : [...formState.platforms, platform];
+    
+      console.log("Updated platforms:", updatedPlatforms); 
       setFormState({
         ...formState,
-        platforms: formState.platforms.includes(platform)
-          ? formState.platforms.filter((p: string) => p !== platform)
-          : [...formState.platforms, platform],
+        platforms: updatedPlatforms,
       });
     };
-  
+    
     const selectAllPlatforms = () => setFormState({ ...formState, platforms: [...platformOptions] });
   
     return (
