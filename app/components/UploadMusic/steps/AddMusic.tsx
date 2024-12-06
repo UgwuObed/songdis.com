@@ -64,14 +64,14 @@ const AddMusicStep = ({ uploadType, formState, setFormState }: { uploadType: str
   
     try {
       const response = await uploadFile(formData);
-      console.log('Upload response:', response); // Logs the full response object
+      console.log('Upload response:', response); 
   
       if (response?.secure_url) {
-        console.log('Secure URL:', response.secure_url); // Logs the secure_url
+        console.log('Secure URL:', response.secure_url);
   
         const updatedTrack = {
           ...track,
-          audioFileUrl: response.secure_url,  // Add the secure_url here
+          audioFileUrl: response.secure_url, 
         };
   
         // Update duration once the audio is loaded
@@ -85,7 +85,7 @@ const AddMusicStep = ({ uploadType, formState, setFormState }: { uploadType: str
               ...prevState,
               audioFiles: [...prevState.audioFiles, updatedTrack],
             };
-            console.log('Updated FormState:', updatedState); // Log the updated formState
+            console.log('Updated FormState:', updatedState); 
             return updatedState;
           });
           
@@ -96,7 +96,7 @@ const AddMusicStep = ({ uploadType, formState, setFormState }: { uploadType: str
         setAlert({ type: "error", message: "Failed to retrieve upload URL." });
       }
     } catch (error) {
-      console.error("Upload failed:", error); // Logs the error in case of failure
+      console.error("Upload failed:", error); 
       setAlert({ type: "error", message: "Error uploading file. Please try again." });
     }
   };
