@@ -5,8 +5,10 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { BASE_URL } from '../apiConfig';
 import Link from 'next/link';
+import PaymentPlan from '../../components/Home/payment';
 
 const Signup = () => {
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -58,8 +60,8 @@ const Signup = () => {
       if (response.data?.message === 'Registration successful.') {
         const token = response.data.token;
         localStorage.setItem('authToken', token);
-
-        router.push('/dashboard');
+        setStep(2);
+       
       } else {
         setError('Registration failed. Please try again.');
       }
@@ -74,6 +76,15 @@ const Signup = () => {
       setLoading(false);
     }
 };
+
+if (step === 2) {
+  return (
+    <PaymentPlan
+      accountType={formData.account_type}
+      onPaymentComplete={() => router.push('/dashboard')} 
+    />
+  );
+}
 
   return (
     <div style={styles.container}>
