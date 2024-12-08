@@ -60,8 +60,9 @@ const Signup = () => {
       if (response.data?.message === 'Registration successful.') {
         const token = response.data.token;
         localStorage.setItem('authToken', token);
+        localStorage.setItem('userEmail', formData.email);
         setStep(2);
-       
+        router.push('/dashboard?signupSuccess=true');
       } else {
         setError('Registration failed. Please try again.');
       }
@@ -77,14 +78,16 @@ const Signup = () => {
     }
 };
 
-if (step === 2) {
-  return (
-    <PaymentPlan
-      accountType={formData.account_type}
-      onPaymentComplete={() => router.push('/dashboard')} 
-    />
-  );
-}
+
+
+// if (step === 2) {
+//   return (
+//     <PaymentPlan
+//       accountType={formData.account_type}
+//       onPaymentComplete={() => router.push('/dashboard')} 
+//     />
+//   );
+// }
 
   return (
     <div style={styles.container}>
