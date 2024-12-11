@@ -33,8 +33,6 @@ const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [releases, setReleases] = useState<string[]>([]);
  
-
- 
   useEffect(() => {
     const fetchMusic = async () => {
       try {
