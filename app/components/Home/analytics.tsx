@@ -1,87 +1,200 @@
-'use client';
+import { useEffect, useState } from "react";
+import axios from 'axios';
+import { BASE_URL } from '../apiConfig';
 
-import React, { SetStateAction, useState } from 'react';
-import SidebarMenu from '../../components/Home/menu';
+interface Plan {
+  id: string;
+  name: string;
+  price: number;
+  duration: string;
+  features: string[];
+}
 
-const Analytics = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [subscriptionPlan, setSubscriptionPlan] = useState(null); 
-  const plans = [
-    { name: 'Starter', price: 'NGN 2,000/month', features: ['Access to starter content'] },
-    { name: 'Growth', price: 'NGN 5,000/month', features: ['Access to growth content', 'Priority support'] },
-    { name: 'Professional', price: 'NGN 10,000/month', features: ['All features', 'Priority support'] },
-  ];
+interface PaymentPlanProps {
+  accountType: string;
+  onPaymentComplete: () => void;
+}
+
+const Analytics = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processingPlan, setProcessingPlan] = useState<string | null>(null);
+  const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
+
+
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          throw new Error("Authentication token not found");
+        }
+
+        const response = await axios.get(`${BASE_URL}/api/plans`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+
+        setPlans(response.data);
+      } catch (error) {
+        setError(error instanceof Error ? error.message : "Failed to fetch plans");
+        console.error("Failed to fetch plans:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlans();
+  }, []);
+
+  const handlePayment = async (planId: string) => {
+    setProcessingPlan(planId);
+    setError(null);
+  
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) {
+        setError("Authentication token not found. Please log in again.");
+        return;
+      }
+  
+      console.log('Initiating payment for plan:', planId);
+      
+      const response = await axios.post(
+        `${BASE_URL}/api/subscribe`,
+        { plan_id: planId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+  
+      console.log('Payment response:', response.data);
+  
+      if (response.data.status === 'success' && response.data.redirect_url) {
+        // Open in same window
+        window.location.href = response.data.redirect_url;
+        useEffect(() => {
+          const queryParams = new URLSearchParams(window.location.search);
+          if (queryParams.get('status') === 'success') {
+            onPaymentComplete();
+          }
+        }, []);
+        
+      } else {
+        setError("Invalid response from payment server");
+        console.error('Invalid payment response:', response.data);
+      }
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error
+        ? err.message
+        : (err as { response?: { data?: { message?: string } } })?.response?.data?.message || "Unexpected error occurred";
+      setError(errorMessage);
+      console.error("Payment initiation failed:", {
+        error: err,
+        response: (err as { response?: { data?: unknown } })?.response?.data
+      });
+    } finally {
+      setProcessingPlan(null);
+    }
+  };  
+
+  
+  if (loading) {
+    return <div>Loading plans...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-gray-100">
-      <SidebarMenu isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      {/* Main Content Area */}
-      <div
-        className={`flex flex-col transition-all duration-300 ${
-          isSidebarOpen ? 'ml-[200px]' : 'ml-[50px]'
-        } flex-grow h-full`}
-        style={{ overflowX: 'hidden' }}
-      >
-        {/* Header */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-4 flex flex-col md:flex-row items-center justify-between w-full">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-700">Subscribe to Get Access</h2>
-            <p className="text-gray-500">Choose a plan and enjoy exclusive content</p>
-          </div>
+    <div className="py-24 relative">
+      <div className="absolute h-[26.5rem] w-full top-0 bg-white-to-r from-red-600 to-white -z-10"></div>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="font-manrope text-5xl font-bold text-black mb-4">
+            Select a Payment Plan
+          </h2>
+          <p className="text-gray-500 text-xl leading-6">
+            You've selected the <span className="text-black">{accountType}</span> plan.
+          </p>
         </div>
 
-        {/* Subscription Plans */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6 w-full">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Subscription Plans</h2>
+        <section className="py-12">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid gap-8 lg:grid-cols-3 sm:grid-cols-1">
+              {plans.map((plan) => (
+                <div
+                  key={plan.id}
+                  className="group relative flex flex-col items-center bg-white rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 p-6 border border-red-500 hover:border-red-700"
+                >
+                  <div className="w-16 h-16 rounded-full bg-red-100 flex justify-center items-center mb-4">
+                    {/* Plan Icon */}
+                    <svg
+                      className="w-6 h-6 text-red-600"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m2 0a2 2 0 100-4h-6a2 2 0 100 4m0 0h6a2 2 0 110 4h-6a2 2 0 100-4m0 0h-6a2 2 0 100 4h6"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="font-bold text-lg text-red-600">{plan.name}</h3>
+                  <p className="font-bold mt-2 text-gray-700">
+                    ₦{plan.price.toLocaleString()} {plan.duration}
+                  </p>
+                  <ul className="mt-4 text-gray-700 list-disc list-inside">
+                    {plan.features.map((feature, index) => (
+                      <li key={index} className="mb-2">
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                  onClick={() => handlePayment(plan.id)}
+                  className={`mt-4 py-2 px-4 rounded-md transition-colors ${
+                    processingPlan === plan.id ? "bg-gray-500 text-white" : "bg-red-600 text-white hover:bg-red-700"
+                  }`}
+                  disabled={processingPlan === plan.id}
+                >
+                  {processingPlan === plan.id ? (
+                    <span>
+                      <svg className="animate-spin h-5 w-5 inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 6v6l4 2"
+                        />
+                      </svg>
+                      Processing...
+                    </span>
+                  ) : (
+                    `Select ${plan.name}`
+                  )}
+                </button>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {plans.map((plan, index) => (
-              <div
-                key={index}
-                className={`p-4 border rounded-md transition cursor-pointer ${
-                  subscriptionPlan === plan.name ? 'border-red-500 bg-red-100' : 'border-gray-300'
-                }`}
-                onClick={() => setSubscriptionPlan(plan.name as unknown as SetStateAction<null>)}
-              >
-                <h3 className="text-lg font-bold text-gray-700">{plan.name}</h3>
-                <p className="text-gray-500">{plan.price}</p>
-                <ul className="mt-2 text-sm text-gray-600">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="mt-1">
-                      - {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Subscription Confirmation */}
-        <div className="bg-white p-6 rounded-lg shadow-md w-full">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Confirm Your Subscription</h3>
-
-          {subscriptionPlan ? (
-            <div className="text-center">
-              <p className="text-gray-700 mb-4">
-                You have selected the <strong>{subscriptionPlan}</strong> plan.
-              </p>
-              <button
-                className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition"
-                onClick={() => alert('Subscription successful!')}
-              >
-                Subscribe Now
-              </button>
+                </div>
+              ))}
             </div>
-          ) : (
-            <p className="text-center text-gray-500 py-10">
-              Please select a subscription plan to proceed.
-            </p>
-          )}
-        </div>
+          </div>
+        </section>
       </div>
     </div>
-  );
-};
+  );};
 
 export default Analytics;

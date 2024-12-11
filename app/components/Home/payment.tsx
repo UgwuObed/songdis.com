@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { BASE_URL } from '../apiConfig';
-
+import PaymentStatus from './status';
 
 interface Plan {
   id: string;
@@ -16,36 +16,16 @@ interface PaymentPlanProps {
   onPaymentComplete: () => void;
 }
 
-interface PaystackResponse {
-  reference: string;
-  status: string;
-}
-
 const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isInitializingPayment, setIsInitializingPayment] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processingPlan, setProcessingPlan] = useState<string | null>(null);
+  const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
+
 
   useEffect(() => {
-    const loadPaystackScript = () => {
-      return new Promise<void>((resolve, reject) => {
-        console.log("Loading Paystack script...");
-        if ((window as any).PaystackPop) {
-          resolve();
-          return;
-        }
-    
-        const script = document.createElement('script');
-        script.src = 'https://js.paystack.co/v1/inline.js';
-        script.async = true;
-        script.onload = () => resolve();
-        script.onerror = () => reject(new Error('Failed to load Paystack script'));
-        document.head.appendChild(script);
-      });
-    };
-    
     const fetchPlans = async () => {
       try {
         const authToken = localStorage.getItem("authToken");
@@ -53,18 +33,13 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
           throw new Error("Authentication token not found");
         }
 
-        const response = await fetch(`${BASE_URL}/api/plans`, {
+        const response = await axios.get(`${BASE_URL}/api/plans`, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setPlans(data);
+        setPlans(response.data);
       } catch (error) {
         setError(error instanceof Error ? error.message : "Failed to fetch plans");
         console.error("Failed to fetch plans:", error);
@@ -73,135 +48,56 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
       }
     };
 
-    const initializeComponent = async () => {
-      try {
-        await loadPaystackScript();
-        await fetchPlans();
-      } catch (error) {
-        setError(error instanceof Error ? error.message : "Initialization failed");
-        setLoading(false);
-      }
-    };
-
-    initializeComponent();
+    fetchPlans();
   }, []);
 
-  const handleSubscription = async (response: any, plan: Plan) => {
-    console.log("Handling subscription with response:", response);
-    
+  const handlePayment = async (planId: string) => {
+    setProcessingPlan(planId);
+    setError(null);
+  
     try {
       const authToken = localStorage.getItem("authToken");
       if (!authToken) {
-        throw new Error("Auth token not found");
+        setError("Authentication token not found. Please log in again.");
+        return;
       }
 
-      const payload = {
-        plan_id: plan.id,
-        reference: response.reference,
-        transaction_id: response.transaction,
-        status: response.status,
-      };
-      
-      console.log("Making request to subscribe endpoint with payload:", payload);
-
-      // Make the API call
-      const result = await axios({
-        method: 'POST',
-        url: `${BASE_URL}/api/subscribe`,
-        data: payload,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
+      const response = await axios.post(
+        `${BASE_URL}/api/subscribe`,
+        { plan_id: planId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
         }
+      );
+  
+      if (response.data.status === 'success' && response.data.redirect_url) {
+        // Open in same window
+        window.location.href = response.data.redirect_url;
+      } else {
+        setError("Invalid response from payment server");
+        console.error('Invalid payment response:', response.data);
+      }
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error
+        ? err.message
+        : (err as { response?: { data?: { message?: string } } })?.response?.data?.message || "Unexpected error occurred";
+      setError(errorMessage);
+      console.error("Payment initiation failed:", {
+        error: err,
+        response: (err as { response?: { data?: unknown } })?.response?.data
       });
-
-      console.log("Subscription API response:", result);
-      return result;
-    } catch (error) {
-      console.error("Subscription API error:", error);
-      throw error;
+    } finally {
+      setProcessingPlan(null);
     }
-  };
+  };  
 
-  const handlePayment = async (plan: Plan) => {
-    console.log("=== Starting Payment Process ===");
-    setIsInitializingPayment(true);
-    setSelectedPlan(plan);
-
-    try {
-      const userEmail = localStorage.getItem('userEmail');
-      if (!userEmail) {
-        throw new Error('User email not found');
-      }
-
-      const PaystackPop = (window as any).PaystackPop;
-      if (!PaystackPop) {
-        throw new Error("Paystack script not loaded");
-      }
-
-      const paymentRef = 'TR_' + Math.floor((Math.random() * 1000000000) + 1);
-      console.log("Generated payment reference:", paymentRef);
-
-      const config = {
-        key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
-        email: userEmail,
-        amount: Math.round(plan.price * 100),
-        currency: "NGN",
-        ref: paymentRef,
-        metadata: {
-          plan_id: plan.id,
-          user_email: userEmail
-        },
-        onSuccess: function(response: any) {
-          console.log("Payment successful:", response);
-          
-          // Handle subscription in a non-async callback
-          handleSubscription(response, plan)
-            .then((result) => {
-              console.log("Subscription successful:", result);
-              alert("Payment successful! Your subscription has been activated.");
-              onPaymentComplete();
-            })
-            .catch((error) => {
-              console.error("Subscription failed:", error);
-              alert(`Payment successful but subscription failed. Reference: ${response.reference}`);
-            })
-            .finally(() => {
-              setIsInitializingPayment(false);
-              setSelectedPlan(null);
-            });
-        },
-        onClose: function() {
-          console.log("Payment modal closed");
-          setIsInitializingPayment(false);
-          setSelectedPlan(null);
-        }
-      };
-
-      console.log("Initializing Paystack with config:", config);
-      
-      const handler = PaystackPop.setup(config);
-      setIsInitializingPayment(false);
-      handler.openIframe();
-    } catch (error) {
-      console.error("Payment initialization error:", error);
-      setError(error instanceof Error ? error.message : "Payment processing failed");
-      setIsInitializingPayment(false);
-      setSelectedPlan(null);
-    }
-  };
   
   if (loading) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <div className="h-8 w-8 text-primary">Loading...</div>
-      </div>
-    );
+    return <div>Loading plans...</div>;
   }
-
-  // if (isPaymentLoading) {
-  //   return <div>Processing your payment, please wait...</div>;
-  // }
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -230,7 +126,7 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
                   className="group relative flex flex-col items-center bg-white rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 p-6 border border-red-500 hover:border-red-700"
                 >
                   <div className="w-16 h-16 rounded-full bg-red-100 flex justify-center items-center mb-4">
-                    {/* Plan Icon - Customize as needed */}
+                    {/* Plan Icon */}
                     <svg
                       className="w-6 h-6 text-red-600"
                       xmlns="http://www.w3.org/2000/svg"
@@ -251,18 +147,37 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
                     ₦{plan.price.toLocaleString()} {plan.duration}
                   </p>
                   <ul className="mt-4 text-gray-700 list-disc list-inside">
-                    {plan.features.map((feature: string, index: number) => (
+                    {plan.features.map((feature, index) => (
                       <li key={index} className="mb-2">
                         {feature}
                       </li>
                     ))}
                   </ul>
                   <button
-                    onClick={() => handlePayment(plan)}
-                    className="mt-4 py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
-                  >
-                    Select {plan.name}
-                  </button>
+                  onClick={() => handlePayment(plan.id)}
+                  className={`mt-4 py-2 px-4 rounded-md transition-colors ${
+                    processingPlan === plan.id ? "bg-gray-500 text-white" : "bg-red-600 text-white hover:bg-red-700"
+                  }`}
+                  disabled={processingPlan === plan.id}
+                >
+                  {processingPlan === plan.id ? (
+                    <span>
+                      <svg className="animate-spin h-5 w-5 inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 6v6l4 2"
+                        />
+                      </svg>
+                      Processing...
+                    </span>
+                  ) : (
+                    `Select ${plan.name}`
+                  )}
+                </button>
+
+
                 </div>
               ))}
             </div>
@@ -270,7 +185,6 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
         </section>
       </div>
     </div>
-  );
-};
+  );};
 
 export default PaymentPlan;
