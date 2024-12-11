@@ -1,8 +1,8 @@
-'use client'; 
+'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import { BASE_URL } from '../apiConfig';
 import Link from 'next/link';
 
@@ -13,11 +13,9 @@ const Signin = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const router = useRouter(); 
+  const router = useRouter();
 
-  
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: { target: { name: any; value: any; }; }) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -30,22 +28,19 @@ const Signin = () => {
     setError('');
 
     try {
-      // await axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie');
-
       const response = await axios.post(`${BASE_URL}/api/login`, {
         email: formData.email,
         password: formData.password,
       });
-  
+
       if (response.data?.message === 'Login successful.') {
         const token = response.data.token;
         localStorage.setItem('authToken', token);
-
         router.push('/dashboard');
       } else {
         setError('Login failed. Please try again.');
       }
-    } catch (err: unknown) {
+    } catch (err) {
       console.error('Signin error:', err);
       if (axios.isAxiosError(err) && err.response) {
         setError(err.response.data.message || 'An unexpected error occurred.');
@@ -55,18 +50,35 @@ const Signin = () => {
     } finally {
       setLoading(false);
     }
-};
+  };
+
   return (
-    <div style={styles.container}>
-      <div style={styles.formContainer as React.CSSProperties}>
-        <img src="/assets/logo/logo.png" alt="Logo" style={styles.logo} />
-        <h2 style={styles.title as React.CSSProperties}>Welcome Back</h2>
-        <p style={styles.subtitle as React.CSSProperties}>Continue being amazing</p>
+    <div 
+      className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex items-center justify-center p-4"
+      style={{ backgroundImage: 'url("/assets/banner/auth.jpg")' }}
+    >
+      <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <img
+          src="/assets/logo/logo.png"
+          alt="Logo"
+          className="h-12 md:h-16 w-auto mx-auto mb-6"
+        />
+        
+        <h2 className="text-xl md:text-2xl font-bold text-center mb-2">
+          Welcome Back
+        </h2>
+        
+        <p className="text-sm text-gray-600 text-center mb-6">
+          Continue being amazing
+        </p>
 
-        {/* Display error messages */}
-        {error && <p className="notification error">{error}</p>}
+        {error && (
+          <div className="bg-red-600 text-white p-4 rounded mb-4 text-center">
+            {error}
+          </div>
+        )}
 
-        <form onSubmit={handleSubmit} style={styles.form as React.CSSProperties}>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
             name="email"
@@ -74,8 +86,9 @@ const Signin = () => {
             value={formData.email}
             onChange={handleChange}
             required
-            style={styles.input as React.CSSProperties}
+            className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
           />
+          
           <input
             type="password"
             name="password"
@@ -83,16 +96,17 @@ const Signin = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            style={styles.input as React.CSSProperties}
+            className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
           />
+
           <button
             type="submit"
-            style={styles.submitButton as React.CSSProperties}
             disabled={loading}
+            className="w-full bg-red-600 text-white py-3 px-4 rounded hover:bg-red-700 transition-colors disabled:bg-red-400 mt-6"
           >
             {loading ? (
-              <div style={styles.loaderContainer}>
-                <div className="spinner" />
+              <div className="flex items-center justify-center">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
                 Signing in...
               </div>
             ) : (
@@ -100,122 +114,16 @@ const Signin = () => {
             )}
           </button>
         </form>
-<br></br>
-        <p style={{ color: 'inherit', textAlign: 'center' }}>
-          Not a member? <Link href="/auth/signup">Sign Up</Link>
+
+        <p className="text-center mt-6">
+          Not a member?{' '}
+          <Link href="/auth/signup" className="text-red-600 hover:text-red-700">
+            Sign Up
+          </Link>
         </p>
       </div>
-
-     
-      <style jsx>{`
-        .notification {
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          padding: 15px 20px;
-          border-radius: 5px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-          font-size: 14px;
-          font-weight: 600;
-          transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-        }
-
-        .error {
-          background-color: #e53e3e;
-          color: white;
-        }
-
-        .spinner {
-          border: 3px solid rgba(0, 0, 0, 0.1);
-          border-left-color: #ffffff;
-          border-radius: 50%;
-          width: 20px;
-          height: 20px;
-          animation: spin 1s linear infinite;
-          display: inline-block;
-          margin-right: 10px;
-        }
-
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </div>
   );
-};
-
-// Styles Object
-const styles = {
-  container: {
-    backgroundImage: 'url("/assets/banner/auth.jpg")',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    minHeight: '100vh',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  formContainer: {
-    backgroundColor: 'white',
-    padding: '20px',
-    minHeight: '10px',
-    borderRadius: '8px',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-    width: '100%',
-    maxWidth: '700px',
-    position: 'relative',
-  },
-  logo: {
-    width: '140px',
-    height: 'auto',
-    display: 'block',
-    margin: '0 auto',
-  },
-  title: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  subtitle: {
-    textAlign: 'center',
-    fontSize: '14px',
-    color: 'gray',
-    marginBottom: '20px',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-  },
-  input: {
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    width: '100%',
-  },
-  submitButton: {
-    padding: '10px',
-    backgroundColor: '#EB001B',
-    color: 'white',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginTop: '20px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '10px',
-  },
-  loaderContainer: {
-    display: 'flex',
-    alignItems: 'center',
-  },
 };
 
 export default Signin;

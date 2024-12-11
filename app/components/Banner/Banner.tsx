@@ -1,7 +1,6 @@
 "use client"; 
-
 import React, { useState } from 'react';
-import Image from "next/image";
+import Link from "next/link";
 import Registerdialog from '../Navbar/Registerdialog';
 
 const Banner = () => {
@@ -22,13 +21,13 @@ const Banner = () => {
                     </div>
 
                     <div className="relative z-10 mt-5 text-center">
-                        <button
+                        <Link
                             type="button"
                             className="px-6 py-3 mt-2 text-sm font-medium text-red-600 bg-white border-2 border-red-600 leafbutton"
-                            onClick={() => setIsRegisterOpen(true)}  
+                            href="/auth/signup"
                         >
                             Join For Free
-                        </button>
+                        </Link>
                     </div>
 
 

@@ -4,8 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 import Drawer from "./Drawer";
 import Drawerdata from "./Drawerdata";
-import Signdialog from "./Signdialog";
-import Registerdialog from "./Registerdialog";
+
 
 interface NavigationItem {
     name: string;
@@ -91,12 +90,7 @@ const Navbar = () => {
                         </div>
 
                     
-                        {/* SIGNIN DIALOG */}
-                        <Signdialog isOpen={isSignInOpen} setIsOpen={setIsSignInOpen} />
-
-                        {/* REGISTER DIALOG */}
-                        <Registerdialog isOpen={isRegisterOpen} setIsOpen={setIsRegisterOpen} />
-
+                     
                         {/* DRAWER ICON FOR MOBILE */}
                         <div className='block lg:hidden'>
                             <Bars3Icon className="block w-6 h-6" aria-hidden="true" onClick={() => setIsDrawerOpen(true)} />

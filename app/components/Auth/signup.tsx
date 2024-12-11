@@ -21,14 +21,14 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: { target: { name: any; value: any; }; }) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -46,8 +46,6 @@ const Signup = () => {
     }
   
     try {
-      // await axios.get(`${BASE_URL}/sanctum/csrf-cookie`);
-      
       const response = await axios.post(`${BASE_URL}/api/register`, {
         first_name: formData.first_name,
         last_name: formData.last_name,
@@ -62,11 +60,10 @@ const Signup = () => {
         localStorage.setItem('authToken', token);
         localStorage.setItem('userEmail', formData.email);
         setStep(2);
-        // router.push('/dashboard?signupSuccess=true');
       } else {
         setError('Registration failed. Please try again.');
       }
-    } catch (err: unknown) {
+    } catch (err) {
       console.error('Signup error:', err);
       if (axios.isAxiosError(err) && err.response) {
         setError(err.response.data.message || 'An unexpected error occurred.');
@@ -76,35 +73,45 @@ const Signup = () => {
     } finally {
       setLoading(false);
     }
-};
+  };
 
-
-
-if (step === 2) {
-  return (
-    <PaymentPlan
-      accountType={formData.account_type}
-      onPaymentComplete={() => router.push('/dashboard')} 
-    />
-  );
-}
+  if (step === 2) {
+    return (
+      <PaymentPlan
+        accountType={formData.account_type}
+        onPaymentComplete={() => router.push('/dashboard')} 
+      />
+    );
+  }
 
   return (
-    <div style={styles.container}>
-      <div style={styles.formContainer as React.CSSProperties}>
-        <img src="/assets/logo/logo.png" alt="Logo" style={styles.logo} />
-        <h2 style={styles.title as React.CSSProperties}>Sign up</h2>
-        <p style={styles.subtitle as React.CSSProperties}>
+    <div className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex items-center justify-center p-4" 
+         style={{ backgroundImage: 'url("/assets/banner/auth.jpg")' }}>
+      <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-3xl">
+        <img
+          src="/assets/logo/logo.png"
+          alt="Logo"
+          className="h-12 md:h-16 w-auto mx-auto mb-63"
+        />
+        
+        <h2 className="text-xl md:text-2xl font-bold text-center mb-2">
+          Sign up
+        </h2>
+        
+        <p className="text-sm text-gray-600 text-center mb-6">
           To complete this signup, you must accept our{' '}
-          <a href="#terms" style={styles.link}>terms</a> and{' '}
-          <a href="#conditions" style={styles.link}>conditions</a>.
+          <a href="#terms" className="text-red-600 underline">terms</a> and{' '}
+          <a href="#conditions" className="text-red-600 underline">conditions</a>.
         </p>
 
-        {/* Display error message */}
-        {error && <p className="notification error">{error}</p>}
+        {error && (
+          <div className="bg-red-600 text-white p-4 rounded mb-4">
+            {error}
+          </div>
+        )}
 
-        <form onSubmit={handleSubmit} style={styles.form as React.CSSProperties}>
-          <div style={styles.gridContainer}>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
               name="first_name"
@@ -112,7 +119,7 @@ if (step === 2) {
               value={formData.first_name}
               onChange={handleChange}
               required
-              style={styles.input}
+              className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
             />
             <input
               type="text"
@@ -121,7 +128,7 @@ if (step === 2) {
               value={formData.last_name}
               onChange={handleChange}
               required
-              style={styles.input}
+              className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
             />
           </div>
 
@@ -132,8 +139,9 @@ if (step === 2) {
             value={formData.email}
             onChange={handleChange}
             required
-            style={styles.input}
+            className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
           />
+          
           <input
             type="password"
             name="password"
@@ -141,8 +149,9 @@ if (step === 2) {
             value={formData.password}
             onChange={handleChange}
             required
-            style={styles.input}
+            className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
           />
+          
           <input
             type="password"
             name="password_confirmation"
@@ -150,71 +159,66 @@ if (step === 2) {
             value={formData.password_confirmation}
             onChange={handleChange}
             required
-            style={styles.input}
+            className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
           />
 
-    <h3 style={styles.accountTypeHeading}>Choose account type</h3>
-    <div style={styles.accountTypeContainer}>
-      {/* Basic Plan Card */}
-      <div
-        style={{
-          ...styles.accountTypeBox as React.CSSProperties,
-          ...(formData.account_type === 'basic ' ? styles.activeBox : {}),
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          height: '100%',
-        }}
-        onClick={() => setFormData({ ...formData, account_type: 'basic ' })}
-      >
-        <p>Unlimited uploads and supportive community for one artist</p>
-        <button type="button" style={{ ...styles.selectButton, marginTop: 'auto' }}>
-          Basic Plan
-        </button>
-      </div>
+          <h3 className="text-lg font-bold mt-6 mb-4">Choose account type</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Basic Plan */}
+            <div
+              className={`p-4 border rounded cursor-pointer transition-colors duration-200 flex flex-col justify-between h-full
+                ${formData.account_type === 'basic' ? 'border-red-600 bg-red-50' : 'border-gray-300'}`}
+              onClick={() => setFormData({ ...formData, account_type: 'basic' })}
+            >
+              <p className="text-sm mb-4">Unlimited uploads and supportive community for one artist</p>
+              <button
+                type="button"
+                className="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition-colors"
+              >
+                Basic Plan
+              </button>
+            </div>
 
-      {/* Growth Plan Card */}
-      <div
-        style={{
-          ...styles.accountTypeBox as React.CSSProperties,
-          ...(formData.account_type === 'growth' ? styles.activeBox : {}),
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          height: '100%', 
-        }}
-        onClick={() => setFormData({ ...formData, account_type: 'growth' })}
-      >
-        <p>Multiple artists and enhances professional image.</p>
-        <button type="button" style={{ ...styles.selectButton, marginTop: 'auto' }}>
-          Growth Plan
-        </button>
-      </div>
+            {/* Growth Plan */}
+            <div
+              className={`p-4 border rounded cursor-pointer transition-colors duration-200 flex flex-col justify-between h-full
+                ${formData.account_type === 'growth' ? 'border-red-600 bg-red-50' : 'border-gray-300'}`}
+              onClick={() => setFormData({ ...formData, account_type: 'growth' })}
+            >
+              <p className="text-sm mb-4">Multiple artists and enhances professional image.</p>
+              <button
+                type="button"
+                className="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition-colors"
+              >
+                Growth Plan
+              </button>
+            </div>
 
-      {/* Professional Plan Card */}
-      <div
-        style={{
-          ...styles.accountTypeBox as React.CSSProperties,
-          ...(formData.account_type === 'professional' ? styles.activeBox : {}),
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          height: '100%', 
-        }}
-        onClick={() => setFormData({ ...formData, account_type: 'professional' })}
-      >
-        <p>Designed specially for career-level artists or labels</p>
-        <button type="button" style={{ ...styles.selectButton, marginTop: 'auto' }}>
-          Professional Plan
-        </button>
-      </div>
-    </div>
+            {/* Professional Plan */}
+            <div
+              className={`p-4 border rounded cursor-pointer transition-colors duration-200 flex flex-col justify-between h-full
+                ${formData.account_type === 'professional' ? 'border-red-600 bg-red-50' : 'border-gray-300'}`}
+              onClick={() => setFormData({ ...formData, account_type: 'professional' })}
+            >
+              <p className="text-sm mb-4">Designed specially for career-level artists or labels</p>
+              <button
+                type="button"
+                className="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition-colors"
+              >
+                Professional Plan
+              </button>
+            </div>
+          </div>
 
-
-          <button type="submit" style={styles.submitButton} disabled={loading}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-red-600 text-white py-3 px-4 rounded hover:bg-red-700 transition-colors disabled:bg-red-400 mt-6"
+          >
             {loading ? (
-              <div style={styles.loaderContainer}>
-                <div className="spinner" />
+              <div className="flex items-center justify-center">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
                 Signing up...
               </div>
             ) : (
@@ -223,168 +227,15 @@ if (step === 2) {
           </button>
         </form>
 
-        <p style={styles.footer as React.CSSProperties}>
-          Already a member? <Link href="/auth/signin">Sign In</Link>
+        <p className="text-center mt-6">
+          Already a member?{' '}
+          <Link href="/auth/signin" className="text-red-600 hover:text-red-700">
+            Sign In
+          </Link>
         </p>
       </div>
-
-      <style jsx>{`
-        .notification {
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          padding: 15px 20px;
-          border-radius: 5px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-          font-size: 14px;
-          font-weight: 600;
-          transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-        }
-
-        .error {
-          background-color: #e53e3e;
-          color: white;
-        }
-
-        .spinner {
-          border: 3px solid rgba(0, 0, 0, 0.1);
-          border-left-color: #ffffff;
-          border-radius: 50%;
-          width: 20px;
-          height: 20px;
-          animation: spin 1s linear infinite;
-          display: inline-block;
-          margin-right: 10px;
-        }
-
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </div>
   );
-
-};
-const styles = {
-  container: {
-    backgroundImage: 'url("/assets/banner/auth.jpg")',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    minHeight: '100vh',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  formContainer: {
-    backgroundColor: 'white',
-    padding: '20px',
-    minHeight: '10px',
-    borderRadius: '8px',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-    width: '100%',
-    maxWidth: '700px',
-    position: 'relative',
-  },
-  logo: {
-    width: '140px',
-    height: 'auto',
-    display: 'block',
-    margin: '0 auto',
-  },
-  title: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  subtitle: {
-    textAlign: 'center',
-    fontSize: '14px',
-    color: 'gray',
-    marginBottom: '20px',
-  },
-  link: {
-    color: 'red',
-    textDecoration: 'underline',
-  },
-  error: {
-    color: 'red',
-    textAlign: 'center',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-  },
-  gridContainer: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '10px',
-  },
-  input: {
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    width: '100%',
-  },
-  accountTypeHeading: {
-    fontSize: '18px',
-    fontWeight: 'bold',
-    marginTop: '20px',
-  },
-  accountTypeContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gap: '10px',
-  },
-  accountTypeBox: {
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    textAlign: 'center',
-    cursor: 'pointer',
-    flex: 1,
-  },
-  activeBox: {
-    borderColor: '#EB001B',
-    backgroundColor: '#ffe6e6',
-  },
-  accountTypeTitle: {
-    fontSize: '16px',
-    fontWeight: 'bold',
-  },
-  selectButton: {
-    marginTop: '10px',
-    backgroundColor: '#EB001B',
-    color: 'white',
-    padding: '5px 10px',
-    borderRadius: '4px',
-  },
-  submitButton: {
-    padding: '10px',
-    backgroundColor: '#EB001B',
-    color: 'white',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginTop: '20px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loaderContainer: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  footer: {
-    textAlign: 'center',
-    marginTop: '20px',
-  },
 };
 
 export default Signup;

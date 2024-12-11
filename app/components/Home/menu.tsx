@@ -59,25 +59,25 @@ const SidebarMenu = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpe
                 ))}
             </nav>
 
-          {/* Bottom Menu */}
-          <div className="mt-auto p-4">
-              <Link 
-                  href="/spotify"
-                  onClick={(e) => {
-                      e.preventDefault(); 
-                      alert('Coming Soon');
-                  }}
-              >
-                  <div className="flex items-center text-white p-4 hover:bg-red-700 hover:scale-105 transform transition-all duration-300 cursor-pointer group">
-                      <FolderIcon className="h-6 w-6 group-hover:text-yellow-400" aria-hidden="true" />
-                      <span className={`ml-3 text-sm font-medium ${isOpen ? 'opacity-100' : 'opacity-0 hidden'} transition-opacity duration-500`}>
-                          Spotify
-                      </span>
-                  </div>
-              </Link>
-              <Link 
-          href="/cover"
-          onClick={(e) => {
+{/* Bottom Menu */}
+<div className="mt-auto p-4">
+    <Link 
+        href="/spotify"
+        onClick={(e) => {
+            e.preventDefault(); 
+            alert('Coming Soon');
+        }}
+    >
+        <div className="flex items-center text-white p-4 hover:bg-red-700 hover:scale-105 transform transition-all duration-300 cursor-pointer group">
+            <FolderIcon className="h-6 w-6 group-hover:text-yellow-400" aria-hidden="true" />
+            <span className={`ml-3 text-sm font-medium ${isOpen ? 'opacity-100' : 'opacity-0 hidden'} transition-opacity duration-500`}>
+                Spotify
+            </span>
+        </div>
+    </Link>
+    <Link 
+        href="/cover"
+        onClick={(e) => {
             e.preventDefault(); 
             alert('Coming Soon');
         }}

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const Clientsay = () => {
     return (
@@ -80,9 +81,13 @@ const Clientsay = () => {
             </div>
         </div>
     </div>
-</div><br/>
-<div className="mt-6 text-center">
-                    <button className="px-6 py-3 text-white bg-red-600 rounded-lg">Join Now</button>
+   </div><br/>
+    <div className="mt-6 text-center">
+                    <Link
+                     href="/auth/signup"
+                     className="px-6 py-3 text-white bg-red-600 rounded-lg">
+                    Join Now
+                    </Link>
                 </div>
 
             </div>
