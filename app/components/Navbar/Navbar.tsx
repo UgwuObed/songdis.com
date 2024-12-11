@@ -37,12 +37,12 @@ const Navbar = () => {
     }
 
     return (
-        <Disclosure as="nav" className="navbar">
+        <Disclosure as="nav" className="fixed top-0 z-50 w-full bg-white shadow navbar">
             <>
-                <div className="mx-auto max-w-7xl px-6 lg:py-4 lg:px-8">
-                    <div className="relative flex h-20 items-center justify-between">
-                        <div className="flex flex-1 items-center sm:items-stretch sm:justify-start">
-                            <div className="flex flex-shrink-0 items-center">
+                <div className="px-6 mx-auto max-w-7xl lg:py-4 lg:px-8">
+                    <div className="relative flex items-center justify-between h-20">
+                        <div className="flex items-center flex-1 sm:items-stretch sm:justify-start">
+                            <div className="flex items-center flex-shrink-0">
                                 <img
                                     className="block lg:hidden"
                                     src={'/assets/logo/logo.png'}
@@ -56,7 +56,7 @@ const Navbar = () => {
                                     style={{ height: '250px', width: 'auto' }} 
                                 />
                             </div>
-                            <div className="hidden lg:block m-auto">
+                            <div className="hidden m-auto lg:block">
                                 <div className="flex space-x-4">
                                     {navigation.map((item) => (
                                         <Link
@@ -81,12 +81,12 @@ const Navbar = () => {
                             </div>
                         </div>
 
-                        <div className="hidden lg:flex space-x-4">
+                        <div className="hidden space-x-4 lg:flex">
                             <Link 
-                             className="text-black text-lg font-medium px-4 py-2 hover:bg-gray-200" 
+                             className="px-4 py-2 text-lg font-medium text-black hover:bg-gray-200" 
                             href="/auth/signin">Sign In</Link>
                             <Link 
-                             className="text-white text-lg font-medium bg-red-600 px-4 py-2 hover:bg-red-700   border-lightgrey leafbutton"
+                             className="px-4 py-2 text-lg font-medium text-white bg-red-600 hover:bg-red-700 border-lightgrey leafbutton"
                             href="/auth/signup">Sign Up</Link>
                         </div>
 
@@ -99,7 +99,7 @@ const Navbar = () => {
 
                         {/* DRAWER ICON FOR MOBILE */}
                         <div className='block lg:hidden'>
-                            <Bars3Icon className="block h-6 w-6" aria-hidden="true" onClick={() => setIsDrawerOpen(true)} />
+                            <Bars3Icon className="block w-6 h-6" aria-hidden="true" onClick={() => setIsDrawerOpen(true)} />
                         </div>
 
                         {/* DRAWER LINKS DATA */}

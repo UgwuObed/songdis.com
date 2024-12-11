@@ -42,9 +42,18 @@ export default class MultipleItems extends Component {
             cssEase: "linear",
             responsive: [
                 {
-                    breakpoint: 1024,
+                    breakpoint: 1200,
                     settings: {
                         slidesToShow: 4,
+                        slidesToScroll: 1,
+                        infinite: true,
+                        dots: false
+                    }
+                },
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
                         slidesToScroll: 1,
                         infinite: true,
                         dots: false
@@ -60,7 +69,7 @@ export default class MultipleItems extends Component {
                     }
                 },
                 {
-                    breakpoint: 500,
+                    breakpoint: 360,
                     settings: {
                         slidesToShow: 1,
                         slidesToScroll: 1,
@@ -74,8 +83,8 @@ export default class MultipleItems extends Component {
         return (
 
             <div className='text-center'>
-                <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                    <div className="py-14">
+                <div className="max-w-4xl px-4 mx-auto sm:px-6 lg:max-w-7xl lg:px-8">
+                    <div className="py-1 lg:py-5">
                         <Slider {...settings}>
                             {data.map((item, i) =>
                                 <div key={i}>

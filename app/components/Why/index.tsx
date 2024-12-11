@@ -27,9 +27,9 @@ const Why = () => {
   return (
     <div id="about">
       {/* Main Container */}
-      <div className="mx-auto max-w-7xl px-4 my-20 sm:py-20 lg:px-8">
+      <div className="px-4 mx-auto my-20 max-w-7xl sm:py-5 lg:px-8">
         {/* Grid layout for Web and Mobile */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div className="grid items-center grid-cols-1 gap-8 lg:grid-cols-2">
           
           {/* COLUMN-1 (Image Section) */}
           <div className="flex justify-center lg:justify-start">
@@ -38,7 +38,7 @@ const Why = () => {
               alt="music-distribution-image"
               width={400}
               height={900}
-              className="w-full max-w-md lg:max-w-lg rounded-lg shadow-lg"
+              className="w-full max-w-md rounded-lg shadow-lg lg:max-w-lg"
             />
           </div>
 
@@ -48,7 +48,7 @@ const Why = () => {
               <div className="flex items-start" key={index}>
                 
                 {/* Icon with a hover effect */}
-                <div className="flex-shrink-0 rounded-full h-12 w-12 flex items-center justify-center bg-circlebg transition-all transform hover:scale-105 hover:shadow-lg">
+                <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 transition-all transform rounded-full bg-circlebg hover:scale-105 hover:shadow-lg">
                   <Image
                     src="/assets/why/check.svg"
                     alt="check-icon"
@@ -62,7 +62,7 @@ const Why = () => {
                   <h4 className="text-xl font-bold text-gray-900">
                     {item.heading}
                   </h4>
-                  <h5 className="text-md text-gray-600 mt-2 leading-relaxed">
+                  <h5 className="mt-2 leading-relaxed text-gray-600 text-md">
                     {item.subheading}
                   </h5>
                 </div>

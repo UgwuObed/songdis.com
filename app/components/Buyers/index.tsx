@@ -26,12 +26,12 @@ const cardData: cardDataType[] = [
 
 const Buyers = () => {
     return (
-        <div className='mx-auto max-w-7xl py-16 px-6'>
+        <div className='px-6 py-16 mx-auto max-w-7xl'>
             <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-y-20 gap-x-5'>
                 {cardData.map((items, i) => (
-                    <div className='flex flex-col justify-center items-center' key={i}>
-                        <h3 className='text-2xl text-black font-semibold text-center lg:mt-6'>{items.heading}</h3>
-                        <p className='text-lg font-normal text-black text-center text-opacity-50 mt-2'>{items.subheading}</p>
+                    <div className='flex flex-col items-center justify-start md:items-start' key={i}>
+                        <h3 className='text-2xl font-semibold text-center text-black lg:mt-6'>{items.heading}</h3>
+                        <p className='mt-2 text-base font-normal text-center text-black text-opacity-50 md:text-start'>{items.subheading}</p>
                     </div>
                 ))}
             </div>

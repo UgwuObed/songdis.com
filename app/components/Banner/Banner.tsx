@@ -10,8 +10,8 @@ const Banner = () => {
     return (
         <main>
             <div className="w-full"> 
-                <div className="w-full pt-16 sm:pt-20 pb-20 banner-image relative"> 
-                    <div className="text-center relative z-10">
+                <div className="relative w-full px-3 pb-20 pt-36 sm:pt-40 banner-image"> 
+                    <div className="relative z-10 text-center">
                         <h1 className="text-3xl font-bold text-white sm:text-4xl lg:text-6xl md:4px lh-96">
                             Get your music everywhere.<br /> In Simple Steps!
                         </h1>
@@ -21,10 +21,10 @@ const Banner = () => {
                         </p>
                     </div>
 
-                    <div className="text-center mt-5 relative z-10">
+                    <div className="relative z-10 mt-5 text-center">
                         <button
                             type="button"
-                            className="text-sm text-white font-medium bg-red-600 py-3 px-6 mt-2 border border-lightgrey leafbutton"
+                            className="px-6 py-3 mt-2 text-sm font-medium text-red-600 bg-white border-2 border-red-600 leafbutton"
                             onClick={() => setIsRegisterOpen(true)}  
                         >
                             Join For Free
