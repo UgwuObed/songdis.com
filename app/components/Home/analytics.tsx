@@ -24,85 +24,85 @@ const Analytics = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
   const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
 
 
-  useEffect(() => {
-    const fetchPlans = async () => {
-      try {
-        const authToken = localStorage.getItem("authToken");
-        if (!authToken) {
-          throw new Error("Authentication token not found");
-        }
+  // useEffect(() => {
+  //   const fetchPlans = async () => {
+  //     try {
+  //       const authToken = localStorage.getItem("authToken");
+  //       if (!authToken) {
+  //         throw new Error("Authentication token not found");
+  //       }
 
-        const response = await axios.get(`${BASE_URL}/api/plans`, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
+  //       const response = await axios.get(`${BASE_URL}/api/plans`, {
+  //         headers: {
+  //           Authorization: `Bearer ${authToken}`,
+  //         },
+  //       });
 
-        setPlans(response.data);
-      } catch (error) {
-        setError(error instanceof Error ? error.message : "Failed to fetch plans");
-        console.error("Failed to fetch plans:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       setPlans(response.data);
+  //     } catch (error) {
+  //       setError(error instanceof Error ? error.message : "Failed to fetch plans");
+  //       console.error("Failed to fetch plans:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchPlans();
-  }, []);
+  //   fetchPlans();
+  // }, []);
 
-  const handlePayment = async (planId: string) => {
-    setProcessingPlan(planId);
-    setError(null);
+  // const handlePayment = async (planId: string) => {
+  //   setProcessingPlan(planId);
+  //   setError(null);
   
-    try {
-      const authToken = localStorage.getItem("authToken");
-      if (!authToken) {
-        setError("Authentication token not found. Please log in again.");
-        return;
-      }
+  //   try {
+  //     const authToken = localStorage.getItem("authToken");
+  //     if (!authToken) {
+  //       setError("Authentication token not found. Please log in again.");
+  //       return;
+  //     }
   
-      console.log('Initiating payment for plan:', planId);
+  //     console.log('Initiating payment for plan:', planId);
       
-      const response = await axios.post(
-        `${BASE_URL}/api/subscribe`,
-        { plan_id: planId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+  //     const response = await axios.post(
+  //       `${BASE_URL}/api/subscribe`,
+  //       { plan_id: planId },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${authToken}`,
+  //         },
+  //       }
+  //     );
   
-      console.log('Payment response:', response.data);
+  //     console.log('Payment response:', response.data);
   
-      if (response.data.status === 'success' && response.data.redirect_url) {
-        // Open in same window
-        window.location.href = response.data.redirect_url;
-        useEffect(() => {
-          const queryParams = new URLSearchParams(window.location.search);
-          if (queryParams.get('status') === 'success') {
-            onPaymentComplete();
-          }
-        }, []);
+  //     if (response.data.status === 'success' && response.data.redirect_url) {
+  //       // Open in same window
+  //       window.location.href = response.data.redirect_url;
+  //       useEffect(() => {
+  //         const queryParams = new URLSearchParams(window.location.search);
+  //         if (queryParams.get('status') === 'success') {
+  //           onPaymentComplete();
+  //         }
+  //       }, []);
         
-      } else {
-        setError("Invalid response from payment server");
-        console.error('Invalid payment response:', response.data);
-      }
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error
-        ? err.message
-        : (err as { response?: { data?: { message?: string } } })?.response?.data?.message || "Unexpected error occurred";
-      setError(errorMessage);
-      console.error("Payment initiation failed:", {
-        error: err,
-        response: (err as { response?: { data?: unknown } })?.response?.data
-      });
-    } finally {
-      setProcessingPlan(null);
-    }
-  };  
+  //     } else {
+  //       setError("Invalid response from payment server");
+  //       console.error('Invalid payment response:', response.data);
+  //     }
+  //   } catch (err: unknown) {
+  //     const errorMessage = err instanceof Error
+  //       ? err.message
+  //       : (err as { response?: { data?: { message?: string } } })?.response?.data?.message || "Unexpected error occurred";
+  //     setError(errorMessage);
+  //     console.error("Payment initiation failed:", {
+  //       error: err,
+  //       response: (err as { response?: { data?: unknown } })?.response?.data
+  //     });
+  //   } finally {
+  //     setProcessingPlan(null);
+  //   }
+  // };  
 
   
   if (loading) {
@@ -164,7 +164,7 @@ const Analytics = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
                     ))}
                   </ul>
                   <button
-                  onClick={() => handlePayment(plan.id)}
+                  
                   className={`mt-4 py-2 px-4 rounded-md transition-colors ${
                     processingPlan === plan.id ? "bg-gray-500 text-white" : "bg-red-600 text-white hover:bg-red-700"
                   }`}
