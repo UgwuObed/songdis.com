@@ -32,6 +32,7 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
   const [trackMetadata, setTrackMetadata] = useState<Partial<Track>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const audioFiles: Track[] = formState.audioFiles || [];
 
@@ -44,6 +45,8 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
   const updateFormState = (updatedTracks: Track[]) => {
     setFormState((prev: any) => ({ ...prev, audioFiles: updatedTracks }));
   };
+
+  const MAX_FILE_SIZE = 100 * 1024 * 1024; 
 
   const handleFileChange = async (files: FileList | null) => {
     if (!files) return;
@@ -185,6 +188,17 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
           </div>
         </div>
 
+        {isLoading && (
+            <div className="mt-4">
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div 
+                  className="bg-red-500 h-2.5 rounded-full transition-all duration-300" 
+                  style={{ width: `${uploadProgress}%` }}
+                />
+              </div>
+              <p className="text-sm text-gray-500 mt-2">{uploadProgress}% uploaded</p>
+            </div>
+          )}
         {/* Track List */}
         {audioFiles.length > 0 && (
           <div className="mt-8 space-y-3">
