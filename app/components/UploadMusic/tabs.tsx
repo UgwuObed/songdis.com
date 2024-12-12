@@ -9,23 +9,22 @@ const Tabs = ({
   setSelectedTab: (tab: string) => void;
   onCreateNew: () => void;
 }) => {
-  // const tabs = ['Releases', 'Create New', 'Tracks', 'Edit History'];
-
-  const tabs = ['Releases', 'Create New',  'Edit History'];
+  const tabs = ['Releases', 'Create New', 'Edit History'];
 
   return (
     <div className="border-b border-gray-200">
-      <br />
-      <ul className="flex space-x-4">
+      <ul className="flex overflow-x-auto whitespace-nowrap space-x-2 md:space-x-4 p-2 md:p-4">
         {tabs.map((tab, idx) => (
           <li
             key={idx}
-            className={`cursor-pointer py-2 px-4 ${
-              selectedTab === tab ? 'border-b-2 border-red-500 font-bold' : 'text-gray-500'
+            className={`cursor-pointer py-2 px-4 rounded-md transition ${
+              selectedTab === tab
+                ? 'border-b-2 border-red-500 font-bold text-red-500'
+                : 'text-gray-500 hover:text-red-500 hover:bg-gray-100'
             }`}
             onClick={() => {
               if (tab === 'Create New') {
-                onCreateNew(); 
+                onCreateNew();
               } else {
                 setSelectedTab(tab);
               }

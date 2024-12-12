@@ -12,7 +12,7 @@ import UploadTypeSelection from '../UploadMusic/type';
 import { PlusIcon } from '@heroicons/react/24/outline';
 
 const Music = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState('Releases');
   const [isSelectingType, setIsSelectingType] = useState(false);
   const [uploadType, setUploadType] = useState<'Single' | 'Album/EP'>('Single');
@@ -30,57 +30,66 @@ const Music = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 overflow-hidden">
+    <div className="flex h-screen w-full bg-gray-50">
       {/* Sidebar */}
-      <SidebarMenu isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-
+      <div className={`${isSidebarOpen ? 'md:ml-48' : 'md:ml-16'}
+      } transition-all duration-300 ease-in-out overflow-hidden`}>
+        <SidebarMenu isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+      </div>
+  
       {/* Main Content */}
-      <div
-        className={`flex-1 flex flex-col transition-all duration-300 ${
-          isSidebarOpen ? 'ml-48' : 'ml-16'
-        }`}
-        style={{ overflowX: 'hidden', width: '100vw' }}
-      >
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Search Bar */}
-        <SearchBar />
-
+        {/* <div className="p-4 bg-white shadow-sm">
+          <SearchBar />
+        </div> */}
+  
         {/* Content Section */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          {/* Header Section */}
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold">Manage Releases</h2>
-            <button
-              onClick={handleUploadClick}
-              className="flex items-center bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600 transition text-sm"
-            >
-              <PlusIcon className="h-4 w-4 mr-1" />
-              Create New
-            </button>
+        <div className="flex-1 overflow-hidden">
+          <div className="h-full p-6 overflow-y-auto">
+            {/* Header Section */}
+            <div className="flex justify-between items-center mb-6">
+              <h1 className="text-2xl font-bold text-gray-900">
+                Manage Releases
+              </h1>
+              <button
+                onClick={handleUploadClick}
+                className="inline-flex items-center px-2 py-1 bg-red-600 text-white rounded-md hover:bg-red-700"
+              >
+                <PlusIcon className="w-5 h-5 mr-2" />
+                New
+              </button>
+            </div>
+  
+            {/* Show Type Selection or Tabs */}
+            {isSelectingType ? (
+              <div className="w-full max-w-4xl mx-auto">
+                <UploadTypeSelection onSelect={handleTypeSelection} />
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {/* Tabs */}
+                <Tabs
+                  selectedTab={selectedTab}
+                  setSelectedTab={setSelectedTab}
+                  onCreateNew={handleUploadClick} 
+                />
+  
+                {/* Render Tab Content */}
+                <div className="w-full">
+                {/* Render Tab Content */}
+                {selectedTab === 'Create New' && <UploadMusic uploadType={uploadType} />}
+                {selectedTab === 'Releases' && <Releases />}
+                {selectedTab === 'Tracks' && <Tracks />}
+                {selectedTab === 'Edit History' && <EditHistory />}
+                </div>
+              </div>
+            )}
           </div>
-
-          {/* Show Type Selection or Tabs */}
-          {isSelectingType ? (
-            <UploadTypeSelection onSelect={handleTypeSelection} />
-          ) : (
-            <>
-              {/* Tabs */}
-              <Tabs
-                selectedTab={selectedTab}
-                setSelectedTab={setSelectedTab}
-                onCreateNew={handleUploadClick} 
-              />
-
-              {/* Render Tab Content */}
-              {selectedTab === 'Create New' && <UploadMusic uploadType={uploadType} />}
-              {selectedTab === 'Releases' && <Releases />}
-              {selectedTab === 'Tracks' && <Tracks />}
-              {selectedTab === 'Edit History' && <EditHistory />}
-            </>
-          )}
         </div>
       </div>
     </div>
   );
-
-};
-export default Music;
+  };
+  
+  export default Music;

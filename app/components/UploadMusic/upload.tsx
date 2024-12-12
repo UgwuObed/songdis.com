@@ -122,74 +122,88 @@ const UploadMusic = ({ uploadType }: { uploadType: "Single" | "Album/EP" }) => {
 
   return (
     <motion.div
-      className="bg-white text-black p-8 rounded-lg max-w-full"
+      className="bg-white text-black p-4 md:p-8 rounded-lg w-full max-w-4xl mx-auto"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <h2 className="text-xl font-bold mb-6 flex justify-center">
+      <h2 className="text-lg md:text-xl font-bold mb-4 md:mb-6 text-center">
         Upload {uploadType === "Single" ? "Single Track" : "Album/EP"}
       </h2>
 
-      {/* Stepper */}
-      <div className="flex justify-between items-center mb-8">
-        {stepTitles.map((title, index) => (
-          <div
-            key={index}
-            className={`flex-1 flex flex-col items-center ${index + 1 <= step ? "text-red-500" : "text-gray-500"}`}
-          >
+      {/* Stepper - Made scrollable on mobile */}
+      <div className="overflow-x-auto mb-6 md:mb-8 px-2">
+        <div className="flex justify-between items-center min-w-[600px] md:min-w-0">
+          {stepTitles.map((title, index) => (
             <div
-              className={`w-10 h-10 flex items-center justify-center border-2 rounded-full ${
-                index + 1 <= step ? "border-red-500" : "border-gray-500"
+              key={index}
+              className={`flex-1 flex flex-col items-center ${
+                index + 1 <= step ? "text-red-500" : "text-gray-500"
               }`}
             >
-              {index + 1}
+              <div
+                className={`w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border-2 rounded-full ${
+                  index + 1 <= step ? "border-red-500" : "border-gray-500"
+                }`}
+              >
+                {index + 1}
+              </div>
+              <span className="text-xs md:text-sm mt-2">{title}</span>
             </div>
-            <span className="text-sm mt-2">{title}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Content Container with max-width */}
+      <div className="max-w-3xl mx-auto">
+        {/* Step Components */}
+        <div className="mb-6">
+          {step === 1 && <DetailsStep uploadType={uploadType} formState={formState} setFormState={setFormState} />}
+          {step === 2 && <AddMusicStep uploadType={uploadType} formState={formState} setFormState={setFormState} />}
+          {step === 3 && <ReleaseStep uploadType={uploadType} formState={formState} setFormState={setFormState} />}
+          {step === 4 && <PlatformStep formState={formState} setFormState={setFormState} />}
+          {step === 5 && <MetadataStep uploadType={uploadType} formState={formState} setFormState={setFormState} />}
+        </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 px-4">
+            <p className="text-red-500 text-sm">{error}</p>
           </div>
-        ))}
-      </div>
-
-      {/* Step Components */}
-      {step === 1 && <DetailsStep uploadType={uploadType} formState={formState} setFormState={setFormState} />}
-      {step === 2 && <AddMusicStep uploadType={uploadType} formState={formState} setFormState={setFormState} />}
-      {step === 3 && <ReleaseStep uploadType={uploadType} formState={formState} setFormState={setFormState} />}
-      {step === 4 && <PlatformStep formState={formState} setFormState={setFormState} />}
-      {step === 5 && <MetadataStep uploadType={uploadType} formState={formState} setFormState={setFormState} />}
-
-      {/* Error Message */}
-      {error && <p className="text-red-500 mt-4">{error}</p>}
-
-      {/* Navigation */}
-      <div className="flex justify-between mt-6">
-        <button
-          onClick={prevStep}
-          disabled={step === 1}
-          className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Back
-        </button>
-        {step === stepTitles.length ? (
-          <button
-            onClick={submitForm}
-            disabled={isLoading}
-            className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
-          >
-            {isLoading ? "Uploading..." : "Submit"}
-          </button>
-        ) : (
-          <button
-            onClick={nextStep}
-            className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500"
-          >
-            Next Step
-          </button>
         )}
-          {/* Success Modal */}
-      <SuccessModal isVisible={isSuccessModalVisible} onClose={closeSuccessModal} />
+
+        {/* Navigation - Full width on mobile, proper spacing on desktop */}
+        <div className="flex justify-between mt-6 px-4 md:px-0">
+          <button
+            onClick={prevStep}
+            disabled={step === 1}
+            className="px-4 md:px-6 py-2 bg-gray-500 text-white text-sm md:text-base rounded hover:bg-gray-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Back
+          </button>
+          {step === stepTitles.length ? (
+            <button
+              onClick={submitForm}
+              disabled={isLoading}
+              className="px-4 md:px-6 py-2 bg-red-500 text-white text-sm md:text-base rounded-md hover:bg-red-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
+            >
+              {isLoading ? "Uploading..." : "Submit"}
+            </button>
+          ) : (
+            <button
+              onClick={nextStep}
+              className="px-4 md:px-6 py-2 bg-red-500 text-white text-sm md:text-base rounded-md hover:bg-red-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              Next Step
+            </button>
+          )}
+        </div>
       </div>
-      
+
+      {/* Success Modal */}
+      <SuccessModal isVisible={isSuccessModalVisible} onClose={closeSuccessModal} />
     </motion.div>
   );
 };
+
 export default UploadMusic;

@@ -4,6 +4,7 @@ import { X, Calendar, Twitter, Instagram, Facebook, Music, ArrowLeft, ArrowRight
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PaymentPlan from '../../components/Home/payment';
 import { BASE_URL } from '../apiConfig';
 
 type UploadTypeSelectionProps = {
@@ -17,6 +18,7 @@ const UploadTypeSelection: React.FC<UploadTypeSelectionProps> = ({ onSelect }) =
   const [loading, setLoading] = useState(true);
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPaymentPlan, setShowPaymentPlan] = useState(false);
   const [formData, setFormData] = useState({
     full_name: '',
     stage_name: '',
@@ -44,10 +46,13 @@ const UploadTypeSelection: React.FC<UploadTypeSelectionProps> = ({ onSelect }) =
         });
   
         const data = await response.json();
-        
+  
         if (response.status === 404) {
           setProfile(null);
           setShowModal(true);
+        } else if (response.status === 403 && data.message === 'Your subscription plan is inactive or invalid') {
+          // Redirect to PaymentPlan
+          setShowPaymentPlan(true);
         } else if (!response.ok) {
           throw new Error(data.message || 'Failed to fetch profile');
         } else {
@@ -61,9 +66,16 @@ const UploadTypeSelection: React.FC<UploadTypeSelectionProps> = ({ onSelect }) =
       } finally {
         setLoading(false);
       }
-    };  
+    };
+  
     fetchProfile();
   }, []);
+
+  if (showPaymentPlan) {
+    return <PaymentPlan accountType={''} onPaymentComplete={function (): void {
+      throw new Error('Function not implemented.');
+    } } />;
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -108,66 +120,73 @@ const UploadTypeSelection: React.FC<UploadTypeSelectionProps> = ({ onSelect }) =
 
   return (
     <div className="flex flex-col items-center bg-white text-gray-800 p-10 rounded-lg space-y-6 shadow-md">
-      <h2 className="text-3xl font-bold mb-4">Select Upload Type</h2>
+  <h2 className="text-2xl md:text-3xl font-bold mb-4 text-center md:text-left">
+  Select Upload Type
+</h2>
 
-      <div className="grid grid-cols-2 gap-8">
-        {/* Song */}
-        <div
-          className={`flex flex-col items-center p-6 rounded-lg cursor-pointer transition-transform transform ${
-            selectedType === 'Single' ? 'bg-red-100 border-2 border-red-500 scale-105' : 'bg-gray-100 border border-gray-300 hover:scale-105'
-          }`}
-          onClick={() => setSelectedType('Single')}
-        >
-          <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mb-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              className="w-8 h-8 text-white"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 3L1 9l11 6 11-6L12 3zm0 7.5L4.5 9 12 13.5 19.5 9 12 10.5zm0 3L4.5 12 12 16.5 19.5 12 12 13.5z" />
-            </svg>
-          </div>
-          <p className="text-lg font-semibold">Single</p>
-        </div>
-
-        {/* Album/EP */}
-        <div
-          className={`flex flex-col items-center p-6 rounded-lg cursor-pointer transition-transform transform ${
-            selectedType === 'Album/EP' ? 'bg-yellow-100 border-2 border-yellow-500 scale-105' : 'bg-gray-100 border border-gray-300 hover:scale-105'
-          }`}
-          onClick={() => setSelectedType('Album/EP')}
-        >
-          <div className="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              className="w-8 h-8 text-white"
-              viewBox="0 0 24 24"
-            >
-              <path d="M4 4h16v16H4z" />
-            </svg>
-          </div>
-          <p className="text-lg font-semibold">Album / EP</p>
-        </div>
-      </div>
-
-      <button
-        onClick={() => selectedType && onSelect(selectedType)}
-        className={`mt-6 px-8 py-3 text-lg font-bold rounded-lg transition ${
-          selectedType
-            ? 'bg-red-500 text-white hover:bg-red-600'
-            : 'bg-gray-500 text-gray-300 cursor-not-allowed'
-        }`}
-        disabled={!selectedType}
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
+  {/* Song */}
+  <div
+    className={`flex flex-col items-center p-4 sm:p-6 rounded-lg cursor-pointer transition-transform transform ${
+      selectedType === 'Single'
+        ? 'bg-red-100 border-2 border-red-500 scale-105'
+        : 'bg-gray-100 border border-gray-300 hover:scale-105'
+    }`}
+    onClick={() => setSelectedType('Single')}
+  >
+    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-red-500 rounded-full flex items-center justify-center mb-4">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        className="w-6 h-6 sm:w-8 sm:h-8 text-white"
+        viewBox="0 0 24 24"
       >
-        Next
-      </button>
+        <path d="M12 3L1 9l11 6 11-6L12 3zm0 7.5L4.5 9 12 13.5 19.5 9 12 10.5zm0 3L4.5 12 12 16.5 19.5 12 12 13.5z" />
+      </svg>
+    </div>
+    <p className="text-base sm:text-lg font-semibold">Single</p>
+  </div>
 
-      <div className="mt-4 text-sm text-gray-500">
-                <p>Supported file types: MP3, WAV, FLAC, M4A, OGG</p>
-                <p>Max file size: 250MB</p>
-              </div>
+  {/* Album/EP */}
+  <div
+    className={`flex flex-col items-center p-4 sm:p-6 rounded-lg cursor-pointer transition-transform transform ${
+      selectedType === 'Album/EP'
+        ? 'bg-yellow-100 border-2 border-yellow-500 scale-105'
+        : 'bg-gray-100 border border-gray-300 hover:scale-105'
+    }`}
+    onClick={() => setSelectedType('Album/EP')}
+  >
+    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        className="w-6 h-6 sm:w-8 sm:h-8 text-white"
+        viewBox="0 0 24 24"
+      >
+        <path d="M4 4h16v16H4z" />
+      </svg>
+    </div>
+    <p className="text-base sm:text-lg font-semibold">Album / EP</p>
+  </div>
+</div>
+
+<button
+  onClick={() => selectedType && onSelect(selectedType)}
+  className={`mt-4 sm:mt-6 px-6 py-2 sm:px-8 sm:py-3 text-sm sm:text-lg font-bold rounded-lg transition ${
+    selectedType
+      ? 'bg-red-500 text-white hover:bg-red-600'
+      : 'bg-gray-500 text-gray-300 cursor-not-allowed'
+  }`}
+  disabled={!selectedType}
+>
+  Next
+</button>
+
+<div className="mt-4 text-xs sm:text-sm text-gray-500 text-center md:text-left">
+  <p>Supported file types: MP3, WAV, FLAC, M4A, OGG</p>
+  <p>Max file size: 250MB</p>
+</div>
+
       {/* Toast Notifications */}
       <ToastContainer />
       {showModal && (

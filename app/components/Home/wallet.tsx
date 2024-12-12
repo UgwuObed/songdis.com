@@ -11,20 +11,21 @@ const Wallet = () => {
     readyToWithdraw: 0,
   });
   const [transactions, setTransactions] = useState([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gray-100">
-      <SidebarMenu isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      {/* Main Content Area */}
+      <div className={`${isSidebarOpen ? 'md:ml-48' : 'md:ml-16'} transition-all duration-300 ease-in-out overflow-hidden`}>
+        <SidebarMenu isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+      </div>
       <div
-        className={`flex flex-col transition-all duration-300 ${
+        className={`flex flex-col transition-all duration-300 md:${
           isSidebarOpen ? 'ml-[200px]' : 'ml-[50px]'
-        } flex-grow h-full`}
+        } ml-0 flex-grow h-full`}
         style={{ overflowX: 'hidden' }}
       >
         {/* Profile and Account Details */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-4 flex flex-col md:flex-row items-center justify-between w-full">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md mb-4 flex flex-col md:flex-row items-center justify-between w-full">
           <div>
             {/* <h2 className="text-lg font-semibold text-gray-700">NEHEMIAH MELODY</h2>
             <p className="text-gray-500">Access Bank - 0692527883</p> */}
@@ -35,10 +36,10 @@ const Wallet = () => {
         </div>
 
         {/* Wallet Overview */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6 w-full">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md mb-6 w-full">
           <h2 className="text-xl font-semibold text-gray-700 mb-4">Your Balance</h2>
 
-          <div className="grid grid-cols-2 gap-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
             <div className="p-4 border rounded-md">
               <p className="text-gray-500">Pending payout</p>
               <p className="text-2xl font-bold">NGN {balance.pendingPayout}</p>
@@ -60,7 +61,7 @@ const Wallet = () => {
         </div>
 
         {/* Transactions */}
-        <div className="bg-white p-6 rounded-lg shadow-md w-full">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md w-full overflow-x-auto">
           <h3 className="text-lg font-semibold text-gray-700 mb-4">Transactions</h3>
 
           {transactions.length === 0 ? (

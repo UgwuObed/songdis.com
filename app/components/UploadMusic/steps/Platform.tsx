@@ -1,3 +1,5 @@
+import React from 'react';
+
 const PlatformStep = ({ formState, setFormState }: any) => {
   const platformOptions = [
     'Spotify',
@@ -16,8 +18,7 @@ const PlatformStep = ({ formState, setFormState }: any) => {
     const updatedPlatforms = formState.platforms.includes(platform)
       ? formState.platforms.filter((p: string) => p !== platform)
       : [...formState.platforms, platform];
-
-    console.log("Updated platforms:", updatedPlatforms);  
+    
     setFormState({
       ...formState,
       platforms: updatedPlatforms,
@@ -33,30 +34,59 @@ const PlatformStep = ({ formState, setFormState }: any) => {
   };
 
   return (
-    <div className="space-y-8">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">Select Distribution Platforms</h2>
-      <div className="grid grid-cols-2 gap-4 mt-4">
+    <div className="max-w-4xl mx-auto p-4 space-y-6 md:space-y-8">
+      <div className="text-center md:text-left">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-800">
+          Select Distribution Platforms
+        </h2>
+        <p className="mt-2 text-sm text-gray-600">
+          Choose where you want your music to be available
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {platformOptions.map((platform) => (
-          <div key={platform} className="flex items-center">
-            <input
-              type="checkbox"
-              checked={formState.platforms.includes(platform)}
-              onChange={() => togglePlatform(platform)}
-              className="mr-2"
-            />
-            <label className="text-sm text-gray-700">{platform}</label>
+          <div
+            key={platform}
+            className="relative flex items-center space-x-3 bg-white p-4 rounded-lg border border-gray-200 hover:border-red-200 transition-colors duration-200"
+          >
+            <div className="flex items-center h-5">
+              <input
+                type="checkbox"
+                checked={formState.platforms.includes(platform)}
+                onChange={() => togglePlatform(platform)}
+                className="w-4 h-4 text-red-500 border-gray-300 rounded 
+                           focus:ring-red-500 focus:ring-offset-0 focus:ring-2
+                           cursor-pointer transition-colors duration-200"
+              />
+            </div>
+            <label className="flex-1 text-sm font-medium text-gray-700 cursor-pointer">
+              {platform}
+            </label>
           </div>
         ))}
       </div>
-      <button
-        onClick={selectAllPlatforms}
-        className="w-full bg-red-500 text-white py-2 mt-4 rounded-md hover:bg-red-600 transition ease-in-out focus:outline-none focus:ring-2 focus:ring-red-400"
-      >
-        Select All Platforms
-      </button>
-      <p className="text-sm text-gray-500 mt-2">
-        By selecting all, your music will be distributed to all platforms listed above and over 400+ additional channels.
-      </p>
+
+      <div className="space-y-4">
+        <button
+          onClick={selectAllPlatforms}
+          className="w-full bg-red-500 text-white font-medium py-3 px-4 
+                     rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 
+                     focus:ring-red-500 focus:ring-offset-2 transform 
+                     transition-all duration-200 active:scale-[0.98]
+                     shadow-sm hover:shadow-md"
+        >
+          Select All Platforms
+        </button>
+        
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <p className="text-sm text-gray-600 leading-relaxed">
+            By selecting all, your music will be distributed to all platforms listed above and 
+            <span className="font-medium text-gray-700"> over 400+ additional channels</span>. 
+            This ensures maximum reach for your music.
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

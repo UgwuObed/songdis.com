@@ -27,12 +27,12 @@ import {
 
 const Dashboard = () => {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false); 
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [showLoginSuccessNotification, setShowLoginSuccessNotification] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [releases, setReleases] = useState<string[]>([]);
- 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+  const [releases, setReleases] = useState([]);
+
   useEffect(() => {
     const fetchMusic = async () => {
       try {
@@ -73,13 +73,23 @@ const Dashboard = () => {
     }
   }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>; 
-  }
-
-  if (!isAuthenticated) {
-    return null; 
-  }
+    useEffect(() => {
+      const handleResize = () => {
+        setIsSidebarOpen(window.innerWidth >= 768);
+      };
+  
+      handleResize(); 
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+  
+    if (isLoading) {
+      return <div className="flex h-screen items-center justify-center">Loading...</div>;
+    }
+  
+    if (!isAuthenticated) {
+      return null;
+    }
 
   const features = [
     { name: 'Priority Pitch', description: 'Submit releases for enhanced promotion, editorial playlists, and more', icon: MusicalNoteIcon },
@@ -112,111 +122,110 @@ const Dashboard = () => {
     { name: 'Sep', uv: 38, pv: 32, amt: 70 },
   ];
 
-  return (
-    <div className="flex h-screen bg-gray-100 overflow-hidden"> 
-      <SidebarMenu isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      <div
-        className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-48' : 'ml-16'}`}
-        style={{ overflowX: 'hidden', width: '100vw' }}
-      >
-         <SearchBar />
 
-        {/* Main Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+
+  return (
+    <div className="flex min-h-screen bg-gray-100">
+      <SidebarMenu isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+      
+      <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'md:ml-48' : 'md:ml-16'}`}>
+        <SearchBar />
+
+        <div className="flex-1 overflow-y-auto p-4 md:p-6">
           {/* Releases Section */}
-          <div className="mb-8">
-  <div className="flex justify-between items-center mb-4">
-    <h2 className="text-2xl font-semibold">Releases</h2>
-    <button className="text-red-600 font-medium">View All</button>
-  </div>
-  {releases.length > 0 ? (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {releases.map((albumArt, index) => (
-        albumArt && (
-          <div key={index} className="relative aspect-square">
-            <img
-              src={albumArt}
-              alt={`Release ${index + 1}`}
-              className="w-full h-full object-cover rounded-lg shadow-md"
-              onError={(e) => {
-                e.currentTarget.src = '/placeholder-image.jpg';
-                console.log('Error loading image:', albumArt);
-              }}
-            />
+          <div className="mb-6 md:mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl md:text-2xl font-semibold">Releases</h2>
+              <button className="text-red-600 font-medium text-sm md:text-base">View All</button>
+            </div>
+            
+            {releases.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+                {releases.map((albumArt, index) => (
+                  albumArt && (
+                    <div key={index} className="relative aspect-square">
+                      <img
+                        src={albumArt}
+                        alt={`Release ${index + 1}`}
+                        className="w-full h-full object-cover rounded-lg shadow-md"
+                        onError={(e) => {
+                          e.currentTarget.src = '/placeholder-image.jpg';
+                        }}
+                      />
+                    </div>
+                  )
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-6 md:py-8 text-gray-500">
+                No releases available
+              </div>
+            )}
           </div>
-        )
-      ))}
-    </div>
-  ) : (
-    <div className="text-center py-8 text-gray-500">
-      No releases available
-    </div>
-  )}
-</div>
 
           {/* Wallet and Delivery Log */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
             {/* Wallet Section */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold mb-4">My Wallet</h2>
+            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
+              <h2 className="text-lg md:text-xl font-semibold mb-4">My Wallet</h2>
               <div className="bg-gradient-to-r from-red-500 to-red-600 text-white p-4 rounded-lg">
-                <p className="text-2xl font-bold">$0</p>
+                <p className="text-xl md:text-2xl font-bold">$0</p>
               </div>
-              <div className="flex justify-between mt-4">
-                <button className="bg-red-600 text-white py-2 px-4 rounded">Withdraw</button>
-                <button className="bg-red-600 text-white py-2 px-4 rounded">Transfer</button>
+              <div className="flex justify-between mt-4 space-x-2">
+                <button className="flex-1 bg-red-600 text-white py-2 px-4 rounded text-sm md:text-base">Withdraw</button>
+                <button className="flex-1 bg-red-600 text-white py-2 px-4 rounded text-sm md:text-base">Transfer</button>
               </div>
             </div>
 
             {/* Delivery Log Section */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Delivery Log</h2>
-                <select className="text-sm border rounded p-1">
+                <h2 className="text-lg md:text-xl font-semibold">Delivery Log</h2>
+                <select className="text-xs md:text-sm border rounded p-1">
                   <option>14 Sep - 20 Sep</option>
                 </select>
               </div>
-              <ul className="space-y-4">
-                {[1, 2, 3, 4].map((item) => (
-                  <li key={item} className="flex justify-between items-center text-sm">
-                    <div className="flex items-center">
-                      {/* <img src={`/assets/dashboard/release-${item}.jpeg`} alt={`Cover ${item}`} className="w-8 h-8 rounded mr-2" />
-                      <span>Cover Me</span> */}
-                    </div>
-                    <span>Pending distribution</span>
-                    <span>Sat, 20 Sept 2024</span>
-                    <span className="text-green-500">Uploaded</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <tbody className="divide-y divide-gray-200">
+                    {[1, 2, 3, 4].map((item) => (
+                      <tr key={item} className="text-xs md:text-sm">
+                        <td className="py-2">Pending distribution</td>
+                        <td className="py-2 text-right">Sat, 20 Sept 2024</td>
+                        <td className="py-2 text-right text-green-500">Uploaded</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
 
           {/* Features Section */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Features</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+          <div className="mb-6 md:mb-8">
+            <h2 className="text-xl md:text-2xl font-semibold mb-4">Features</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
               {features.map((feature, index) => (
-                <div key={index} className="bg-white p-4 rounded-lg shadow-md flex flex-col items-center text-center">
-                  <feature.icon className="h-8 w-8 text-red-500 mb-2" />
-                  <h3 className="text-sm font-semibold mb-1">{feature.name}</h3>
-                  <p className="text-xs text-gray-600">{feature.description}</p>
+                <div key={index} className="bg-white p-3 md:p-4 rounded-lg shadow-md flex flex-col items-center text-center">
+                  <feature.icon className="h-6 w-6 md:h-8 md:w-8 text-red-500 mb-2" />
+                  <h3 className="text-xs md:text-sm font-semibold mb-1">{feature.name}</h3>
+                  <p className="text-xs text-gray-600 line-clamp-2">{feature.description}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Analytics Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-semibold">Analytics Snapshot</h2>
-              <button className="text-red-600 font-medium">Go to Analytics</button>
+              <h2 className="text-xl md:text-2xl font-semibold">Analytics Snapshot</h2>
+              <button className="text-red-600 font-medium text-sm md:text-base">Go to Analytics</button>
             </div>
-            <div className="h-64 bg-red-500 rounded-lg text-white p-4">
-              <ResponsiveContainer width="100%" height={250}>
+            <div className="h-48 md:h-64 bg-red-500 rounded-lg text-white p-2 md:p-4">
+              <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData}>
-                  <XAxis dataKey="name" stroke="#fff" />
-                  <YAxis stroke="#fff" />
+                  <XAxis dataKey="name" stroke="#fff" tick={{ fontSize: 12 }} />
+                  <YAxis stroke="#fff" tick={{ fontSize: 12 }} />
                   <Tooltip />
                   <Bar dataKey="uv" fill="#ffc658" />
                   <Bar dataKey="pv" fill="#82ca9d" />
@@ -229,4 +238,5 @@ const Dashboard = () => {
     </div>
   );
 };
+
 export default Dashboard;

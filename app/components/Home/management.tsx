@@ -1,82 +1,43 @@
-'use client';
-
-import React, { SetStateAction, useState } from 'react';
-import SidebarMenu from '../../components/Home/menu';
+import { ArrowRight, Clock } from "lucide-react";
+import router from "next/router";
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const Managment = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [subscriptionPlan, setSubscriptionPlan] = useState(null); 
-  const plans = [
-    { name: 'Starter', price: 'NGN 2,000/month', features: ['Access to starter content'] },
-    { name: 'Growth', price: 'NGN 5,000/month', features: ['Access to growth content', 'Priority support'] },
-    { name: 'Professional', price: 'NGN 10,000/month', features: ['All features', 'Priority support'] },
-  ];
+
+  const router = useRouter();
+
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-gray-100">
-      <SidebarMenu isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      {/* Main Content Area */}
-      <div
-        className={`flex flex-col transition-all duration-300 ${
-          isSidebarOpen ? 'ml-[200px]' : 'ml-[50px]'
-        } flex-grow h-full`}
-        style={{ overflowX: 'hidden' }}
-      >
-        {/* Header */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-4 flex flex-col md:flex-row items-center justify-between w-full">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-700">Subscribe to Get Access</h2>
-            <p className="text-gray-500">Choose a plan and enjoy exclusive content</p>
-          </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-white to-gray-50">
+      <div className="text-center p-8 rounded-2xl backdrop-blur-sm bg-white/30 shadow-xl border border-gray-100 max-w-2xl mx-4">
+        <div className="mb-6 bg-red-50 p-4 rounded-full inline-block">
+          <Clock className="w-12 h-12 text-red-500" />
         </div>
-
-        {/* Subscription Plans */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6 w-full">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Subscription Plans</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {plans.map((plan, index) => (
-              <div
-                key={index}
-                className={`p-4 border rounded-md transition cursor-pointer ${
-                  subscriptionPlan === plan.name ? 'border-red-500 bg-red-100' : 'border-gray-300'
-                }`}
-                onClick={() => setSubscriptionPlan(plan.name as unknown as SetStateAction<null>)}
+        
+        <h1 className="text-5xl font-bold text-gray-800 mb-4 bg-gradient-to-r from-red-600 to-yellow-600 bg-clip-text text-transparent">
+          Coming Soon
+        </h1>
+        
+        <div className="space-y-4">
+          <p className="text-xl text-gray-600">
+            This page dashboard is currently under development
+          </p>
+          <p className="text-gray-500">
+            We're working hard to bring you powerful insights and beautiful visualizations.
+          </p>
+          <div className="pt-6">
+          <button
+                onClick={() => router.push('/dashboard')}
+                className="group relative bg-red-500 text-white px-8 py-3 rounded-xl font-semibold 
+                          shadow-lg hover:bg-red-600 transform hover:-translate-y-0.5 transition-all 
+                          duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 
+                          focus:ring-offset-2"
               >
-                <h3 className="text-lg font-bold text-gray-700">{plan.name}</h3>
-                <p className="text-gray-500">{plan.price}</p>
-                <ul className="mt-2 text-sm text-gray-600">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="mt-1">
-                      - {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Subscription Confirmation */}
-        <div className="bg-white p-6 rounded-lg shadow-md w-full">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Confirm Your Subscription</h3>
-
-          {subscriptionPlan ? (
-            <div className="text-center">
-              <p className="text-gray-700 mb-4">
-                You have selected the <strong>{subscriptionPlan}</strong> plan.
-              </p>
-              <button
-                className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition"
-                onClick={() => alert('Subscription successful!')}
-              >
-                Subscribe Now
+                <span className="flex items-center">
+                  Go to Dashboard
+                  <ArrowRight className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+                </span>
               </button>
-            </div>
-          ) : (
-            <p className="text-center text-gray-500 py-10">
-              Please select a subscription plan to proceed.
-            </p>
-          )}
+          </div>
         </div>
       </div>
     </div>

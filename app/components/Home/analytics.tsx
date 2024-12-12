@@ -1,200 +1,47 @@
-import { useEffect, useState } from "react";
-import axios from 'axios';
-import { BASE_URL } from '../apiConfig';
+import { ArrowRight, Clock } from "lucide-react";
+import router from "next/router";
+import { useRouter, useSearchParams } from 'next/navigation';
 
-interface Plan {
-  id: string;
-  name: string;
-  price: number;
-  duration: string;
-  features: string[];
-}
+const Analytics = () => {
 
-interface PaymentPlanProps {
-  accountType: string;
-  onPaymentComplete: () => void;
-}
-
-const Analytics = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
-  const [plans, setPlans] = useState<Plan[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [processingPlan, setProcessingPlan] = useState<string | null>(null);
-  const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
-
-
-  // useEffect(() => {
-  //   const fetchPlans = async () => {
-  //     try {
-  //       const authToken = localStorage.getItem("authToken");
-  //       if (!authToken) {
-  //         throw new Error("Authentication token not found");
-  //       }
-
-  //       const response = await axios.get(`${BASE_URL}/api/plans`, {
-  //         headers: {
-  //           Authorization: `Bearer ${authToken}`,
-  //         },
-  //       });
-
-  //       setPlans(response.data);
-  //     } catch (error) {
-  //       setError(error instanceof Error ? error.message : "Failed to fetch plans");
-  //       console.error("Failed to fetch plans:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchPlans();
-  // }, []);
-
-  // const handlePayment = async (planId: string) => {
-  //   setProcessingPlan(planId);
-  //   setError(null);
-  
-  //   try {
-  //     const authToken = localStorage.getItem("authToken");
-  //     if (!authToken) {
-  //       setError("Authentication token not found. Please log in again.");
-  //       return;
-  //     }
-  
-  //     console.log('Initiating payment for plan:', planId);
-      
-  //     const response = await axios.post(
-  //       `${BASE_URL}/api/subscribe`,
-  //       { plan_id: planId },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${authToken}`,
-  //         },
-  //       }
-  //     );
-  
-  //     console.log('Payment response:', response.data);
-  
-  //     if (response.data.status === 'success' && response.data.redirect_url) {
-  //       // Open in same window
-  //       window.location.href = response.data.redirect_url;
-  //       useEffect(() => {
-  //         const queryParams = new URLSearchParams(window.location.search);
-  //         if (queryParams.get('status') === 'success') {
-  //           onPaymentComplete();
-  //         }
-  //       }, []);
-        
-  //     } else {
-  //       setError("Invalid response from payment server");
-  //       console.error('Invalid payment response:', response.data);
-  //     }
-  //   } catch (err: unknown) {
-  //     const errorMessage = err instanceof Error
-  //       ? err.message
-  //       : (err as { response?: { data?: { message?: string } } })?.response?.data?.message || "Unexpected error occurred";
-  //     setError(errorMessage);
-  //     console.error("Payment initiation failed:", {
-  //       error: err,
-  //       response: (err as { response?: { data?: unknown } })?.response?.data
-  //     });
-  //   } finally {
-  //     setProcessingPlan(null);
-  //   }
-  // };  
-
-  
-  if (loading) {
-    return <div>Loading plans...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  const router = useRouter();
 
   return (
-    <div className="py-24 relative">
-      <div className="absolute h-[26.5rem] w-full top-0 bg-white-to-r from-red-600 to-white -z-10"></div>
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="font-manrope text-5xl font-bold text-black mb-4">
-            Select a Payment Plan
-          </h2>
-          <p className="text-gray-500 text-xl leading-6">
-            You've selected the <span className="text-black">{accountType}</span> plan.
-          </p>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-white to-gray-50">
+      <div className="text-center p-8 rounded-2xl backdrop-blur-sm bg-white/30 shadow-xl border border-gray-100 max-w-2xl mx-4">
+        <div className="mb-6 bg-red-50 p-4 rounded-full inline-block">
+          <Clock className="w-12 h-12 text-red-500" />
         </div>
-
-        <section className="py-12">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid gap-8 lg:grid-cols-3 sm:grid-cols-1">
-              {plans.map((plan) => (
-                <div
-                  key={plan.id}
-                  className="group relative flex flex-col items-center bg-white rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 p-6 border border-red-500 hover:border-red-700"
-                >
-                  <div className="w-16 h-16 rounded-full bg-red-100 flex justify-center items-center mb-4">
-                    {/* Plan Icon */}
-                    <svg
-                      className="w-6 h-6 text-red-600"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12h6m2 0a2 2 0 100-4h-6a2 2 0 100 4m0 0h6a2 2 0 110 4h-6a2 2 0 100-4m0 0h-6a2 2 0 100 4h6"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="font-bold text-lg text-red-600">{plan.name}</h3>
-                  <p className="font-bold mt-2 text-gray-700">
-                    ₦{plan.price.toLocaleString()} {plan.duration}
-                  </p>
-                  <ul className="mt-4 text-gray-700 list-disc list-inside">
-                    {plan.features.map((feature, index) => (
-                      <li key={index} className="mb-2">
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                  
-                  className={`mt-4 py-2 px-4 rounded-md transition-colors ${
-                    processingPlan === plan.id ? "bg-gray-500 text-white" : "bg-red-600 text-white hover:bg-red-700"
-                  }`}
-                  disabled={processingPlan === plan.id}
-                >
-                  {processingPlan === plan.id ? (
-                    <span>
-                      <svg className="animate-spin h-5 w-5 inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 6v6l4 2"
-                        />
-                      </svg>
-                      Processing...
-                    </span>
-                  ) : (
-                    `Select ${plan.name}`
-                  )}
-                </button>
-
-
-                </div>
-              ))}
-            </div>
+        
+        <h1 className="text-5xl font-bold text-gray-800 mb-4 bg-gradient-to-r from-red-600 to-yellow-600 bg-clip-text text-transparent">
+          Coming Soon
+        </h1>
+        
+        <div className="space-y-4">
+          <p className="text-xl text-gray-600">
+            This page dashboard is currently under development
+          </p>
+          <p className="text-gray-500">
+            We're working hard to bring you powerful insights and beautiful visualizations.
+          </p>
+          <div className="pt-6">
+          <button
+                onClick={() => router.push('/dashboard')}
+                className="group relative bg-red-500 text-white px-8 py-3 rounded-xl font-semibold 
+                          shadow-lg hover:bg-red-600 transform hover:-translate-y-0.5 transition-all 
+                          duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 
+                          focus:ring-offset-2"
+              >
+                <span className="flex items-center">
+                  Go to Dashboard
+                  <ArrowRight className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+                </span>
+              </button>
           </div>
-        </section>
+        </div>
       </div>
     </div>
-  );};
+  );
+};
 
 export default Analytics;
