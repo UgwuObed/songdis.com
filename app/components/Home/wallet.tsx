@@ -42,11 +42,11 @@ const Wallet = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
             <div className="p-4 border rounded-md">
               <p className="text-gray-500">Pending payout</p>
-              <p className="text-2xl font-bold">NGN {balance.pendingPayout}</p>
+              <p className="text-2xl font-bold">USD {balance.pendingPayout}</p>
             </div>
             <div className="p-4 border rounded-md">
               <p className="text-gray-500">Ready to withdraw</p>
-              <p className="text-2xl font-bold text-green-600">NGN {balance.readyToWithdraw}</p>
+              <p className="text-2xl font-bold text-green-600">USD {balance.readyToWithdraw}</p>
             </div>
           </div>
 

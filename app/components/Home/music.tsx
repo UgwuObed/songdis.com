@@ -48,10 +48,11 @@ const Music = () => {
         <div className="flex-1 overflow-hidden">
           <div className="h-full p-6 overflow-y-auto">
             {/* Header Section */}
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">
+            <div className="flex justify-between items-center mb-6 mt-10">
+            <h1 className="text-1xl font-bold text-gray-900 ">
                 Manage Releases
               </h1>
+
               <button
                 onClick={handleUploadClick}
                 className="inline-flex items-center px-2 py-1 bg-red-600 text-white rounded-md hover:bg-red-700"
