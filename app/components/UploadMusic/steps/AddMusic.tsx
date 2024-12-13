@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState } from 'react';
 import { PlusIcon, PencilIcon, TrashIcon, MusicalNoteIcon } from '@heroicons/react/24/outline';
 import Modal from 'react-modal';
