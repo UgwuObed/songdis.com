@@ -4,6 +4,8 @@ import SidebarMenu from '../../components/Home/menu';
 import { PencilIcon, ShareIcon, EllipsisVerticalIcon, ClipboardIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
 import { BASE_URL } from '../apiConfig';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 const Link = () => {
@@ -22,7 +24,7 @@ const Link = () => {
 
   const handleCopyLink = (link: string) => {
     navigator.clipboard.writeText(link);
-    alert('Link copied to clipboard!');
+    toast.success('Link copied to clipboard!');
   };
 
   useEffect(() => {
@@ -69,6 +71,9 @@ const Link = () => {
       {/* Sidebar */}
       <SidebarMenu isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
+
+      <ToastContainer />
+      
       {/* Main Content */}
       <div
         className={`flex-grow p-4 transition-all duration-300 ease-in-out ${

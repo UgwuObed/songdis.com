@@ -27,18 +27,23 @@ const Wallet = () => {
         {/* Profile and Account Details */}
         <div className="bg-white p-4 md:p-6 rounded-lg shadow-md mb-4 flex flex-col md:flex-row items-center justify-between w-full">
           <div>
-            {/* <h2 className="text-lg font-semibold text-gray-700">NEHEMIAH MELODY</h2>
-            <p className="text-gray-500">Access Bank - 0692527883</p> */}
+            {/* Profile details */}
           </div>
           <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition mt-4 md:mt-0">
             Update account details
           </button>
         </div>
 
+        {/* Payment Information */}
+        <div className="bg-blue-50 p-4 md:p-6 rounded-lg shadow-md mb-6 w-full">
+          <p className="text-sm md:text-base text-blue-600">
+            Payments are sent once your earnings reach <strong>$50</strong>. Processing starts after the 15th of each month, and you can withdraw anytime after.
+          </p>
+        </div>
+
         {/* Wallet Overview */}
         <div className="bg-white p-4 md:p-6 rounded-lg shadow-md mb-6 w-full">
           <h2 className="text-xl font-semibold text-gray-700 mb-4">Your Balance</h2>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
             <div className="p-4 border rounded-md">
               <p className="text-gray-500">Pending payout</p>
@@ -49,10 +54,11 @@ const Wallet = () => {
               <p className="text-2xl font-bold text-green-600">USD {balance.readyToWithdraw}</p>
             </div>
           </div>
-
           <button
             className={`w-full py-2 rounded-lg transition ${
-              balance.readyToWithdraw > 0 ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-gray-300 text-gray-700 cursor-not-allowed'
+              balance.readyToWithdraw > 0
+                ? 'bg-green-500 text-white hover:bg-green-600'
+                : 'bg-gray-300 text-gray-700 cursor-not-allowed'
             }`}
             disabled={balance.readyToWithdraw === 0}
           >
@@ -63,7 +69,6 @@ const Wallet = () => {
         {/* Transactions */}
         <div className="bg-white p-4 md:p-6 rounded-lg shadow-md w-full overflow-x-auto">
           <h3 className="text-lg font-semibold text-gray-700 mb-4">Transactions</h3>
-
           {transactions.length === 0 ? (
             <p className="text-center text-gray-500 py-10">You do not have any transactions</p>
           ) : (
