@@ -20,7 +20,7 @@ const SearchBar = () => {
         <BellIcon className="h-6 w-6 text-gray-600 cursor-pointer" />
         <div className="flex items-center space-x-4">
           <div>
-            <p className="text-sm font-medium text-gray-800">Stelios James</p>
+            <p className="text-sm font-medium text-gray-800">Good Day</p>
             {/* <p className="text-xs text-gray-500">Artist</p> */}
           </div>
           <img src="https://via.placeholder.com/40" alt="Profile" className="w-10 h-10 rounded-full" />
