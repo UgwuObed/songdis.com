@@ -23,7 +23,7 @@ const SearchBar = () => {
             <p className="text-sm font-medium text-gray-800">Good Day</p>
             {/* <p className="text-xs text-gray-500">Artist</p> */}
           </div>
-          <img src="https://via.placeholder.com/40" alt="Profile" className="w-10 h-10 rounded-full" />
+          {/* <img src="https://via.placeholder.com/40" alt="Profile" className="w-10 h-10 rounded-full" /> */}
         </div>
         {/* <ArrowDownRightIcon className="h-6 w-6 text-gray-600 cursor-pointer" /> */}
       </div>
