@@ -1,4 +1,5 @@
 "use server";
+
 import { v2 as cloud } from "cloudinary";
 import streamifier from "streamifier";
 
@@ -27,11 +28,10 @@ export interface CloudinaryResponse {
   original_filename: string;
 }
 
-export const uploadFile = async (formData: FormData): Promise<CloudinaryResponse> => {
+export async function uploadFile(formData: FormData): Promise<CloudinaryResponse> {
   const file = formData.get("file");
 
   if (file instanceof File) {
-
     console.log("Uploading file of type:", file.type);
 
     if (!file.size) {
@@ -57,4 +57,4 @@ export const uploadFile = async (formData: FormData): Promise<CloudinaryResponse
   }
 
   throw new Error("Invalid file provided");
-};
+}
