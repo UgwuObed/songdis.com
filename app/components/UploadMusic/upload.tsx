@@ -38,6 +38,7 @@ const UploadMusic = ({ uploadType }: { uploadType: "Single" | "Album/EP" }) => {
     platforms: [] as string[],
     lyrics: "",
     upcCode: "",
+    isrcCode: "",
     mood: "",
     trackMetadata: [{ name: "", lyrics: "", credits: "", producers: "", featured_artists: "" }],
   });
@@ -75,6 +76,7 @@ const UploadMusic = ({ uploadType }: { uploadType: "Single" | "Album/EP" }) => {
     formData.append("producers", formState.producers);
     formData.append("lyrics", formState.lyrics);
     formData.append("upc_code", formState.upcCode || "");
+    formData.append("isrc_code", formState.isrcCode || "");
     formData.append("genres_moods", formState.mood);
     if (formState.albumArt) {
       formData.append("album_art_url", formState.albumArt);

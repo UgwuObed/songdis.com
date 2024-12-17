@@ -12,6 +12,7 @@ type UploadTypeSelectionProps = {
 };
 
 const UploadTypeSelection: React.FC<UploadTypeSelectionProps> = ({ onSelect }) => {
+  // Group all state declarations together at the top
   const [selectedType, setSelectedType] = useState<'Single' | 'Album/EP' | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [profile, setProfile] = useState<any>(null);
@@ -29,54 +30,74 @@ const UploadTypeSelection: React.FC<UploadTypeSelectionProps> = ({ onSelect }) =
     spotify_url: '',
     apple_music_url: '',
   });
-
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Check subscription status
   useEffect(() => {
-    const fetchProfile = async () => {
+    const checkSubscriptionStatus = async () => {
       try {
         const token = localStorage.getItem('authToken');
-        const response = await fetch(`${BASE_URL}/api/profile`, {
+        const response = await fetch(`${BASE_URL}/api/status`, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
+            Accept: 'application/json',
+          },
         });
   
         const data = await response.json();
   
-        if (response.status === 404) {
-          setProfile(null);
-          setShowModal(true);
-        } else if (response.status === 403 && data.message === 'Your subscription plan is inactive or invalid') {
-          // Redirect to PaymentPlan
+        if (data.message === 'No active subscription.') {
           setShowPaymentPlan(true);
         } else if (!response.ok) {
-          throw new Error(data.message || 'Failed to fetch profile');
-        } else {
-          setProfile(data.profile);
+          throw new Error(data.message || 'Failed to check subscription status');
         }
       } catch (error) {
-        console.error('Fetch error:', error);
-        if (error instanceof Error && !error.message.includes('404')) {
-          toast.error('Error checking profile status. Please try again.');
-        }
+        console.error('Subscription check error:', error);
+        toast.error('Error checking subscription status. Please try again.');
       } finally {
         setLoading(false);
       }
     };
   
-    fetchProfile();
+    checkSubscriptionStatus();
   }, []);
 
-  if (showPaymentPlan) {
-    return <PaymentPlan accountType={''} onPaymentComplete={function (): void {
-      throw new Error('Function not implemented.');
-    } } />;
-  }
+  // Fetch profile data
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (showPaymentPlan) return; // Don't fetch if showing payment plan
 
+      try {
+        const token = localStorage.getItem('authToken');
+        const response = await fetch(`${BASE_URL}/api/profile`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const data = await response.json();
+        if (response.status === 404) {
+          setProfile(null);
+          setShowModal(true);
+        } else {
+          setProfile(data.profile);
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+        toast.error('Error fetching profile.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [showPaymentPlan]); // Added showPaymentPlan as dependency
+
+  // Form handling functions
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -114,9 +135,24 @@ const UploadTypeSelection: React.FC<UploadTypeSelectionProps> = ({ onSelect }) =
     }
   };
 
+  // Loading state
   if (loading) {
     return <div className="text-center">Loading...</div>;
   }
+
+  // Payment plan state
+  if (showPaymentPlan) {
+    return (
+      <PaymentPlan
+        accountType=""
+        onPaymentComplete={() => {
+          setShowPaymentPlan(false);
+          window.location.reload(); 
+        }}
+      />
+    );
+  }
+
 
   return (
     <div className="flex flex-col items-center bg-white text-gray-800 p-10 rounded-lg space-y-6 shadow-md">

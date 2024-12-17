@@ -26,6 +26,18 @@ const MetadataStep = ({ formState, setFormState, uploadType }: { formState: any;
           onChange={(e) => setFormState({ ...formState, upcCode: e.target.value })}
         />
       </div>
+
+      <div className="mb-4">
+        <label className="block text-sm text-gray-600">ISRC Code (Optional)</label>
+        <input
+        type="text"
+        className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-red-500"
+        placeholder="Enter ISRC Code"
+        value={formState.isrcCode}
+          onChange={(e) => setFormState({ ...formState, isrcCode: e.target.value })}
+          />
+          </div>
+
     </div>
   );
 };
