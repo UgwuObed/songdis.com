@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SidebarMenu from '../../components/Home/menu';
 import SearchBar from '../../components/Home/search';
+import UploadMusic from '../UploadMusic/upload';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { BASE_URL } from "../apiConfig";
+import { PlusIcon } from '@heroicons/react/24/outline';
 import {
   MusicalNoteIcon,
   DocumentTextIcon,
@@ -32,6 +34,7 @@ const Dashboard = () => {
   const [showLoginSuccessNotification, setShowLoginSuccessNotification] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
   const [releases, setReleases] = useState([]);
+  const [isSelectingType, setIsSelectingType] = useState(false);
 
   useEffect(() => {
     const fetchMusic = async () => {
@@ -83,6 +86,10 @@ const Dashboard = () => {
       return () => window.removeEventListener('resize', handleResize);
     }, []);
   
+    const handleUploadClick = () => {
+      router.push('/home/music');
+    };
+    
     if (isLoading) {
       return <div className="flex h-screen items-center justify-center">Loading...</div>;
     }
@@ -132,6 +139,15 @@ const Dashboard = () => {
         <SearchBar />
 
         <div className="flex-1 overflow-y-auto p-4 md:p-6">
+
+        <button
+                onClick={handleUploadClick}
+                className="inline-flex items-center px-2 py-1 bg-red-600 text-white rounded-md hover:bg-red-700"
+              >
+                <PlusIcon className="w-5 h-5 mr-2" />
+                New
+              </button>
+
           {/* Releases Section */}
           <div className="mb-6 md:mb-8">
             <div className="flex justify-between items-center mb-4">
