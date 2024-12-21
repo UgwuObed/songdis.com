@@ -78,7 +78,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ isOpen, setIsOpen }) => {
                 <div className={`flex items-center justify-center mt-6 transition-opacity duration-500 
                     ${(isOpen || isMobile) ? 'opacity-100' : 'opacity-0'}`}
                 >
-                    <img src="/assets/logo/song.png" alt="Logo" className="h-16" />
+                    {/* <img src="/assets/logo/log/song.PNG" alt="Logo" className="h-16" /> */}
                 </div>
 
                 {/* Navigation */}

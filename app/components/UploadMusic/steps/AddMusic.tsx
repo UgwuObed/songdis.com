@@ -4,7 +4,6 @@ import Modal from 'react-modal';
 import { motion } from 'framer-motion';
 import { toast, ToastContainer } from 'react-toastify';
 import { uploadFile } from '../../../utils/cloudinaryUpload';
-import { uploadToCloudinary } from '../../../utils/cloudinaryDirectUpload';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface AddMusicStepProps {
@@ -51,7 +50,7 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
 
   const handleFileChange = async (files: FileList | null) => {
     if (!files) return;
-  
+
     const newTracks: Track[] = Array.from(files).map((file) => ({
       file,
       trackName: file.name.replace(/\.[^/.]+$/, ''),
@@ -60,23 +59,21 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
       lyrics: '',
       duration: '0:00',
     }));
-  
+
     if (uploadType === 'Single' && (newTracks.length > 1 || audioFiles.length > 0)) {
       toast.error('Only one track is allowed for a single upload.');
       return;
     }
-  
+
     setIsLoading(true);
-    setUploadProgress(0);
-  
+
     try {
       const uploadedTracks = await Promise.all(
-        newTracks.map(async (track, index) => {
-          const response = await uploadToCloudinary(track.file);
-          
-          // Update progress for each file
-          setUploadProgress(((index + 1) / newTracks.length) * 100);
-  
+        newTracks.map(async (track) => {
+          const formData = new FormData();
+          formData.append('file', track.file);
+
+          const response = await uploadFile(formData);
           if (response?.secure_url) {
             const audio = new Audio(response.secure_url);
             await new Promise((resolve) => (audio.onloadedmetadata = resolve));
@@ -89,17 +86,16 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
           throw new Error('Upload failed');
         })
       );
-  
+
       updateFormState([...audioFiles, ...uploadedTracks]);
       toast.success(`${uploadedTracks.length} track(s) uploaded successfully!`);
     } catch (error) {
-      console.error('Upload error:', error);
       toast.error('Error uploading files. Please try again.');
     } finally {
       setIsLoading(false);
-      setUploadProgress(0);
     }
   };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);

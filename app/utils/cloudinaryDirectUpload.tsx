@@ -7,9 +7,7 @@ interface UploadResponse {
 }
 
 export const getSignature = async () => {
-  const response = await fetch('/api/cloudinary-signature', {
-    method: 'POST'
-  });
+  const response = await fetch('/api/cloudinary-signature');
   return response.json();
 };
 
