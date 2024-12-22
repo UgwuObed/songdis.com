@@ -184,6 +184,7 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
     }
   };
 
+  
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
