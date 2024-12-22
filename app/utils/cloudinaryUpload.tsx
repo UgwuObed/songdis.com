@@ -11,7 +11,6 @@ cloud.config({
 });
 
 export interface CloudinaryResponse {
-  duration: any;
   public_id: string;
   version: number;
   signature: string;
@@ -50,7 +49,7 @@ export const uploadFile = async (formData: FormData): Promise<CloudinaryResponse
           reject(error);
         } else {
           console.log("File uploaded successfully:", result);
-          resolve(result as unknown as CloudinaryResponse);
+          resolve(result as CloudinaryResponse);
         }
       });
 
