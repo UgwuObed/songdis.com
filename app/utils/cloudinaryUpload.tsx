@@ -50,7 +50,7 @@ export const uploadFile = async (formData: FormData): Promise<CloudinaryResponse
           reject(error);
         } else {
           console.log("File uploaded successfully:", result);
-          resolve(result as CloudinaryResponse);
+          resolve(result as unknown as CloudinaryResponse);
         }
       });
 
