@@ -11,6 +11,7 @@ cloud.config({
 });
 
 export interface CloudinaryResponse {
+  duration: any;
   public_id: string;
   version: number;
   signature: string;
