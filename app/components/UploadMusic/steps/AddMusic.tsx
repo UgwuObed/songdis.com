@@ -13,6 +13,12 @@ interface AddMusicStepProps {
   setFormState: (state: any) => void;
 }
 
+interface CloudinaryResponse {
+  secure_url: string;
+  duration?: number; // Optional duration field
+  [key: string]: any; // Allow additional properties
+}
+
 interface Track {
   file: File;
   trackName: string;
@@ -70,30 +76,30 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
     if (uploadType === 'Single' && (newTracks.length > 1 || audioFiles.length > 0)) {
       setIsLoading(false);
       toast.error('Only one track is allowed for a single upload.', {
-        position: "top-right",
+        position: 'top-right',
         autoClose: 3000,
       });
       return;
     }
   
     let successfulUploads: Track[] = [];
-    
+  
     try {
       for (let i = 0; i < newTracks.length; i++) {
         const track = newTracks[i];
-        
+  
         try {
           // Compress audio
           const compressedBlob = await compressAudio(track.file);
           const compressedFile = new File([compressedBlob], track.file.name, {
-            type: 'audio/mpeg'
+            type: 'audio/mpeg',
           });
   
           // Upload file
           const formData = new FormData();
           formData.append('file', compressedFile);
   
-          const response = await uploadFile(formData);
+          const response = (await uploadFile(formData)) as CloudinaryResponse;
   
           if (!response?.secure_url) {
             throw new Error('Upload failed - no secure URL received');
@@ -106,26 +112,23 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
               // Use duration from Cloudinary response if available
               duration = formatDuration(response.duration);
             } else {
-              const audio = new Audio();
-              audio.src = response.secure_url;
-              
-              // Set a timeout for audio loading
+              const audio = new Audio(response.secure_url);
+  
               const audioDuration = await Promise.race([
                 new Promise<number>((resolve) => {
                   audio.onloadedmetadata = () => resolve(audio.duration);
                 }),
-                new Promise<number>((_, reject) => {
-                  setTimeout(() => reject(new Error('Audio load timeout')), 5000);
-                })
+                new Promise<number>((_, reject) =>
+                  setTimeout(() => reject(new Error('Audio load timeout')), 5000)
+                ),
               ]);
-              
+  
               duration = formatDuration(audioDuration);
             }
           } catch (durationError) {
             console.warn('Could not get audio duration:', durationError);
-            // Use a fallback duration from the original file if available
+            // Fallback duration estimation
             if (track.file.size && track.file.type.includes('audio')) {
-              // Rough estimation based on file size and typical bitrate
               const estimatedDuration = (track.file.size * 8) / (128 * 1024); // Assuming 128kbps
               duration = formatDuration(estimatedDuration);
             }
@@ -134,7 +137,7 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
           const uploadedTrack = {
             ...track,
             audioFileUrl: response.secure_url,
-            duration: duration,
+            duration,
           };
   
           successfulUploads.push(uploadedTrack);
@@ -142,11 +145,10 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
           // Update progress
           const progress = ((i + 1) / newTracks.length) * 100;
           setUploadProgress(progress);
-  
         } catch (error) {
           console.error(`Error uploading track ${track.trackName}:`, error);
           toast.error(`Failed to upload ${track.trackName}`, {
-            position: "top-right",
+            position: 'top-right',
             autoClose: 3000,
           });
         }
@@ -159,22 +161,21 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
   
         // Show success notification
         toast.success(`Successfully uploaded ${successfulUploads.length} track(s)!`, {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 3000,
         });
       }
-  
     } catch (error) {
       console.error('Upload process error:', error);
       toast.error('An error occurred during the upload process.', {
-        position: "top-right",
+        position: 'top-right',
         autoClose: 3000,
       });
     } finally {
       // Reset states
       setIsLoading(false);
       setUploadProgress(0);
-      
+  
       // Clear file input
       const fileInput = document.getElementById('audioFileInput') as HTMLInputElement;
       if (fileInput) {
