@@ -12,7 +12,6 @@ type UploadTypeSelectionProps = {
 };
 
 const UploadTypeSelection: React.FC<UploadTypeSelectionProps> = ({ onSelect }) => {
-  // Group all state declarations together at the top
   const [selectedType, setSelectedType] = useState<'Single' | 'Album/EP' | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [profile, setProfile] = useState<any>(null);
@@ -32,7 +31,6 @@ const UploadTypeSelection: React.FC<UploadTypeSelectionProps> = ({ onSelect }) =
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Check subscription status
   useEffect(() => {
     const checkSubscriptionStatus = async () => {
       try {
@@ -67,7 +65,7 @@ const UploadTypeSelection: React.FC<UploadTypeSelectionProps> = ({ onSelect }) =
   // Fetch profile data
   useEffect(() => {
     const fetchProfile = async () => {
-      if (showPaymentPlan) return; // Don't fetch if showing payment plan
+      if (showPaymentPlan) return; 
 
       try {
         const token = localStorage.getItem('authToken');
@@ -95,9 +93,8 @@ const UploadTypeSelection: React.FC<UploadTypeSelectionProps> = ({ onSelect }) =
     };
 
     fetchProfile();
-  }, [showPaymentPlan]); // Added showPaymentPlan as dependency
+  }, [showPaymentPlan]); 
 
-  // Form handling functions
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -135,12 +132,11 @@ const UploadTypeSelection: React.FC<UploadTypeSelectionProps> = ({ onSelect }) =
     }
   };
 
-  // Loading state
+
   if (loading) {
     return <div className="text-center">Loading...</div>;
   }
 
-  // Payment plan state
   if (showPaymentPlan) {
     return (
       <PaymentPlan

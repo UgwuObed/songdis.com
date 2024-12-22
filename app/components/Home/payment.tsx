@@ -20,10 +20,12 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [processingPlan, setProcessingPlan] = useState<string | null>(null);
+  const [showPromoInput, setShowPromoInput] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+  const [promoLoading, setPromoLoading] = useState(false);
+  const [promoError, setPromoError] = useState<string | null>(null);
   const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
-
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -51,6 +53,43 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
     fetchPlans();
   }, []);
 
+  const handlePromoCodeSubmit = async () => {
+    setPromoError(null);
+    setPromoLoading(true);
+
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) {
+        throw new Error("Authentication token not found");
+      }
+
+      const response = await axios.post(
+        `${BASE_URL}/api/redeem-promo`,
+        { code: promoCode },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.status === 'success') {
+        // Call the completion handler to update the UI/redirect
+        onPaymentComplete();
+      } else {
+        setPromoError("Failed to apply promo code");
+      }
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error
+        ? err.message
+        : (err as { response?: { data?: { message?: string } } })?.response?.data?.message || "Invalid promo code";
+      setPromoError(errorMessage);
+    } finally {
+      setPromoLoading(false);
+    }
+  };
+
   const handlePayment = async (planId: string) => {
     setProcessingPlan(planId);
     setError(null);
@@ -74,7 +113,6 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
       );
   
       if (response.data.status === 'success' && response.data.redirect_url) {
-        // Open in same window
         window.location.href = response.data.redirect_url;
       } else {
         setError("Invalid response from payment server");
@@ -85,16 +123,11 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
         ? err.message
         : (err as { response?: { data?: { message?: string } } })?.response?.data?.message || "Unexpected error occurred";
       setError(errorMessage);
-      console.error("Payment initiation failed:", {
-        error: err,
-        response: (err as { response?: { data?: unknown } })?.response?.data
-      });
     } finally {
       setProcessingPlan(null);
     }
   };  
 
-  
   if (loading) {
     return <div>Loading plans...</div>;
   }
@@ -115,6 +148,63 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
           <p className="text-gray-500 text-xl leading-6">
             You've selected the <span className="text-black">{accountType}</span> plan.
           </p>
+          
+          {/* Promo Code Section */}
+          <div className="mt-4">
+            {!showPromoInput ? (
+              <button
+                onClick={() => setShowPromoInput(true)}
+                className="text-red-600 hover:text-red-700 underline"
+              >
+                Have a promo code for one month free?
+              </button>
+            ) : (
+              <div className="flex flex-col items-center space-y-2">
+                <div className="flex justify-center items-center space-x-2">
+                  <input
+                    type="text"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                    placeholder="Enter promo code"
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                  />
+                  <button
+                    onClick={handlePromoCodeSubmit}
+                    disabled={promoLoading}
+                    className={`px-4 py-2 rounded-md ${
+                      promoLoading 
+                        ? "bg-gray-400" 
+                        : "bg-red-600 hover:bg-red-700"
+                    } text-white`}
+                  >
+                    {promoLoading ? (
+                      <span className="flex items-center">
+                        <svg className="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6l4 2" />
+                        </svg>
+                        Applying...
+                      </span>
+                    ) : (
+                      "Apply Code"
+                    )}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowPromoInput(false);
+                      setPromoError(null);
+                      setPromoCode("");
+                    }}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    Cancel
+                  </button>
+                </div>
+                {promoError && (
+                  <p className="text-red-600 text-sm">{promoError}</p>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         <section className="py-12">
@@ -126,7 +216,6 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
                   className="group relative flex flex-col items-center bg-white rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 p-6 border border-red-500 hover:border-red-700"
                 >
                   <div className="w-16 h-16 rounded-full bg-red-100 flex justify-center items-center mb-4">
-                    {/* Plan Icon */}
                     <svg
                       className="w-6 h-6 text-red-600"
                       xmlns="http://www.w3.org/2000/svg"
@@ -154,30 +243,28 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
                     ))}
                   </ul>
                   <button
-                  onClick={() => handlePayment(plan.id)}
-                  className={`mt-4 py-2 px-4 rounded-md transition-colors ${
-                    processingPlan === plan.id ? "bg-gray-500 text-white" : "bg-red-600 text-white hover:bg-red-700"
-                  }`}
-                  disabled={processingPlan === plan.id}
-                >
-                  {processingPlan === plan.id ? (
-                    <span>
-                      <svg className="animate-spin h-5 w-5 inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 6v6l4 2"
-                        />
-                      </svg>
-                      Processing...
-                    </span>
-                  ) : (
-                    `Select ${plan.name}`
-                  )}
-                </button>
-
-
+                    onClick={() => handlePayment(plan.id)}
+                    className={`mt-4 py-2 px-4 rounded-md transition-colors ${
+                      processingPlan === plan.id ? "bg-gray-500 text-white" : "bg-red-600 text-white hover:bg-red-700"
+                    }`}
+                    disabled={processingPlan === plan.id}
+                  >
+                    {processingPlan === plan.id ? (
+                      <span>
+                        <svg className="animate-spin h-5 w-5 inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 6v6l4 2"
+                          />
+                        </svg>
+                        Processing...
+                      </span>
+                    ) : (
+                      `Select ${plan.name}`
+                    )}
+                  </button>
                 </div>
               ))}
             </div>
@@ -185,6 +272,7 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
         </section>
       </div>
     </div>
-  );};
+  );
+};
 
 export default PaymentPlan;
