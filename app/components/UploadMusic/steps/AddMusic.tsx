@@ -15,8 +15,8 @@ interface AddMusicStepProps {
 
 interface CloudinaryResponse {
   secure_url: string;
-  duration?: number; // Optional duration field
-  [key: string]: any; // Allow additional properties
+  duration?: number;
+  [key: string]: any;
 }
 
 interface Track {
@@ -59,7 +59,7 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
   const handleFileChange = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
   
-    // Clear previous upload state
+  
     setIsLoading(true);
     setUploadProgress(0);
   
@@ -72,7 +72,7 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
       duration: '0:00',
     }));
   
-    // Check for single upload restriction
+
     if (uploadType === 'Single' && (newTracks.length > 1 || audioFiles.length > 0)) {
       setIsLoading(false);
       toast.error('Only one track is allowed for a single upload.', {
@@ -89,7 +89,7 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
         const track = newTracks[i];
   
         try {
-          // Compress audio
+      
           const compressedBlob = await compressAudio(track.file);
           const compressedFile = new File([compressedBlob], track.file.name, {
             type: 'audio/mpeg',
@@ -105,11 +105,11 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
             throw new Error('Upload failed - no secure URL received');
           }
   
-          // Get audio duration with fallback
+    
           let duration = '0:00';
           try {
             if (response.duration) {
-              // Use duration from Cloudinary response if available
+              
               duration = formatDuration(response.duration);
             } else {
               const audio = new Audio(response.secure_url);
@@ -127,9 +127,9 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
             }
           } catch (durationError) {
             console.warn('Could not get audio duration:', durationError);
-            // Fallback duration estimation
+       
             if (track.file.size && track.file.type.includes('audio')) {
-              const estimatedDuration = (track.file.size * 8) / (128 * 1024); // Assuming 128kbps
+              const estimatedDuration = (track.file.size * 8) / (128 * 1024); 
               duration = formatDuration(estimatedDuration);
             }
           }
@@ -141,8 +141,7 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
           };
   
           successfulUploads.push(uploadedTrack);
-  
-          // Update progress
+
           const progress = ((i + 1) / newTracks.length) * 100;
           setUploadProgress(progress);
         } catch (error) {
@@ -154,12 +153,12 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
         }
       }
   
-      // Update form state with successful uploads
+
       if (successfulUploads.length > 0) {
         const updatedTracks = [...audioFiles, ...successfulUploads];
         updateFormState(updatedTracks);
   
-        // Show success notification
+
         toast.success(`Successfully uploaded ${successfulUploads.length} track(s)!`, {
           position: 'top-right',
           autoClose: 3000,
@@ -172,11 +171,11 @@ const AddMusicStep: React.FC<AddMusicStepProps> = ({
         autoClose: 3000,
       });
     } finally {
-      // Reset states
+
       setIsLoading(false);
       setUploadProgress(0);
   
-      // Clear file input
+ 
       const fileInput = document.getElementById('audioFileInput') as HTMLInputElement;
       if (fileInput) {
         fileInput.value = '';
