@@ -140,13 +140,16 @@ const Dashboard = () => {
 
         <div className="flex-1 overflow-y-auto p-4 md:p-6">
 
-        <button
-                onClick={handleUploadClick}
-                className="inline-flex items-center px-2 py-1 bg-red-600 text-white rounded-md hover:bg-red-700"
-              >
-                <PlusIcon className="w-5 h-5 mr-2" />
-                New
-              </button>
+        <div className="flex justify-end">
+  <button
+    onClick={handleUploadClick}
+    className="inline-flex items-center px-2 py-1 bg-red-600 text-white rounded-md hover:bg-red-700"
+  >
+    <PlusIcon className="w-5 h-5 mr-2" />
+    New
+  </button>
+</div>
+
 
           {/* Releases Section */}
           <div className="mb-6 md:mb-8">
