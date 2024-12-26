@@ -2,6 +2,7 @@ import React from "react";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { uploadFile } from "../../../utils/cloudinaryUpload";
+import ArtistSelect from "./ArtistName";
 
 const DetailsStep = ({ formState, setFormState, uploadType }: any) => {
   const [loading, setLoading] = React.useState(false); 
@@ -31,6 +32,7 @@ const DetailsStep = ({ formState, setFormState, uploadType }: any) => {
       }
     }
   };
+
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -100,12 +102,13 @@ const DetailsStep = ({ formState, setFormState, uploadType }: any) => {
           {/* Artist Name */}
           <div>
             <label className="block text-sm text-gray-600 mb-1">Artist Name</label>
-            <input
-              type="text"
-              placeholder="Enter Artist Name"
-              className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+            <ArtistSelect
               value={formState.primaryArtist}
-              onChange={(e) => setFormState({ ...formState, primaryArtist: e.target.value })}
+              onChange={(id, stageName) => setFormState({ 
+                ...formState, 
+                primaryArtist: stageName,
+                primaryArtistId: id
+              })}
             />
           </div>
         </div>

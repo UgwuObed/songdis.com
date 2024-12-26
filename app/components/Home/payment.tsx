@@ -75,7 +75,6 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
       );
 
       if (response.data.status === 'success') {
-        // Call the completion handler to update the UI/redirect
         onPaymentComplete();
       } else {
         setPromoError("Failed to apply promo code");
