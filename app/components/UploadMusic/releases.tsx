@@ -35,8 +35,9 @@ const Releases = () => {
           primary_artist: release.primary_artist,
           upload_type: release.upload_type,
           album_art_path: release.album_art_url,
+          status: release.status, 
         }));
-
+console.log(filteredReleases);
         setReleases(filteredReleases);
       } catch (error) {
         console.error('Error fetching releases:', error);
@@ -129,6 +130,19 @@ const Releases = () => {
                       <span className="text-xs sm:text-sm bg-gray-200 text-gray-700 px-2 py-1 rounded">
                         {release.upload_type}
                       </span>
+                      <div className="flex justify-between items-center mt-3 sm:mt-4">
+                  <span
+                    className={`text-xs sm:text-sm px-2 py-1 rounded ${
+                      release.status === 'pending'
+                        ? 'bg-yellow-100 text-yellow-700'
+                        : release.status === 'complete'
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-gray-100 text-gray-700'
+                    }`}
+                  >
+                    {release.status}
+                  </span>
+                 </div>
                     </div>
                     <div className="flex justify-between items-center mt-3 sm:mt-4 space-x-2">
                       <button className="text-orange-500 hover:text-orange-600 p-1">
