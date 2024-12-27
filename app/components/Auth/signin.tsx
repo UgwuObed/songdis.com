@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams  } from 'next/navigation';
 import { BASE_URL } from '../apiConfig';
 import Link from 'next/link';
 
@@ -14,6 +14,9 @@ const Signin = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const resetSuccess = searchParams.get('reset') === 'success';
 
   const handleChange = (e: { target: { name: any; value: any; }; }) => {
     setFormData({
@@ -71,13 +74,19 @@ const Signin = () => {
         <p className="text-sm text-gray-600 text-center mb-6">
           Continue being amazing
         </p>
-
+  
         {error && (
           <div className="bg-red-600 text-white p-4 rounded mb-4 text-center">
             {error}
           </div>
         )}
-
+  
+        {resetSuccess && (
+          <div className="bg-green-600 text-white p-4 rounded mb-4 text-center">
+            Password reset successful. Please sign in with your new password.
+          </div>
+        )}
+  
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
@@ -89,16 +98,26 @@ const Signin = () => {
             className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
           />
           
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
-          />
-
+          <div className="space-y-2">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            />
+            <div className="flex justify-end">
+              <Link 
+                href="/auth/forget" 
+                className="text-sm text-red-600 hover:text-red-700"
+              >
+                Forgot Password?
+              </Link>
+            </div>
+          </div>
+  
           <button
             type="submit"
             disabled={loading}
@@ -114,7 +133,7 @@ const Signin = () => {
             )}
           </button>
         </form>
-
+  
         <p className="text-center mt-6">
           Not a member?{' '}
           <Link href="/auth/signup" className="text-red-600 hover:text-red-700">
