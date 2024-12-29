@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { BASE_URL } from '../apiConfig';
 import Link from 'next/link';
 import PaymentPlan from '../../components/Home/payment';
+import TermsAndConditionsModal from '../../components/Auth/terms';
 
 const Signup = () => {
   const [step, setStep] = useState(1);
@@ -20,6 +21,7 @@ const Signup = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const handleChange = (e: { target: { name: any; value: any; }; }) => {
     setFormData({
@@ -101,10 +103,8 @@ const Signup = () => {
         </h2>
         
         <p className="text-sm text-gray-600 text-center mb-6">
-          To complete this signup, you must accept our{' '}
-          <a href="#terms" className="text-red-600 underline">terms</a> and{' '}
-          <a href="#conditions" className="text-red-600 underline">conditions</a>.
-        </p>
+          To complete this signup, you must accept our <TermsAndConditionsModal />
+      </p>
 
         {error && (
           <div className="bg-red-600 text-white p-4 rounded mb-4">
@@ -212,6 +212,24 @@ const Signup = () => {
               </button>
             </div>
           </div>
+
+          <div className="flex items-start mt-6">
+  <div className="flex items-center h-5">
+    <input
+      id="terms"
+      type="checkbox"
+      checked={termsAccepted}
+      onChange={(e) => setTermsAccepted(e.target.checked)}
+      className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500"
+    />
+  </div>
+  <div className="ml-3">
+    <label htmlFor="terms" className="text-sm text-gray-600">
+      I agree to the <TermsAndConditionsModal /> of SongDis distribution service.
+      By checking this box, I confirm that I have read and understood the terms.
+    </label>
+  </div>
+</div>
 
           <button
             type="submit"
