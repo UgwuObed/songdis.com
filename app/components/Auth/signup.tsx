@@ -188,7 +188,7 @@ const Signup = () => {
                 ${formData.account_type === 'growth' ? 'border-red-600 bg-red-50' : 'border-gray-300'}`}
               onClick={() => setFormData({ ...formData, account_type: 'growth' })}
             >
-              <p className="text-sm mb-4">Multiple artists and enhances professional image.</p>
+              <p className="text-sm mb-4">Three artists and enhances professional image.</p>
               <button
                 type="button"
                 className="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition-colors"
