@@ -148,62 +148,64 @@ const PaymentPlan = ({ accountType, onPaymentComplete }: PaymentPlanProps) => {
             You've selected the <span className="text-black">{accountType}</span> plan.
           </p>
           
-          {/* Promo Code Section */}
-          <div className="mt-4">
-            {!showPromoInput ? (
-              <button
-                onClick={() => setShowPromoInput(true)}
-                className="text-red-600 hover:text-red-700 underline"
-              >
-                Have a promo code for one month free?
-              </button>
+         {/* Promo Code Section */}
+<div className="mt-4 w-full">
+  {!showPromoInput ? (
+    <button
+      onClick={() => setShowPromoInput(true)}
+      className="text-red-600 hover:text-red-700 underline w-full text-center"
+    >
+      Have a promo code for 14 days free?
+    </button>
+  ) : (
+    <div className="flex flex-col items-center space-y-3 w-full">
+      <div className="flex flex-col sm:flex-row w-full max-w-md space-y-2 sm:space-y-0 sm:space-x-2">
+        <input
+          type="text"
+          value={promoCode}
+          onChange={(e) => setPromoCode(e.target.value)}
+          placeholder="Enter promo code"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+        />
+        <div className="flex space-x-2">
+          <button
+            onClick={handlePromoCodeSubmit}
+            disabled={promoLoading}
+            className={`flex-1 sm:flex-none px-4 py-2 rounded-md ${
+              promoLoading 
+                ? "bg-gray-400" 
+                : "bg-red-600 hover:bg-red-700"
+            } text-white whitespace-nowrap`}
+          >
+            {promoLoading ? (
+              <span className="flex items-center justify-center">
+                <svg className="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6l4 2" />
+                </svg>
+                Applying...
+              </span>
             ) : (
-              <div className="flex flex-col items-center space-y-2">
-                <div className="flex justify-center items-center space-x-2">
-                  <input
-                    type="text"
-                    value={promoCode}
-                    onChange={(e) => setPromoCode(e.target.value)}
-                    placeholder="Enter promo code"
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
-                  />
-                  <button
-                    onClick={handlePromoCodeSubmit}
-                    disabled={promoLoading}
-                    className={`px-4 py-2 rounded-md ${
-                      promoLoading 
-                        ? "bg-gray-400" 
-                        : "bg-red-600 hover:bg-red-700"
-                    } text-white`}
-                  >
-                    {promoLoading ? (
-                      <span className="flex items-center">
-                        <svg className="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6l4 2" />
-                        </svg>
-                        Applying...
-                      </span>
-                    ) : (
-                      "Apply Code"
-                    )}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowPromoInput(false);
-                      setPromoError(null);
-                      setPromoCode("");
-                    }}
-                    className="text-gray-500 hover:text-gray-700"
-                  >
-                    Cancel
-                  </button>
-                </div>
-                {promoError && (
-                  <p className="text-red-600 text-sm">{promoError}</p>
-                )}
-              </div>
+              "Apply Code"
             )}
-          </div>
+          </button>
+          <button
+            onClick={() => {
+              setShowPromoInput(false);
+              setPromoError(null);
+              setPromoCode("");
+            }}
+            className="px-4 py-2 text-gray-500 hover:text-gray-700"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+      {promoError && (
+        <p className="text-red-600 text-sm text-center">{promoError}</p>
+      )}
+    </div>
+  )}
+</div>
         </div>
 
         <section className="py-12">

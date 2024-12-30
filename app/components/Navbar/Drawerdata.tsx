@@ -11,9 +11,10 @@ interface NavigationItem {
 interface DrawerdataProps {
   openSignIn: () => void;
   openSignUp: () => void;
+  openFaq: () => void;
 }
 
-const Data = ({ openSignIn, openSignUp }: DrawerdataProps) => {
+const Data = ({ openSignIn, openSignUp, openFaq }: DrawerdataProps) => {
   const navigation: NavigationItem[] = [
     { 
       name: 'Distribute', 
@@ -24,7 +25,12 @@ const Data = ({ openSignIn, openSignUp }: DrawerdataProps) => {
     { name: 'Services', href: '#services', current: false },
     { name: 'About', href: '#about', current: false },
     { name: 'Project', href: '#project', current: false },
-    { name: 'Help', href: '/', current: false },
+    { 
+      name: 'FAQ', 
+      href: '/FAQ',
+      current: false,
+      onClick: () => openFaq()
+    }
   ];
 
   function classNames(...classes: string[]) {
@@ -46,8 +52,8 @@ const Data = ({ openSignIn, openSignUp }: DrawerdataProps) => {
                 )}
                 onClick={(e) => {
                   if (item.onClick) {
-                    e.preventDefault(); 
-                    item.onClick(); 
+                    e.preventDefault();
+                    item.onClick();
                   }
                 }}
                 aria-current={item.current ? 'page' : undefined}
@@ -59,12 +65,20 @@ const Data = ({ openSignIn, openSignUp }: DrawerdataProps) => {
             <Link 
               href="/auth/signin"
               className="block bg-lightblue w-full hover:bg-blue hover:text-white text-blue font-medium my-2 py-2 px-4 rounded text-center"
+              onClick={(e) => {
+                e.preventDefault();
+                openSignIn();
+              }}
             >
               Sign In
             </Link>
             <Link
-              href="/auth/signup"
+              href="/auth/signup" 
               className="block bg-lightblue w-full hover:bg-blue hover:text-white text-blue font-medium my-2 py-2 px-4 rounded text-center"
+              onClick={(e) => {
+                e.preventDefault();
+                openSignUp();
+              }}
             >
               Sign Up
             </Link>
@@ -74,4 +88,5 @@ const Data = ({ openSignIn, openSignUp }: DrawerdataProps) => {
     </div>
   );
 }
+
 export default Data;

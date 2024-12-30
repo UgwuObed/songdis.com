@@ -1,9 +1,10 @@
 import { Disclosure } from '@headlessui/react';
-import { Bars3Icon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import React from 'react';
 import Drawer from "./Drawer";
 import Drawerdata from "./Drawerdata";
+import FAQ from './Faq';
 
 
 interface NavigationItem {
@@ -17,6 +18,7 @@ const Navbar = () => {
     const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
     const [isSignInOpen, setIsSignInOpen] = React.useState(false);
     const [isRegisterOpen, setIsRegisterOpen] = React.useState(false);
+    const [isFaqOpen, setIsFaqOpen] = React.useState(false);
 
     const navigation: NavigationItem[] = [
         { 
@@ -28,7 +30,12 @@ const Navbar = () => {
         { name: 'Services', href: '#services', current: false },
         { name: 'About', href: '#about', current: false },
         { name: 'Project', href: '#project', current: false },
-        { name: 'Help', href: '/', current: false },
+        { 
+            name: 'FAQ', 
+            href: '/FAQ',
+            current: false,
+            onClick: () => setIsFaqOpen(true)
+          },
     ];
 
     function classNames(...classes: string[]) {
@@ -87,8 +94,23 @@ const Navbar = () => {
                             <Link 
                              className="px-4 py-2 text-lg font-medium text-white bg-red-600 hover:bg-red-700 border-lightgrey leafbutton"
                             href="/auth/signup">Sign Up</Link>
+
                         </div>
 
+                    {/* Add FAQ Modal */}
+                    {isFaqOpen && (
+                                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                        <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-lg">
+                                            <button 
+                                                onClick={() => setIsFaqOpen(false)}
+                                                className="absolute right-4 top-4 p-2 hover:bg-gray-100 rounded-full"
+                                            >
+                                                <XMarkIcon className="w-6 h-6" />
+                                            </button>
+                                            <FAQ />
+                                        </div>
+                                    </div>
+                                )}
                     
                      
                         {/* DRAWER ICON FOR MOBILE */}
@@ -101,6 +123,7 @@ const Navbar = () => {
                             <Drawerdata
                                 openSignIn={() => setIsSignInOpen(true)}
                                 openSignUp={() => setIsRegisterOpen(true)}
+                                openFaq={() => setIsFaqOpen(true)}
                             />
                         </Drawer>
                     </div>
