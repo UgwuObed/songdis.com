@@ -26,7 +26,7 @@ const Footer = () => {
           {/* COLUMN-1 */}
           <div className="col-span-4 md:col-span-12 lg:col-span-4">
             <div className="flex gap-4">
-              <Link href="https://facebook.com" className="footer-fb-icons">
+              <Link href="https://m.facebook.com/songdisonline/" className="footer-fb-icons">
                 <Image
                   src={"/assets/footer/facebook.svg"}
                   alt="facebook"
@@ -34,7 +34,7 @@ const Footer = () => {
                   height={20}
                 />
               </Link>
-              <Link href="https://twitter.com" className="footer-icons">
+              <Link href="https://x.com/songdisonline?t=E85RshozKemONH7nhxEQCQ&s=08" className="footer-icons">
                 <Image
                   src={"/assets/footer/twitter.svg"}
                   alt="twitter"
@@ -42,7 +42,7 @@ const Footer = () => {
                   height={20}
                 />
               </Link>
-              <Link href="https://instagram.com" className="footer-icons">
+              <Link href="https://www.instagram.com/songdisonline?igsh=Z2tlODBmOGZzeGN1" className="footer-icons">
                 <Image
                   src={"/assets/footer/instagram.svg"}
                   alt="instagram"
