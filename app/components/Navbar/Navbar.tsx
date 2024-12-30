@@ -27,8 +27,7 @@ const Navbar = () => {
         },
         { name: 'Services', href: '#services', current: false },
         { name: 'About', href: '#about', current: false },
-        { name: 'Project', href: '#project', current: false },
-        { name: 'Help', href: '/', current: false },
+        { name: 'Plan', href: '#plan', current: false },
     ];
 
     function classNames(...classes: string[]) {
