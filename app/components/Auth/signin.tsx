@@ -61,18 +61,18 @@ const Signin = () => {
       style={{ backgroundImage: 'url("/assets/banner/auth.jpg")' }}
     >
       <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <img
-          src="/assets/logo/logo.png"
-          alt="Logo"
-          className="h-12 md:h-16 w-auto mx-auto mb-6"
-        />
+      <img
+  src="/assets/logo/logo.png"
+  alt="Logo"
+  className="h-16 md:h-24 w-auto mx-auto mb-8"
+/>
         
         <h2 className="text-xl md:text-2xl font-bold text-center mb-2">
           Welcome Back
         </h2>
         
         <p className="text-sm text-gray-600 text-center mb-6">
-          Continue being amazing
+          Get Your Music Everywhere
         </p>
   
         {error && (

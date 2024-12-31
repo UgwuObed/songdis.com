@@ -92,12 +92,11 @@ const Signup = () => {
     <div className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex items-center justify-center p-4" 
          style={{ backgroundImage: 'url("/assets/banner/auth.jpg")' }}>
       <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-3xl">
-        <img
-          src="/assets/logo/logo.png"
-          alt="Logo"
-          className="h-12 md:h-16 w-auto mx-auto mb-63"
-        />
-        
+      <img
+      src="/assets/logo/logo.png"
+      alt="Logo"
+      className="h-16 md:h-24 w-auto mx-auto mb-6"
+    />
         <h2 className="text-xl md:text-2xl font-bold text-center mb-2">
           Sign up
         </h2>
