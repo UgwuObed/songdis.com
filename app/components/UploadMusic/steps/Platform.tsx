@@ -12,6 +12,8 @@ const PlatformStep = ({ formState, setFormState }: any) => {
     'TikTok',
     'Instagram/Facebook',
     'Shazam',
+    'Soundcloud',
+    'Audiomack',
   ];
 
   const togglePlatform = (platform: string) => {
@@ -76,7 +78,7 @@ const PlatformStep = ({ formState, setFormState }: any) => {
                      transition-all duration-200 active:scale-[0.98]
                      shadow-sm hover:shadow-md"
         >
-          Select All Platforms
+          Select All 400+ Platforms
         </button>
         
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
