@@ -120,7 +120,7 @@ const ReleaseStep = ({ uploadType, formState, setFormState }: any) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
-            Release Date
+          Release Date (Maximum 7-14 days from today)
           </label>
           <input
             type="date"
