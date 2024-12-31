@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SidebarMenu from '../../components/Home/menu';
 import SearchBar from '../../components/Home/search';
+import DeliveryLog from '../../components/Home/delivery';
 import UploadMusic from '../UploadMusic/upload';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { BASE_URL } from "../apiConfig";
@@ -198,25 +199,7 @@ const Dashboard = () => {
 
             {/* Delivery Log Section */}
             <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg md:text-xl font-semibold">Delivery Log</h2>
-                <select className="text-xs md:text-sm border rounded p-1">
-                  <option>14 Sep - 20 Sep</option>
-                </select>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <tbody className="divide-y divide-gray-200">
-                    {[1, 2, 3, 4].map((item) => (
-                      <tr key={item} className="text-xs md:text-sm">
-                        <td className="py-2">Pending distribution</td>
-                        <td className="py-2 text-right">Sat, 20 Sept 2024</td>
-                        <td className="py-2 text-right text-green-500">Uploaded</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <DeliveryLog />
             </div>
           </div>
 

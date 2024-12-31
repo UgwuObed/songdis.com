@@ -131,17 +131,21 @@ console.log(filteredReleases);
                         {release.upload_type}
                       </span>
                       <div className="flex justify-between items-center mt-3 sm:mt-4">
-                  <span
-                    className={`text-xs sm:text-sm px-2 py-1 rounded ${
-                      release.status === 'pending'
-                        ? 'bg-yellow-100 text-yellow-700'
-                        : release.status === 'complete'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-700'
-                    }`}
-                  >
-                    {release.status}
-                  </span>
+                      <span
+                  className={`text-xs sm:text-sm px-2 py-1 rounded ${
+                    release.status === 'Pending'
+                      ? 'bg-yellow-500 text-white'
+                      : release.status === 'Delivered'
+                      ? 'bg-red-500 text-white'
+                      : release.status === 'Live'
+                      ? 'bg-green-500 text-white'
+                      : release.status === 'NeedDoc'
+                      ? 'bg-orange-500 text-white'
+                      : 'bg-gray-400 text-white'
+                  }`}
+                >
+                  {release.status}
+                </span>
                  </div>
                     </div>
                     <div className="flex justify-between items-center mt-3 sm:mt-4 space-x-2">
